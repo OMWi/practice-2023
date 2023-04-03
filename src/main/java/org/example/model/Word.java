@@ -1,15 +1,15 @@
 package org.example.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Word {
     int id;
-    String word;
+    String text;
     WordType type;
-    ArrayList<Meaning> meanings;
+    List<Meaning> meanings;
 
-    public Word(String word, WordType type, ArrayList<Meaning> meanings) {
-        this.word = word;
+    public Word(String text, WordType type, List<Meaning> meanings) {
+        this.text = text;
         this.type = type;
         this.meanings = meanings;
     }

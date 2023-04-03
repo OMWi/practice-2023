@@ -3,10 +3,10 @@ package org.example.model;
 public class Meaning {
     int id;
     int level;
-    String meaning;
+    String text;
 
-    public Meaning(int level, String meaning) {
+    public Meaning(int level, String text) {
         this.level = level;
-        this.meaning = meaning;
+        this.text = text;
     }
 }

@@ -1,6 +1,6 @@
 package org.example.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     int id;
@@ -9,12 +9,12 @@ public class User {
     String salt;
     String username;
     TelegramUser telegramUser;
-    ArrayList<Word> words;
-    ArrayList<WordList> listsOfWords;
+    List<Word> words;
+    List<WordList> listsOfWords;
     UserRole role = UserRole.USER;
     int points = 0;
 
-    public User(String email, String hashed, String salt, String username, TelegramUser telegramUser, ArrayList<Word> words, ArrayList<WordList> listsOfWords) {
+    public User(String email, String hashed, String salt, String username, TelegramUser telegramUser, List<Word> words, List<WordList> listsOfWords) {
         this.email = email;
         this.hashed = hashed;
         this.salt = salt;
@@ -24,7 +24,7 @@ public class User {
         this.listsOfWords = listsOfWords;
     }
 
-    public User(String email, String hashed, String salt, String username, TelegramUser telegramUser, ArrayList<Word> words, ArrayList<WordList> listsOfWords, UserRole role) {
+    public User(String email, String hashed, String salt, String username, TelegramUser telegramUser, List<Word> words, List<WordList> listsOfWords, UserRole role) {
         this.email = email;
         this.hashed = hashed;
         this.salt = salt;
