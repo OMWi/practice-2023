@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'org.sonarqube' version '3.5.0.2730'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "OMWi_practice-2023"
+        property "sonar.organization", "omwi"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
