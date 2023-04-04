@@ -3,6 +3,8 @@ package org.example.utils;
 import java.sql.SQLException;
 
 public final class Utility {
+    private static final System.Logger logger = System.getLogger(Utility.class.getName());
+
     private Utility() {
     }
 
@@ -11,16 +13,21 @@ public final class Utility {
             if (!(e instanceof SQLException)) {
                 continue;
             }
-            e.printStackTrace(System.err);
-            System.err.println("SQLState: " + ((SQLException)e).getSQLState());
 
-            System.err.println("Error Code: " + ((SQLException)e).getErrorCode());
-
-            System.err.println("Message: " + e.getMessage());
+            logger.log(System.Logger.Level.ERROR, """
+                            {0}
+                            SQLState: {1}
+                            Error Code: {2}
+                            Message: {3}""",
+                    e.getStackTrace(),
+                    ((SQLException) e).getSQLState(),
+                    ((SQLException) e).getErrorCode(),
+                    e.getMessage()
+            );
 
             Throwable t = ex.getCause();
-            while(t != null) {
-                System.out.println("Cause: " + t);
+            while (t != null) {
+                logger.log(System.Logger.Level.ERROR, "Cause: {0}", t.getCause());
                 t = t.getCause();
             }
         }
