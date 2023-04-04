@@ -8,7 +8,11 @@ public class DatabaseConnection {
   static String user = "<user>";
   static String password = "<password>";
 
-  public static Connection getConnection() throws Exception {
+//  TODO: refactor this class
+//  private DatabaseConnection() {
+//  }
+
+  public static Connection getConnection() {
     if (connection == null) {
       connection = DriverManager.getConnection(url, user, password);
     }
