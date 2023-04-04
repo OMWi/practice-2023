@@ -1,4 +1,6 @@
-package org.example.model;
+package org.example.models;
+
+import org.example.enums.LogType;
 
 import java.time.LocalDateTime;
 
@@ -14,12 +16,6 @@ public class Log {
     public Log(User user, LogType type) {
         this.user = user;
         this.type = type;
-    }
-
-    public Log(User user, LogType type, LocalDateTime createdAt) {
-        this.user = user;
-        this.type = type;
-        this.createdAt = createdAt;
     }
 
     public Log(int id, User user, LogType type, LocalDateTime createdAt) {

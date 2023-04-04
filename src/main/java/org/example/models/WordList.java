@@ -1,25 +1,25 @@
-package org.example.model;
+package org.example.models;
 
-import java.util.List;
+import java.util.Set;
 
 public class WordList {
     private int id;
     private String name;
     private int wordCount;
     private int popularity;
-    private List<Word> words;
+    private Set<Word> words;
 
     public WordList() {
     }
 
-    public WordList(String name, int wordCount, int popularity, List<Word> words) {
+    public WordList(String name, int wordCount, int popularity, Set<Word> words) {
         this.name = name;
         this.wordCount = wordCount;
         this.popularity = popularity;
         this.words = words;
     }
 
-    public WordList(int id, String name, int wordCount, int popularity, List<Word> words) {
+    public WordList(int id, String name, int wordCount, int popularity, Set<Word> words) {
         this.id = id;
         this.name = name;
         this.wordCount = wordCount;
@@ -59,11 +59,11 @@ public class WordList {
         this.popularity = popularity;
     }
 
-    public List<Word> getWords() {
+    public Set<Word> getWords() {
         return words;
     }
 
-    public void setWords(List<Word> words) {
+    public void setWords(Set<Word> words) {
         this.words = words;
     }
 }

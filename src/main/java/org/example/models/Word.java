@@ -1,23 +1,23 @@
-package org.example.model;
+package org.example.models;
 
-import java.util.List;
+import java.util.Set;
 
 public class Word {
     private int id;
     private String text;
     private WordType type;
-    private List<Meaning> meanings;
+    private Set<Meaning> meanings;
 
     public Word() {
     }
 
-    public Word(String text, WordType type, List<Meaning> meanings) {
+    public Word(String text, WordType type, Set<Meaning> meanings) {
         this.text = text;
         this.type = type;
         this.meanings = meanings;
     }
 
-    public Word(int id, String text, WordType type, List<Meaning> meanings) {
+    public Word(int id, String text, WordType type, Set<Meaning> meanings) {
         this.id = id;
         this.text = text;
         this.type = type;
@@ -48,11 +48,11 @@ public class Word {
         this.type = type;
     }
 
-    public List<Meaning> getMeanings() {
+    public Set<Meaning> getMeanings() {
         return meanings;
     }
 
-    public void setMeanings(List<Meaning> meanings) {
+    public void setMeanings(Set<Meaning> meanings) {
         this.meanings = meanings;
     }
 }
