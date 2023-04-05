@@ -18,13 +18,17 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "user_data" (
-  "user_id" int PRIMARY KEY REFERENCES "user"("id"),
+  "user_id" int PRIMARY KEY REFERENCES "user"("id")
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
   "username" text NOT NULL,
   "points" int NOT NULL DEFAULT 0
 );
 
 CREATE TABLE "telegram_account" (
-  "user_id" int PRIMARY KEY REFERENCES "user_data"("user_id"),
+  "user_id" int PRIMARY KEY REFERENCES "user_data"("user_id")
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
   "chat_id" int NOT NULL,
   "username" text NOT NULL,
   "is_confirmed" boolean NOT NULL DEFAULT false
@@ -38,12 +42,16 @@ CREATE TABLE "word_category" (
 CREATE TABLE "word" (
   "id" int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   "word" text NOT NULL,
-  "word_category_id" int NOT NULL REFERENCES "word_category"("id")
+  "word_category_id" int NOT NULL REFERENCES "word_category"
+  ON UPDATE CASCADE
+  ON DELETE RESTRICT
 );
 
 CREATE TABLE "meaning" (
   "id" int PRIMARY KEY,
-  "word_id" int NOT NULL REFERENCES "word"("id"),
+  "word_id" int NOT NULL REFERENCES "word"("id")
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
   "level" int NOT NULL,
   "meaning" text NOT NULL
 );
@@ -56,20 +64,32 @@ CREATE TABLE "wordlist" (
 );
 
 CREATE TABLE "wordlist_word" (
-  "wordlist_id" int NOT NULL REFERENCES "wordlist"("id"),
-  "word_id" int NOT NULL REFERENCES "word"("id"),
+  "wordlist_id" int NOT NULL REFERENCES "wordlist"("id")
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  "word_id" int NOT NULL REFERENCES "word"("id")
+  ON UPDATE CASCADE
+  ON DELETE RESTRICT,
   PRIMARY KEY("wordlist_id", "word_id")
 );
 
 CREATE TABLE "userdata_wordlist" (
-  "userdata_id" int NOT NULL REFERENCES "user_data"("user_id"),
-  "wordlist_id" int NOT NULL REFERENCES "wordlist"("id"),
+  "userdata_id" int NOT NULL REFERENCES "user_data"("user_id")
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  "wordlist_id" int NOT NULL REFERENCES "wordlist"("id")
+  ON UPDATE CASCADE
+  ON DELETE RESTRICT,
   PRIMARY KEY("userdata_id", "wordlist_id")
 );
 
 CREATE TABLE "userdata_word" (
-  "userdata_id" int NOT NULL REFERENCES "user_data"("user_id"),
-  "word_id" int NOT NULL REFERENCES "word"("id"),
+  "userdata_id" int NOT NULL REFERENCES "user_data"("user_id")
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  "word_id" int NOT NULL REFERENCES "word"("id")
+  ON UPDATE CASCADE
+  ON DELETE RESTRICT,
   PRIMARY KEY("userdata_id", "word_id"),
   "is_learned" boolean NOT NULL DEFAULT false,
   "guess_streak" int DEFAULT 0
@@ -80,4 +100,6 @@ CREATE TABLE "log" (
   "created_at" timestamp NOT NULL,
   "type" log_type NOT NULL,
   "user_id" int NOT NULL REFERENCES "user"("id")
+  ON UPDATE CASCADE
+  ON DELETE CASCADE
 );
