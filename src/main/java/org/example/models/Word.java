@@ -5,22 +5,22 @@ import java.util.Set;
 public class Word {
     private int id;
     private String text;
-    private WordType type;
+    private WordCategory category;
     private Set<Meaning> meanings;
 
     public Word() {
     }
 
-    public Word(String text, WordType type, Set<Meaning> meanings) {
+    public Word(String text, WordCategory category, Set<Meaning> meanings) {
         this.text = text;
-        this.type = type;
+        this.category = category;
         this.meanings = meanings;
     }
 
-    public Word(int id, String text, WordType type, Set<Meaning> meanings) {
+    public Word(int id, String text, WordCategory category, Set<Meaning> meanings) {
         this.id = id;
         this.text = text;
-        this.type = type;
+        this.category = category;
         this.meanings = meanings;
     }
 
@@ -40,12 +40,12 @@ public class Word {
         this.text = text;
     }
 
-    public WordType getType() {
-        return type;
+    public WordCategory getCategory() {
+        return category;
     }
 
-    public void setType(WordType type) {
-        this.type = type;
+    public void setCategory(WordCategory category) {
+        this.category = category;
     }
 
     public Set<Meaning> getMeanings() {

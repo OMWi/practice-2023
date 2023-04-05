@@ -5,21 +5,21 @@ import java.util.Set;
 public class UserData {
     private int id;
     private String username;
+    private int points;
     private TelegramUser telegramUser;
     private Set<Word> words;
     private Set<WordList> wordLists;
-    private int points;
 
     public UserData() {
     }
 
-    public UserData(int id, String username, TelegramUser telegramUser, Set<Word> words, Set<WordList> wordLists, int points) {
+    public UserData(int id, String username, int points, TelegramUser telegramUser, Set<Word> words, Set<WordList> wordLists) {
         this.id = id;
         this.username = username;
+        this.points = points;
         this.telegramUser = telegramUser;
         this.words = words;
         this.wordLists = wordLists;
-        this.points = points;
     }
 
     public int getId() {
@@ -36,6 +36,14 @@ public class UserData {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public TelegramUser getTelegramUser() {
@@ -60,13 +68,5 @@ public class UserData {
 
     public void setWordLists(Set<WordList> wordLists) {
         this.wordLists = wordLists;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 }
