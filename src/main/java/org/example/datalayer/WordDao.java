@@ -33,6 +33,7 @@ public class WordDao implements IWordDao {
                 var meaningDao = new MeaningDao();
                 var meanings = meaningDao.getMeanings(word.getId());
                 word.setMeanings(meanings);
+                return word;
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
