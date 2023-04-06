@@ -2,12 +2,12 @@ package org.example.datalayer;
 
 import org.example.models.Word;
 
-import java.util.List;
+import java.util.Set;
 
 public interface IWordDao {
     Word getWord(int id);
 
-    List<Word> getAllWords();
+    Set<Word> getAllWords();
 
     boolean insertWord(Word word);
 

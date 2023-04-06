@@ -55,4 +55,14 @@ public class Word {
     public void setMeanings(Set<Meaning> meanings) {
         this.meanings = meanings;
     }
+
+    @Override
+    public String toString() {
+        return "Word{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", category=" + category +
+                ", meanings=" + meanings +
+                '}';
+    }
 }
