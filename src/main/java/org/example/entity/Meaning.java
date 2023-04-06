@@ -1,12 +1,9 @@
-package org.example.models;
+package org.example.entity;
 
 public class Meaning {
     private int id;
     private int level;
     private String text;
-
-    public Meaning() {
-    }
 
     public Meaning(int level, String text) {
         this.level = level;

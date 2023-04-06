@@ -1,11 +1,8 @@
-package org.example.models;
+package org.example.entity;
 
 public class WordCategory {
     private int id;
     private String category;
-
-    public WordCategory() {
-    }
 
     public WordCategory(String category) {
         this.category = category;

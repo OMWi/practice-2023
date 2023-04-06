@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.entity;
 
 import org.example.enums.UserRole;
 
@@ -8,9 +8,6 @@ public class User {
     private String hashed;
     private String salt;
     private UserRole role = UserRole.USER;
-
-    public User() {
-    }
 
     public User(String email, String hashed, String salt) {
         this.email = email;
@@ -64,5 +61,16 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", hashed='" + hashed + '\'' +
+                ", salt='" + salt + '\'' +
+                ", role=" + role +
+                '}';
     }
 }

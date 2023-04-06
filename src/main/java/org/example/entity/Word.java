@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.entity;
 
 import java.util.Set;
 
@@ -7,9 +7,6 @@ public class Word {
     private String text;
     private WordCategory category;
     private Set<Meaning> meanings;
-
-    public Word() {
-    }
 
     public Word(String text, WordCategory category, Set<Meaning> meanings) {
         this.text = text;

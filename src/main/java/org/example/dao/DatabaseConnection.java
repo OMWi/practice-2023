@@ -1,4 +1,4 @@
-package org.example.datalayer;
+package org.example.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

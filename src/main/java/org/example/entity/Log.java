@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.entity;
 
 import org.example.enums.LogType;
 
@@ -6,21 +6,18 @@ import java.time.LocalDateTime;
 
 public class Log {
     private int id;
-    private User user;
+    private int userId;
     private LogType type;
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public Log() {
-    }
-
-    public Log(User user, LogType type) {
-        this.user = user;
+    public Log(int userId, LogType type) {
+        this.userId = userId;
         this.type = type;
     }
 
-    public Log(int id, User user, LogType type, LocalDateTime createdAt) {
+    public Log(int id, int userId, LogType type, LocalDateTime createdAt) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.type = type;
         this.createdAt = createdAt;
     }
@@ -33,12 +30,12 @@ public class Log {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public LogType getType() {
@@ -55,5 +52,15 @@ public class Log {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Log{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", type=" + type +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

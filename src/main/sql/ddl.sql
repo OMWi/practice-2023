@@ -1,12 +1,12 @@
 CREATE TYPE "role" AS ENUM (
-  'user',
-  'admin'
+  'USER',
+  'ADMIN'
 );
 
 CREATE TYPE "log_type" AS ENUM (
-  'register',
-  'login',
-  'logout'
+  'REGISTER',
+  'LOGIN',
+  'LOGOUT'
 );
 
 CREATE TABLE "user" (
@@ -48,7 +48,7 @@ CREATE TABLE "word" (
 );
 
 CREATE TABLE "meaning" (
-  "id" int PRIMARY KEY,
+  "id" int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   "word_id" int NOT NULL REFERENCES "word"("id")
   ON UPDATE CASCADE
   ON DELETE CASCADE,

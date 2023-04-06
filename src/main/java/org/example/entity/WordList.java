@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.entity;
 
 import java.util.Set;
 
@@ -8,9 +8,6 @@ public class WordList {
     private int wordCount;
     private int popularity;
     private Set<Word> words;
-
-    public WordList() {
-    }
 
     public WordList(String name, int wordCount, int popularity, Set<Word> words) {
         this.name = name;
@@ -65,5 +62,16 @@ public class WordList {
 
     public void setWords(Set<Word> words) {
         this.words = words;
+    }
+
+    @Override
+    public String toString() {
+        return "WordList{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", wordCount=" + wordCount +
+                ", popularity=" + popularity +
+                ", words=" + words +
+                '}';
     }
 }
