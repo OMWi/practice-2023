@@ -1,6 +1,5 @@
 package org.example.dao;
 
-import jdk.jshell.execution.Util;
 import org.example.entity.WordList;
 import org.example.utils.Utility;
 
@@ -11,12 +10,14 @@ import java.util.Set;
 
 public class WordListDao implements IWordListDao {
     public static WordList extractWordListFromResultSet(ResultSet rs) throws SQLException {
-        WordList wordList = new WordList();
-        wordList.setId(rs.getInt("id"));
-        wordList.setName(rs.getString("name"));
-        wordList.setWordCount(rs.getInt("word_count"));
-        wordList.setPopularity(rs.getInt("popularity"));
-        return wordList;
+        var wordDao = new WordDao();
+        return new WordList(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getInt("word_count"),
+                rs.getInt("popularity"),
+                wordDao.getByWordList(rs.getInt("id"))
+        );
     }
 
     @Override
