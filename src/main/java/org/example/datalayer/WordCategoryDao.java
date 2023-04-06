@@ -5,8 +5,8 @@ import org.example.utils.Utility;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WordCategoryDao implements IWordCategory {
     private static WordCategory extractWordCategoryFromResultSet(ResultSet rs) throws SQLException {
@@ -35,13 +35,13 @@ public class WordCategoryDao implements IWordCategory {
     }
 
     @Override
-    public List<WordCategory> getAllWordCategories() {
+    public Set<WordCategory> getAllWordCategories() {
         try {
             var connection = DatabaseConnection.getConnection();
             var statement = connection.createStatement();
             var rs = statement.executeQuery("SELECT * FROM word_category");
 
-            List<WordCategory> wordCategories = new ArrayList<>();
+            var wordCategories = new HashSet<WordCategory>();
             while (rs.next()) {
                 WordCategory wordCategory = extractWordCategoryFromResultSet(rs);
                 wordCategories.add(wordCategory);

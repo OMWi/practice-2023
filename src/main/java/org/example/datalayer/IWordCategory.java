@@ -2,12 +2,12 @@ package org.example.datalayer;
 
 import org.example.models.WordCategory;
 
-import java.util.List;
+import java.util.Set;
 
 public interface IWordCategory {
     WordCategory getWordCategory(int id);
 
-    List<WordCategory> getAllWordCategories();
+    Set<WordCategory> getAllWordCategories();
 
     boolean insertWordCategory(WordCategory wordCategory);
 
