@@ -6,7 +6,6 @@ import org.example.utils.Utility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Set;
 
 public class UserDataDao implements IUserDataDao {
     private static UserData extractUserDataFromResultSet(ResultSet rs) throws SQLException {
@@ -45,6 +44,26 @@ public class UserDataDao implements IUserDataDao {
     }
 
     @Override
+    public boolean addWord(int userId, int wordId) {
+        try {
+            var connection = DatabaseConnection.getConnection();
+            try (var statement = connection.prepareStatement("INSERT INTO userdata_word(userdata_id, word_id) VALUES(?, ?)")) {
+                statement.setInt(1, userId);
+                statement.setInt(2, wordId);
+
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
+            }
+        } catch (SQLException exception) {
+            Utility.printSQLException(exception);
+        }
+
+        return false;
+    }
+
+    @Override
     public UserData get(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
@@ -64,7 +83,7 @@ public class UserDataDao implements IUserDataDao {
     }
 
     @Override
-    public Set<UserData> getAll() {
+    public HashSet<UserData> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.prepareStatement("SELECT * FROM user_data")) {

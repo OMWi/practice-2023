@@ -10,14 +10,14 @@ public final class Utility {
     private Utility() {
     }
 
-    public static int getOption(int optionsNumber) {
+    public static int getOption(int firstOption, int lastOption) {
         var scanner = new Scanner(System.in);
         while (true) {
             try {
                 System.out.print("Enter option: ");
                 int option = scanner.nextInt();
-                if (option < 0 || option > optionsNumber) {
-                    throw new InputMismatchException("Option must be integer > 0");
+                if (option < firstOption || option > lastOption) {
+                    throw new InputMismatchException();
                 }
                 return option;
             } catch (InputMismatchException exception) {

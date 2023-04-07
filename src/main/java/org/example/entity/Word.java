@@ -8,10 +8,9 @@ public class Word {
     private WordCategory category;
     private Set<Meaning> meanings;
 
-    public Word(String text, WordCategory category, Set<Meaning> meanings) {
+    public Word(String text, WordCategory category) {
         this.text = text;
         this.category = category;
-        this.meanings = meanings;
     }
 
     public Word(int id, String text, WordCategory category, Set<Meaning> meanings) {

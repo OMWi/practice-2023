@@ -6,7 +6,6 @@ import org.example.utils.Utility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Set;
 
 public class WordDao implements IWordDao {
     private static Word extractWordFromResultSet(ResultSet rs) throws SQLException {
@@ -63,7 +62,7 @@ public class WordDao implements IWordDao {
     }
 
     @Override
-    public Set<Word> getAll() {
+    public HashSet<Word> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.createStatement()) {
@@ -86,7 +85,7 @@ public class WordDao implements IWordDao {
     }
 
     @Override
-    public Set<Word> getByWordList(int wordListId) {
+    public HashSet<Word> getByWordList(int wordListId) {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.prepareStatement("""
@@ -115,7 +114,7 @@ public class WordDao implements IWordDao {
     }
 
     @Override
-    public Set<Word> getByUser(int userId) {
+    public HashSet<Word> getByUser(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.prepareStatement("""

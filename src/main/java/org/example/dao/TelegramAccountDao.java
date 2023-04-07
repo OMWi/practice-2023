@@ -6,7 +6,6 @@ import org.example.utils.Utility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Set;
 
 public class TelegramAccountDao implements ITelegramAccountDao {
     private static TelegramAccount extractTelegramAccountFromResultSet(ResultSet rs) throws SQLException {
@@ -58,7 +57,7 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     }
 
     @Override
-    public Set<TelegramAccount> getAll() {
+    public HashSet<TelegramAccount> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.createStatement()) {

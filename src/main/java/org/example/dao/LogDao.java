@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Set;
 
 public class LogDao implements ILogDao {
     private static Log extractLogFromResultSet(ResultSet rs) throws SQLException {
@@ -62,7 +61,7 @@ public class LogDao implements ILogDao {
     }
 
     @Override
-    public Set<Log> getAll() {
+    public HashSet<Log> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.prepareStatement("SELECT * FROM log")) {

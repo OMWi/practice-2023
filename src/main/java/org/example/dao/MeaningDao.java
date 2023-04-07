@@ -6,7 +6,6 @@ import org.example.utils.Utility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Set;
 
 public class MeaningDao implements IMeaningDao {
     private static Meaning extractMeaningFromResultSet(ResultSet rs) throws SQLException {
@@ -58,7 +57,7 @@ public class MeaningDao implements IMeaningDao {
     }
 
     @Override
-    public Set<Meaning> getAll() {
+    public HashSet<Meaning> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.createStatement()) {
@@ -79,7 +78,7 @@ public class MeaningDao implements IMeaningDao {
     }
 
     @Override
-    public Set<Meaning> getMeaningsOfWord(int wordId) {
+    public HashSet<Meaning> getMeaningsOfWord(int wordId) {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.prepareStatement("SELECT * FROM meaning WHERE word_id=?")) {

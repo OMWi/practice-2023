@@ -6,7 +6,6 @@ import org.example.utils.Utility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Set;
 
 public class WordCategoryDao implements IWordCategory {
     private static WordCategory extractWordCategoryFromResultSet(ResultSet rs) throws SQLException {
@@ -55,7 +54,7 @@ public class WordCategoryDao implements IWordCategory {
     }
 
     @Override
-    public Set<WordCategory> getAll() {
+    public HashSet<WordCategory> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.createStatement()) {

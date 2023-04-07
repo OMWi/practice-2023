@@ -6,7 +6,6 @@ import org.example.utils.Utility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Set;
 
 public class WordListDao implements IWordListDao {
     public static WordList extractWordListFromResultSet(ResultSet rs) throws SQLException {
@@ -43,7 +42,7 @@ public class WordListDao implements IWordListDao {
     }
 
     @Override
-    public Set<WordList> getByUser(int userId) {
+    public HashSet<WordList> getByUser(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.prepareStatement("""
@@ -70,7 +69,7 @@ public class WordListDao implements IWordListDao {
     }
 
     @Override
-    public Set<WordList> getAll() {
+    public HashSet<WordList> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.createStatement()) {
