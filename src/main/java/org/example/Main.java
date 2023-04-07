@@ -1,7 +1,9 @@
 package org.example;
 
 import org.example.controller.AuthenticationController;
+import org.example.dao.UserDataDao;
 import org.example.entity.User;
+import org.example.entity.UserData;
 import org.example.enums.UserRole;
 import org.example.utils.Utility;
 
@@ -9,6 +11,7 @@ import java.util.Scanner;
 
 public class Main {
     public static User currentUser = null;
+    public static UserData currentUserData = null;
     public static boolean isActive = true;
 
     public static void register() {
@@ -59,6 +62,9 @@ public class Main {
             }
             return;
         }
+        var userDataDao = new UserDataDao();
+        currentUserData = userDataDao.get(currentUser.getId());
+
         if (currentUser.getRole() == UserRole.ADMIN) {
             int optionsNumber = 1;
             System.out.println("Hello, admin");
@@ -80,8 +86,8 @@ public class Main {
             return;
         }
         if (currentUser.getRole() == UserRole.USER) {
-            int optionsNumber = 0;
-            System.out.println("Hello, user");
+            int optionsNumber = 1;
+            System.out.println("Hello, user '" + currentUserData.getUsername() + "'");
             System.out.println("0. Close app");
             System.out.println("1. Sign out");
             System.out.println(". Find more words");
