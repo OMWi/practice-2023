@@ -72,7 +72,7 @@ public class WordCategoryDao implements IWordCategory {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override

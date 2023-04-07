@@ -75,7 +75,7 @@ public class TelegramAccountDao implements ITelegramAccountDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override

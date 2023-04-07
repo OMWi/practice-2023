@@ -75,7 +75,7 @@ public class MeaningDao implements IMeaningDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class MeaningDao implements IMeaningDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override

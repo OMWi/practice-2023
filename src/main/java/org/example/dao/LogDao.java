@@ -78,7 +78,7 @@ public class LogDao implements ILogDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override

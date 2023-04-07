@@ -82,7 +82,7 @@ public class WordDao implements IWordDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override
@@ -111,7 +111,7 @@ public class WordDao implements IWordDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override
@@ -141,7 +141,7 @@ public class WordDao implements IWordDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override

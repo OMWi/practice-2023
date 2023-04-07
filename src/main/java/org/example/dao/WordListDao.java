@@ -66,7 +66,7 @@ public class WordListDao implements IWordListDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override
@@ -89,7 +89,7 @@ public class WordListDao implements IWordListDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override

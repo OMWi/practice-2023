@@ -18,8 +18,8 @@ public class UserDataDao implements IUserDataDao {
                 rs.getString("username"),
                 rs.getInt("points"),
                 telegramAccountDao.get(rs.getInt("user_id")),
-                null,
-                null
+                wordDao.getByUser(rs.getInt("user_id")),
+                wordlistDao.getByUser(rs.getInt("user_id"))
         );
     }
 
@@ -79,7 +79,7 @@ public class UserDataDao implements IUserDataDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override

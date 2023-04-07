@@ -79,7 +79,7 @@ public class UserDao implements IUserDao {
             Utility.printSQLException(exception);
         }
 
-        return null;
+        return new HashSet<>();
     }
 
     @Override
