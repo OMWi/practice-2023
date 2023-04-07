@@ -24,7 +24,7 @@ public class UserDao implements IUserDao {
     public boolean add(User user) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("INSERT INTO custom_user(email, hashed, salt, role) VALUES(?, ?, ?, ?::role)")) {
+            try (var statement = connection.prepareStatement("INSERT INTO custom_user(email, hashed, salt, role) VALUES(?, ?, ?, ?)")) {
                 statement.setString(1, user.getEmail());
                 statement.setString(2, user.getHashed());
                 statement.setString(3, user.getSalt());
