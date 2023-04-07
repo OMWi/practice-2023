@@ -24,7 +24,7 @@ public class LogDao implements ILogDao {
     public boolean add(Log log) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("INSERT INTO log(user_id, type, created_at) VALUES(?, ?, ?)")) {
+            try (var statement = connection.prepareStatement("INSERT INTO log(user_id, type::log_type, created_at) VALUES(?, ?, ?)")) {
                 statement.setInt(1, log.getUserId());
                 statement.setString(2, log.getType().toString());
 //            todo: check assignment below
