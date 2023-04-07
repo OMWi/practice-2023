@@ -39,11 +39,11 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     }
 
     @Override
-    public TelegramAccount get(int id) {
+    public TelegramAccount get(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("SELECT * FROM telegram_account WHERE id = ?")) {
-                statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("SELECT * FROM telegram_account WHERE user_id = ?")) {
+                statement.setInt(1, userId);
 
                 var rs = statement.executeQuery();
                 if (rs.next()) {
@@ -79,10 +79,10 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     }
 
     @Override
-    public boolean update(int id, TelegramAccount telegramAccount) {
+    public boolean update(int userId, TelegramAccount telegramAccount) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("UPDATE telegram_account SET chat_id=? AND username=? WHERE id=?")) {
+            try (var statement = connection.prepareStatement("UPDATE telegram_account SET chat_id=? AND username=? WHERE user_id=?")) {
                 statement.setLong(1, telegramAccount.getChatId());
                 statement.setString(2, telegramAccount.getUsername());
 
@@ -99,11 +99,11 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     }
 
     @Override
-    public boolean remove(int id) {
+    public boolean remove(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("DELETE FROM telegram_account WHERE id=?")) {
-                statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("DELETE FROM telegram_account WHERE user_id=?")) {
+                statement.setInt(1, userId);
 
                 var rowsCount = statement.executeUpdate();
                 if (rowsCount == 1) {
