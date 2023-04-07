@@ -9,16 +9,16 @@ CREATE TYPE "log_type" AS ENUM (
   'LOGOUT'
 );
 
-CREATE TABLE "user" (
+CREATE TABLE "custom_user" (
   "id" int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   "email" text NOT NULL,
   "hashed" text NOT NULL,
   "salt" text NOT NULL,
-  "role" role NOT NULL DEFAULT 'user'
+  "role" role NOT NULL DEFAULT 'USER'
 );
 
 CREATE TABLE "user_data" (
-  "user_id" int PRIMARY KEY REFERENCES "user"("id")
+  "user_id" int PRIMARY KEY REFERENCES "custom_user"("id")
   ON UPDATE CASCADE
   ON DELETE CASCADE,
   "username" text NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE "word_category" (
 CREATE TABLE "word" (
   "id" int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   "word" text NOT NULL,
-  "word_category_id" int NOT NULL REFERENCES "word_category"
+      "word_category_id" int NOT NULL REFERENCES "word_category"
   ON UPDATE CASCADE
   ON DELETE RESTRICT
 );
@@ -99,7 +99,7 @@ CREATE TABLE "log" (
   "id" int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   "created_at" timestamp NOT NULL,
   "type" log_type NOT NULL,
-  "user_id" int NOT NULL REFERENCES "user"("id")
+  "user_id" int NOT NULL REFERENCES "custom_user"("id")
   ON UPDATE CASCADE
   ON DELETE CASCADE
 );
