@@ -50,7 +50,7 @@ public class WordListDao implements IWordListDao {
                     SELECT * FROM wordlist
                     LEFT JOIN userdata_wordlist
                     ON userdata_wordlist.wordlist_id = wordlist.id
-                    WHERE userdata_wordlist.user_id = ?""")
+                    WHERE userdata_wordlist.userdata_id = ?""")
             ) {
                 statement.setInt(1, userId);
 
