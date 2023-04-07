@@ -9,6 +9,8 @@ public interface IUserDao {
 
     User get(int id);
 
+    User getByEmail(String email);
+
     Set<User> getAll();
 
     boolean update(User user);

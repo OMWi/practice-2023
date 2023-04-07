@@ -24,15 +24,15 @@ public class UserDao implements IUserDao {
     public boolean add(User user) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("INSERT INTO user(email, hashed, salt, role) VALUES(?, ?, ?, ?)")) {
+            try (var statement = connection.prepareStatement("INSERT INTO custom_user(email, hashed, salt, role) VALUES(?, ?, ?, ?)")) {
                 statement.setString(1, user.getEmail());
                 statement.setString(2, user.getHashed());
                 statement.setString(3, user.getSalt());
                 statement.setString(4, user.getRole().toString());
 
                 var rowsCount = statement.executeUpdate();
-                if (rowsCount != 1) {
-                    return false;
+                if (rowsCount == 1) {
+                    return true;
                 }
             }
         } catch (SQLException exception) {
@@ -46,8 +46,27 @@ public class UserDao implements IUserDao {
     public User get(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("SELECT * FROM user WHERE id = ?")) {
+            try (var statement = connection.prepareStatement("SELECT * FROM custom_user WHERE id = ?")) {
                 statement.setInt(1, id);
+
+                var rs = statement.executeQuery();
+                if (rs.next()) {
+                    return extractUserFromResultSet(rs);
+                }
+            }
+        } catch (SQLException exception) {
+            Utility.printSQLException(exception);
+        }
+
+        return null;
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        try {
+            var connection = DatabaseConnection.getConnection();
+            try (var statement = connection.prepareStatement("SELECT * FROM custom_user WHERE email = ?")) {
+                statement.setString(1, email);
 
                 var rs = statement.executeQuery();
                 if (rs.next()) {
@@ -66,7 +85,7 @@ public class UserDao implements IUserDao {
         try {
             var connection = DatabaseConnection.getConnection();
             try (var statement = connection.createStatement()) {
-                var rs = statement.executeQuery("SELECT * FROM user");
+                var rs = statement.executeQuery("SELECT * FROM custom_user");
 
                 Set<User> users = new HashSet<>();
                 while (rs.next()) {
@@ -86,7 +105,7 @@ public class UserDao implements IUserDao {
     public boolean update(User user) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("UPDATE user SET email=? AND hashed=? AND salt=? AND role=? WHERE id=?")) {
+            try (var statement = connection.prepareStatement("UPDATE custom_user SET email=? AND hashed=? AND salt=? AND role=? WHERE id=?")) {
                 statement.setString(1, user.getEmail());
                 statement.setString(2, user.getHashed());
                 statement.setString(3, user.getSalt());
@@ -109,7 +128,7 @@ public class UserDao implements IUserDao {
     public boolean remove(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            try (var statement = connection.prepareStatement("DELETE FROM user WHERE id=?")) {
+            try (var statement = connection.prepareStatement("DELETE FROM custom_user WHERE id=?")) {
                 statement.setInt(1, id);
 
                 var rowsCount = statement.executeUpdate();
