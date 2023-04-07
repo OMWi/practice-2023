@@ -27,13 +27,14 @@ public class UserDataDao implements IUserDataDao {
     public boolean add(UserData userData) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("INSERT INTO user_data(user_id, username) VALUES(?, ?)");
-            statement.setInt(1, userData.getUserId());
-            statement.setString(2, userData.getUsername());
+            try (var statement = connection.prepareStatement("INSERT INTO user_data(user_id, username) VALUES(?, ?)")) {
+                statement.setInt(1, userData.getUserId());
+                statement.setString(2, userData.getUsername());
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -46,12 +47,13 @@ public class UserDataDao implements IUserDataDao {
     public UserData get(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM user_data WHERE user_id=?");
-            statement.setInt(1, userId);
+            try (var statement = connection.prepareStatement("SELECT * FROM user_data WHERE user_id=?")) {
+                statement.setInt(1, userId);
 
-            var rs = statement.executeQuery();
-            if (rs.next()) {
-                return extractUserDataFromResultSet(rs);
+                var rs = statement.executeQuery();
+                if (rs.next()) {
+                    return extractUserDataFromResultSet(rs);
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -64,15 +66,15 @@ public class UserDataDao implements IUserDataDao {
     public Set<UserData> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM user_data");
-
-            var rs = statement.executeQuery();
-            var userDataSet = new HashSet<UserData>();
-            if (rs.next()) {
-                var userData = extractUserDataFromResultSet(rs);
-                userDataSet.add(userData);
+            try (var statement = connection.prepareStatement("SELECT * FROM user_data")) {
+                var rs = statement.executeQuery();
+                var userDataSet = new HashSet<UserData>();
+                if (rs.next()) {
+                    var userData = extractUserDataFromResultSet(rs);
+                    userDataSet.add(userData);
+                }
+                return userDataSet;
             }
-            return userDataSet;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -84,14 +86,15 @@ public class UserDataDao implements IUserDataDao {
     public boolean update(int userId, UserData userData) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("UPDATE user_data SET username=? AND points=? WHERE user_id=?");
-            statement.setString(1, userData.getUsername());
-            statement.setInt(2, userData.getPoints());
-            statement.setInt(3, userId);
+            try (var statement = connection.prepareStatement("UPDATE user_data SET username=? AND points=? WHERE user_id=?")) {
+                statement.setString(1, userData.getUsername());
+                statement.setInt(2, userData.getPoints());
+                statement.setInt(3, userId);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);

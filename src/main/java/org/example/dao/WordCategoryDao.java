@@ -20,12 +20,13 @@ public class WordCategoryDao implements IWordCategory {
     public boolean add(WordCategory wordCategory) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("INSERT INTO word_category(category) VALUES(?)");
-            statement.setString(1, wordCategory.getCategory());
+            try (var statement = connection.prepareStatement("INSERT INTO word_category(category) VALUES(?)")) {
+                statement.setString(1, wordCategory.getCategory());
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -38,12 +39,13 @@ public class WordCategoryDao implements IWordCategory {
     public WordCategory get(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM word_category WHERE id = ?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("SELECT * FROM word_category WHERE id = ?")) {
+                statement.setInt(1, id);
 
-            var rs = statement.executeQuery();
-            if (rs.next()) {
-                return extractWordCategoryFromResultSet(rs);
+                var rs = statement.executeQuery();
+                if (rs.next()) {
+                    return extractWordCategoryFromResultSet(rs);
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -56,15 +58,16 @@ public class WordCategoryDao implements IWordCategory {
     public Set<WordCategory> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.createStatement();
-            var rs = statement.executeQuery("SELECT * FROM word_category");
+            try (var statement = connection.createStatement()) {
+                var rs = statement.executeQuery("SELECT * FROM word_category");
 
-            var wordCategories = new HashSet<WordCategory>();
-            while (rs.next()) {
-                WordCategory wordCategory = extractWordCategoryFromResultSet(rs);
-                wordCategories.add(wordCategory);
+                var wordCategories = new HashSet<WordCategory>();
+                while (rs.next()) {
+                    WordCategory wordCategory = extractWordCategoryFromResultSet(rs);
+                    wordCategories.add(wordCategory);
+                }
+                return wordCategories;
             }
-            return wordCategories;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -76,13 +79,14 @@ public class WordCategoryDao implements IWordCategory {
     public boolean update(int id, WordCategory wordCategory) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("UPDATE word_category SET category=? WHERE id=?");
-            statement.setString(1, wordCategory.getCategory());
-            statement.setInt(2, id);
+            try (var statement = connection.prepareStatement("UPDATE word_category SET category=? WHERE id=?")) {
+                statement.setString(1, wordCategory.getCategory());
+                statement.setInt(2, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -95,12 +99,13 @@ public class WordCategoryDao implements IWordCategory {
     public boolean remove(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("DELETE FROM word_category WHERE id=?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("DELETE FROM word_category WHERE id=?")) {
+                statement.setInt(1, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);

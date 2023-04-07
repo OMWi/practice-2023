@@ -21,14 +21,15 @@ public class MeaningDao implements IMeaningDao {
     public boolean add(int wordId, Meaning meaning) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("INSERT INTO meaning(word_id, level, meaning) VALUES(?, ?, ?)");
-            statement.setInt(1, wordId);
-            statement.setInt(2, meaning.getLevel());
-            statement.setString(3, meaning.getText());
+            try (var statement = connection.prepareStatement("INSERT INTO meaning(word_id, level, meaning) VALUES(?, ?, ?)")) {
+                statement.setInt(1, wordId);
+                statement.setInt(2, meaning.getLevel());
+                statement.setString(3, meaning.getText());
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -41,12 +42,13 @@ public class MeaningDao implements IMeaningDao {
     public Meaning get(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM meaning WHERE id = ?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("SELECT * FROM meaning WHERE id = ?")) {
+                statement.setInt(1, id);
 
-            var rs = statement.executeQuery();
-            if (rs.next()) {
-                return extractMeaningFromResultSet(rs);
+                var rs = statement.executeQuery();
+                if (rs.next()) {
+                    return extractMeaningFromResultSet(rs);
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -59,15 +61,16 @@ public class MeaningDao implements IMeaningDao {
     public Set<Meaning> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.createStatement();
-            var rs = statement.executeQuery("SELECT * FROM meaning");
+            try (var statement = connection.createStatement()) {
+                var rs = statement.executeQuery("SELECT * FROM meaning");
 
-            var meanings = new HashSet<Meaning>();
-            while (rs.next()) {
-                var meaning = extractMeaningFromResultSet(rs);
-                meanings.add(meaning);
+                var meanings = new HashSet<Meaning>();
+                while (rs.next()) {
+                    var meaning = extractMeaningFromResultSet(rs);
+                    meanings.add(meaning);
+                }
+                return meanings;
             }
-            return meanings;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -79,16 +82,17 @@ public class MeaningDao implements IMeaningDao {
     public Set<Meaning> getMeaningsOfWord(int wordId) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM meaning WHERE word_id=?");
-            statement.setInt(1, wordId);
-            var rs = statement.executeQuery();
+            try (var statement = connection.prepareStatement("SELECT * FROM meaning WHERE word_id=?")) {
+                statement.setInt(1, wordId);
+                var rs = statement.executeQuery();
 
-            var meanings = new HashSet<Meaning>();
-            while (rs.next()) {
-                var meaning = extractMeaningFromResultSet(rs);
-                meanings.add(meaning);
+                var meanings = new HashSet<Meaning>();
+                while (rs.next()) {
+                    var meaning = extractMeaningFromResultSet(rs);
+                    meanings.add(meaning);
+                }
+                return meanings;
             }
-            return meanings;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -100,14 +104,15 @@ public class MeaningDao implements IMeaningDao {
     public boolean update(int id, Meaning meaning) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("UPDATE meaning SET level=? AND meaning=? WHERE id=?");
-            statement.setInt(1, meaning.getLevel());
-            statement.setString(2, meaning.getText());
-            statement.setInt(3, id);
+            try (var statement = connection.prepareStatement("UPDATE meaning SET level=? AND meaning=? WHERE id=?")) {
+                statement.setInt(1, meaning.getLevel());
+                statement.setString(2, meaning.getText());
+                statement.setInt(3, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -120,12 +125,13 @@ public class MeaningDao implements IMeaningDao {
     public boolean remove(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("DELETE FROM meaning WHERE id=?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("DELETE FROM meaning WHERE id=?")) {
+                statement.setInt(1, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);

@@ -24,15 +24,16 @@ public class LogDao implements ILogDao {
     public boolean add(Log log) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("INSERT INTO log(user_id, type, created_at) VALUES(?, ?, ?)");
-            statement.setInt(1, log.getUserId());
-            statement.setString(2, log.getType().toString());
+            try (var statement = connection.prepareStatement("INSERT INTO log(user_id, type, created_at) VALUES(?, ?, ?)")) {
+                statement.setInt(1, log.getUserId());
+                statement.setString(2, log.getType().toString());
 //            todo: check assignment below
-            statement.setObject(3, log.getCreatedAt(), LocalDateTime.class.getModifiers());
+                statement.setObject(3, log.getCreatedAt(), LocalDateTime.class.getModifiers());
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -45,12 +46,13 @@ public class LogDao implements ILogDao {
     public Log get(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM log WHERE id = ?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("SELECT * FROM log WHERE id = ?")) {
+                statement.setInt(1, id);
 
-            var rs = statement.executeQuery();
-            if (rs.next()) {
-                return extractLogFromResultSet(rs);
+                var rs = statement.executeQuery();
+                if (rs.next()) {
+                    return extractLogFromResultSet(rs);
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -63,15 +65,15 @@ public class LogDao implements ILogDao {
     public Set<Log> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM log");
-
-            var rs = statement.executeQuery();
-            var logs = new HashSet<Log>();
-            while (rs.next()) {
-                var log = extractLogFromResultSet(rs);
-                logs.add(log);
+            try (var statement = connection.prepareStatement("SELECT * FROM log")) {
+                var rs = statement.executeQuery();
+                var logs = new HashSet<Log>();
+                while (rs.next()) {
+                    var log = extractLogFromResultSet(rs);
+                    logs.add(log);
+                }
+                return logs;
             }
-            return logs;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -83,12 +85,13 @@ public class LogDao implements ILogDao {
     public boolean remove(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("DELETE FROM log WHERE id=?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("DELETE FROM log WHERE id=?")) {
+                statement.setInt(1, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);

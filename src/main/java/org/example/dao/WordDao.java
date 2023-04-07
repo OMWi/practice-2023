@@ -24,12 +24,13 @@ public class WordDao implements IWordDao {
     public boolean add(Word word) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("INSERT INTO word(word, word_category_id) VALUES(?, ?)");
-            statement.setString(1, word.getText());
-            statement.setInt(2, word.getCategory().getId());
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+            try (var statement = connection.prepareStatement("INSERT INTO word(word, word_category_id) VALUES(?, ?)")) {
+                statement.setString(1, word.getText());
+                statement.setInt(2, word.getCategory().getId());
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -42,16 +43,17 @@ public class WordDao implements IWordDao {
     public Word get(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM word WHERE id = ?");
-            statement.setInt(1, id);
-            var rs = statement.executeQuery();
+            try (var statement = connection.prepareStatement("SELECT * FROM word WHERE id = ?")) {
+                statement.setInt(1, id);
+                var rs = statement.executeQuery();
 
-            if (rs.next()) {
-                var word = extractWordFromResultSet(rs);
-                var meaningDao = new MeaningDao();
-                var meanings = meaningDao.getMeaningsOfWord(word.getId());
-                word.setMeanings(meanings);
-                return word;
+                if (rs.next()) {
+                    var word = extractWordFromResultSet(rs);
+                    var meaningDao = new MeaningDao();
+                    var meanings = meaningDao.getMeaningsOfWord(word.getId());
+                    word.setMeanings(meanings);
+                    return word;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -64,17 +66,18 @@ public class WordDao implements IWordDao {
     public Set<Word> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.createStatement();
-            var rs = statement.executeQuery("SELECT * FROM word");
+            try (var statement = connection.createStatement()) {
+                var rs = statement.executeQuery("SELECT * FROM word");
 
-            var words = new HashSet<Word>();
-            var meaningDao = new MeaningDao();
-            while (rs.next()) {
-                var word = extractWordFromResultSet(rs);
-                word.setMeanings(meaningDao.getMeaningsOfWord(word.getId()));
-                words.add(word);
+                var words = new HashSet<Word>();
+                var meaningDao = new MeaningDao();
+                while (rs.next()) {
+                    var word = extractWordFromResultSet(rs);
+                    word.setMeanings(meaningDao.getMeaningsOfWord(word.getId()));
+                    words.add(word);
+                }
+                return words;
             }
-            return words;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -86,22 +89,24 @@ public class WordDao implements IWordDao {
     public Set<Word> getByWordList(int wordListId) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("""
+            try (var statement = connection.prepareStatement("""
                     SELECT * FROM word
                     LEFT JOIN wordlist_word
                     ON wordlist_word.word_id = word.id
-                    WHERE wordlist_word.wordlist_id = ?""");
-            statement.setInt(1, wordListId);
-            var rs = statement.executeQuery();
+                    WHERE wordlist_word.wordlist_id = ?""")
+            ) {
+                statement.setInt(1, wordListId);
+                var rs = statement.executeQuery();
 
-            var words = new HashSet<Word>();
-            var meaningDao = new MeaningDao();
-            while (rs.next()) {
-                var word = extractWordFromResultSet(rs);
-                word.setMeanings(meaningDao.getMeaningsOfWord(word.getId()));
-                words.add(word);
+                var words = new HashSet<Word>();
+                var meaningDao = new MeaningDao();
+                while (rs.next()) {
+                    var word = extractWordFromResultSet(rs);
+                    word.setMeanings(meaningDao.getMeaningsOfWord(word.getId()));
+                    words.add(word);
+                }
+                return words;
             }
-            return words;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -113,22 +118,25 @@ public class WordDao implements IWordDao {
     public Set<Word> getByUser(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("""
+            try (var statement = connection.prepareStatement("""
                     SELECT * FROM word
                     LEFT JOIN userdata_word
                     ON userdata_word.word_id = word.id
-                    WHERE userdata_word.userdata_id = ?""");
-            statement.setInt(1, userId);
-            var rs = statement.executeQuery();
+                    WHERE userdata_word.userdata_id = ?""")
+            ) {
+                statement.setInt(1, userId);
+                var rs = statement.executeQuery();
 
-            var words = new HashSet<Word>();
-            var meaningDao = new MeaningDao();
-            while (rs.next()) {
-                var word = extractWordFromResultSet(rs);
-                word.setMeanings(meaningDao.getMeaningsOfWord(word.getId()));
-                words.add(word);
+                var words = new HashSet<Word>();
+                var meaningDao = new MeaningDao();
+                while (rs.next()) {
+                    var word = extractWordFromResultSet(rs);
+                    word.setMeanings(meaningDao.getMeaningsOfWord(word.getId()));
+                    words.add(word);
+                }
+                return words;
             }
-            return words;
+
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -140,12 +148,13 @@ public class WordDao implements IWordDao {
     public boolean update(Word word) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("UPDATE word SET word=? AND category=? WHERE id=?");
-            statement.setString(1, word.getText());
-            statement.setInt(2, word.getCategory().getId());
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+            try (var statement = connection.prepareStatement("UPDATE word SET word=? AND category=? WHERE id=?")) {
+                statement.setString(1, word.getText());
+                statement.setInt(2, word.getCategory().getId());
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -158,11 +167,12 @@ public class WordDao implements IWordDao {
     public boolean remove(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("DELETE FROM word WHERE id=?");
-            statement.setInt(1, id);
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+            try (var statement = connection.prepareStatement("DELETE FROM word WHERE id=?")) {
+                statement.setInt(1, id);
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);

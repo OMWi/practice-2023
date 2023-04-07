@@ -24,15 +24,16 @@ public class WordListDao implements IWordListDao {
     public WordList get(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM wordlist WHERE id = ?");
-            statement.setInt(1, id);
-            var rs = statement.executeQuery();
+            try (var statement = connection.prepareStatement("SELECT * FROM wordlist WHERE id = ?")) {
+                statement.setInt(1, id);
+                var rs = statement.executeQuery();
 
-            if (rs.next()) {
-                var wordList = extractWordListFromResultSet(rs);
-                var wordDao = new WordDao();
-                wordList.setWords(wordDao.getByWordList(wordList.getId()));
-                return wordList;
+                if (rs.next()) {
+                    var wordList = extractWordListFromResultSet(rs);
+                    var wordDao = new WordDao();
+                    wordList.setWords(wordDao.getByWordList(wordList.getId()));
+                    return wordList;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -45,20 +46,22 @@ public class WordListDao implements IWordListDao {
     public Set<WordList> getByUser(int userId) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("""
+            try (var statement = connection.prepareStatement("""
                     SELECT * FROM wordlist
                     LEFT JOIN userdata_wordlist
                     ON userdata_wordlist.wordlist_id = wordlist.id
-                    WHERE userdata_wordlist.user_id = ?""");
-            statement.setInt(1, userId);
+                    WHERE userdata_wordlist.user_id = ?""")
+            ) {
+                statement.setInt(1, userId);
 
-            var rs = statement.executeQuery();
-            var wordLists = new HashSet<WordList>();
-            while (rs.next()) {
-                var word = extractWordListFromResultSet(rs);
-                wordLists.add(word);
+                var rs = statement.executeQuery();
+                var wordLists = new HashSet<WordList>();
+                while (rs.next()) {
+                    var word = extractWordListFromResultSet(rs);
+                    wordLists.add(word);
+                }
+                return wordLists;
             }
-            return wordLists;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -70,17 +73,18 @@ public class WordListDao implements IWordListDao {
     public Set<WordList> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.createStatement();
-            var rs = statement.executeQuery("SELECT * FROM wordlist");
+            try (var statement = connection.createStatement()) {
+                var rs = statement.executeQuery("SELECT * FROM wordlist");
 
-            var wordLists = new HashSet<WordList>();
-            var wordDao = new WordDao();
-            while (rs.next()) {
-                var wordList = extractWordListFromResultSet(rs);
-                wordList.setWords(wordDao.getByWordList(wordList.getId()));
-                wordLists.add(wordList);
+                var wordLists = new HashSet<WordList>();
+                var wordDao = new WordDao();
+                while (rs.next()) {
+                    var wordList = extractWordListFromResultSet(rs);
+                    wordList.setWords(wordDao.getByWordList(wordList.getId()));
+                    wordLists.add(wordList);
+                }
+                return wordLists;
             }
-            return wordLists;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -92,14 +96,15 @@ public class WordListDao implements IWordListDao {
     public boolean add(WordList wordList) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("INSERT INTO wordlist(name, word_count, popularity) VALUES(?, ?, ?)");
-            statement.setString(1, wordList.getName());
-            statement.setInt(2, wordList.getWordCount());
-            statement.setInt(3, wordList.getPopularity());
+            try (var statement = connection.prepareStatement("INSERT INTO wordlist(name, word_count, popularity) VALUES(?, ?, ?)")) {
+                statement.setString(1, wordList.getName());
+                statement.setInt(2, wordList.getWordCount());
+                statement.setInt(3, wordList.getPopularity());
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -112,19 +117,21 @@ public class WordListDao implements IWordListDao {
     public boolean update(int id, WordList wordList) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("UPDATE wordlist SET name=? AND word_count=? AND popularity=? WHERE id=?");
-            statement.setString(1, wordList.getName());
-            statement.setInt(2, wordList.getWordCount());
-            statement.setInt(3, wordList.getPopularity());
-            statement.setInt(4, id);
+            try (var statement = connection.prepareStatement("UPDATE wordlist SET name=? AND word_count=? AND popularity=? WHERE id=?")) {
+                statement.setString(1, wordList.getName());
+                statement.setInt(2, wordList.getWordCount());
+                statement.setInt(3, wordList.getPopularity());
+                statement.setInt(4, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
+
         return false;
     }
 
@@ -132,12 +139,13 @@ public class WordListDao implements IWordListDao {
     public boolean remove(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("DELETE FROM wordlist WHERE id=?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("DELETE FROM wordlist WHERE id=?")) {
+                statement.setInt(1, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);

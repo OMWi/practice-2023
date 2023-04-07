@@ -22,13 +22,14 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     public boolean add(TelegramAccount telegramAccount) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("INSERT INTO telegram_account(chat_id, username) VALUES(?, ?)");
-            statement.setLong(1, telegramAccount.getChatId());
-            statement.setString(2, telegramAccount.getUsername());
-            
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+            try (var statement = connection.prepareStatement("INSERT INTO telegram_account(chat_id, username) VALUES(?, ?)")) {
+                statement.setLong(1, telegramAccount.getChatId());
+                statement.setString(2, telegramAccount.getUsername());
+
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -41,12 +42,13 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     public TelegramAccount get(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("SELECT * FROM telegram_account WHERE id = ?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("SELECT * FROM telegram_account WHERE id = ?")) {
+                statement.setInt(1, id);
 
-            var rs = statement.executeQuery();
-            if (rs.next()) {
-                return extractTelegramAccountFromResultSet(rs);
+                var rs = statement.executeQuery();
+                if (rs.next()) {
+                    return extractTelegramAccountFromResultSet(rs);
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -59,15 +61,16 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     public Set<TelegramAccount> getAll() {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.createStatement();
-            var rs = statement.executeQuery("SELECT * FROM telegram_account");
+            try (var statement = connection.createStatement()) {
+                var rs = statement.executeQuery("SELECT * FROM telegram_account");
 
-            var telegramAccounts = new HashSet<TelegramAccount>();
-            while (rs.next()) {
-                TelegramAccount telegramAccount = extractTelegramAccountFromResultSet(rs);
-                telegramAccounts.add(telegramAccount);
+                var telegramAccounts = new HashSet<TelegramAccount>();
+                while (rs.next()) {
+                    TelegramAccount telegramAccount = extractTelegramAccountFromResultSet(rs);
+                    telegramAccounts.add(telegramAccount);
+                }
+                return telegramAccounts;
             }
-            return telegramAccounts;
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
         }
@@ -79,13 +82,14 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     public boolean update(int id, TelegramAccount telegramAccount) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("UPDATE telegram_account SET chat_id=? AND username=? WHERE id=?");
-            statement.setLong(1, telegramAccount.getChatId());
-            statement.setString(2, telegramAccount.getUsername());
+            try (var statement = connection.prepareStatement("UPDATE telegram_account SET chat_id=? AND username=? WHERE id=?")) {
+                statement.setLong(1, telegramAccount.getChatId());
+                statement.setString(2, telegramAccount.getUsername());
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
@@ -98,12 +102,13 @@ public class TelegramAccountDao implements ITelegramAccountDao {
     public boolean remove(int id) {
         try {
             var connection = DatabaseConnection.getConnection();
-            var statement = connection.prepareStatement("DELETE FROM telegram_account WHERE id=?");
-            statement.setInt(1, id);
+            try (var statement = connection.prepareStatement("DELETE FROM telegram_account WHERE id=?")) {
+                statement.setInt(1, id);
 
-            var rowsCount = statement.executeUpdate();
-            if (rowsCount == 1) {
-                return true;
+                var rowsCount = statement.executeUpdate();
+                if (rowsCount == 1) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             Utility.printSQLException(exception);
