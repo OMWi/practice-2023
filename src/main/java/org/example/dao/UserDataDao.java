@@ -13,13 +13,14 @@ public class UserDataDao implements IUserDataDao {
         var telegramAccountDao = new TelegramAccountDao();
         var wordDao = new WordDao();
         var wordlistDao = new WordListDao();
+        var userId = rs.getInt("user_id");
         return new UserData(
-                rs.getInt("user_id"),
+                userId,
                 rs.getString("username"),
                 rs.getInt("points"),
-                telegramAccountDao.get(rs.getInt("user_id")),
-                wordDao.getByUser(rs.getInt("user_id")),
-                wordlistDao.getByUser(rs.getInt("user_id"))
+                telegramAccountDao.get(userId),
+                wordDao.getByUser(userId),
+                wordlistDao.getByUser(userId)
         );
     }
 
