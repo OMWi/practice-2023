@@ -1,7 +1,7 @@
 package org.example.repository;
 
 import org.example.model.WordCategory;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WordCategoryRepository extends CrudRepository<WordCategory, Long> {
+public interface WordCategoryRepository extends JpaRepository<WordCategory, Long> {
 }

@@ -1,7 +1,7 @@
 package org.example.repository;
 
 import org.example.model.Log;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LogRepository extends CrudRepository<Log, Long> {
+public interface LogRepository extends JpaRepository<Log, Long> {
 }

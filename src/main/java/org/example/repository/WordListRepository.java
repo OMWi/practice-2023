@@ -1,7 +1,7 @@
 package org.example.repository;
 
 import org.example.model.WordList;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WordListRepository extends CrudRepository<WordList, Long> {
+public interface WordListRepository extends JpaRepository<WordList, Long> {
 }
