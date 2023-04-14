@@ -26,7 +26,7 @@ public class WordList {
             joinColumns = {@JoinColumn(name = "wordlist_id")},
             inverseJoinColumns = {@JoinColumn(name = "userdata_id")}
     )
-    private List<UserData> listOfUserData;
+    private List<UserData> users;
 
     public WordList() {
     }
@@ -73,7 +73,7 @@ public class WordList {
         word.getWordLists().remove(this);
     }
 
-    public List<UserData> getListOfUserData() {
-        return listOfUserData;
+    public List<UserData> getUsers() {
+        return users;
     }
 }

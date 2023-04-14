@@ -42,4 +42,8 @@ public class WordService {
         if (!wordRepository.existsById(wordId)) throw new NoSuchElementException();
         wordRepository.deleteById(wordId);
     }
+
+    public List<Word> listByUser(Long userId) {
+        return wordRepository.findAllByUsers_UserDataId(userId);
+    }
 }
