@@ -6,8 +6,8 @@ import org.example.enums.UserRole;
 import java.util.List;
 
 @Entity
-@Table(name = "custom_user")
-public class User {
+@Table(name = "user_credentials")
+public class UserCredentials {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,28 +16,24 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String hashed;
-
-    @Column(nullable = false)
-    private String salt;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "userCredentials", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserData userData;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "userCredentials", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Log> logs;
 
-    public User() {
+    public UserCredentials() {
     }
 
-    public User(String email, String hashed, String salt, UserRole role) {
+    public UserCredentials(String email, String password, UserRole role) {
         this.email = email;
-        this.hashed = hashed;
-        this.salt = salt;
+        this.password = password;
         this.role = role;
     }
 
@@ -46,8 +42,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", hashed='" + hashed + '\'' +
-                ", salt='" + salt + '\'' +
+                ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';
     }
@@ -68,20 +63,12 @@ public class User {
         this.email = email;
     }
 
-    public String getHashed() {
-        return hashed;
+    public String getPassword() {
+        return password;
     }
 
-    public void setHashed(String hashed) {
-        this.hashed = hashed;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UserRole getRole() {

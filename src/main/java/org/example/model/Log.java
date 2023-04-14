@@ -2,6 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 import org.example.enums.LogType;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -14,20 +15,21 @@ public class Log {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserCredentials userCredentials;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LogType type;
 
+    @CreationTimestamp
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Log() {
     }
 
-    public Log(User user, LogType type) {
-        this.user = user;
+    public Log(UserCredentials userCredentials, LogType type) {
+        this.userCredentials = userCredentials;
         this.type = type;
     }
 
@@ -35,7 +37,7 @@ public class Log {
     public String toString() {
         return "Log{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + userCredentials +
                 ", type=" + type +
                 ", createdAt=" + createdAt +
                 '}';
@@ -49,12 +51,12 @@ public class Log {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public UserCredentials getUser() {
+        return userCredentials;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserCredentials userCredentials) {
+        this.userCredentials = userCredentials;
     }
 
     public LogType getType() {

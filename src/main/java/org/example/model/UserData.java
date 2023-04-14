@@ -14,7 +14,7 @@ public class UserData {
     @OneToOne
     @MapsId("user_id")
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserCredentials userCredentials;
 
     @Column(nullable = false)
     private String username;
@@ -38,8 +38,8 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(User user, String username) {
-        this.user = user;
+    public UserData(UserCredentials userCredentials, String username) {
+        this.userCredentials = userCredentials;
         this.username = username;
     }
 
@@ -60,12 +60,12 @@ public class UserData {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public UserCredentials getUser() {
+        return userCredentials;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserCredentials userCredentials) {
+        this.userCredentials = userCredentials;
     }
 
     public String getUsername() {
