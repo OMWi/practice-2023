@@ -1,7 +1,9 @@
 package org.example.service;
 
+import org.example.dto.MeaningDto;
 import org.example.model.Meaning;
 import org.example.repository.MeaningRepository;
+import org.example.repository.WordRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +12,19 @@ import java.util.NoSuchElementException;
 @Service
 public class MeaningService {
     private final MeaningRepository meaningRepository;
+    private final WordRepository wordRepository;
 
-    public MeaningService(MeaningRepository meaningRepository) {
+    public MeaningService(MeaningRepository meaningRepository, WordRepository wordRepository) {
         this.meaningRepository = meaningRepository;
+        this.wordRepository = wordRepository;
     }
 
-    public Meaning create(Meaning meaning) {
+    public Meaning create(MeaningDto meaningDto) {
+        var word = wordRepository.findById(meaningDto.wordId).orElseThrow();
+        var meaning = new Meaning(meaningDto.level, meaningDto.text);
+        meaning.setWord(word);
+//        word.addMeaning(meaning);
+//        wordRepository.save(word);
         return meaningRepository.save(meaning);
     }
 

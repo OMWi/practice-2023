@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.dto.WordDto;
 import org.example.model.Word;
 import org.example.repository.WordCategoryRepository;
 import org.example.repository.WordRepository;

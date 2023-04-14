@@ -1,7 +1,8 @@
 package org.example.dto;
 
-public class WordDto {
+public class MeaningDto {
     public Long id;
+    public int level;
     public String text;
-    public Long categoryId;
+    public Long wordId;
 }

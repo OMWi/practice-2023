@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.dto.MeaningDto;
 import org.example.model.Meaning;
 import org.example.service.MeaningService;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class MeaningController {
 
     @PostMapping("/meanings")
     @ResponseStatus(HttpStatus.CREATED)
-    public Meaning createMeaning(@RequestBody Meaning meaning) {
-        return meaningService.create(meaning);
+    public Meaning createMeaning(@RequestBody MeaningDto meaningDto) {
+        return meaningService.create(meaningDto);
     }
 
     @GetMapping("/meanings/{meaningId}")
