@@ -19,19 +19,19 @@ public class MeaningController {
         this.meaningService = meaningService;
     }
 
-    @GetMapping("/words/{wordId}/meanings")
-    public List<Meaning> listMeanings(@PathVariable("wordId") Long wordId) {
-        return meaningService.list(wordId);
-    }
-
     @PostMapping("/meanings")
     @ResponseStatus(HttpStatus.CREATED)
-    public Meaning createMeaning(@RequestBody MeaningDto meaningDto) {
+    public MeaningDto createMeaning(@RequestBody MeaningDto meaningDto) {
         return meaningService.create(meaningDto);
     }
 
+    @GetMapping("/words/{wordId}/meanings")
+    public List<MeaningDto> listMeaningsByWordId(@PathVariable("wordId") Long wordId) {
+        return meaningService.listByWordId(wordId);
+    }
+
     @GetMapping("/meanings/{meaningId}")
-    public Meaning getMeaning(@PathVariable("meaningId") Long meaningId) {
+    public MeaningDto getMeaning(@PathVariable("meaningId") Long meaningId) {
         try {
             return meaningService.get(meaningId);
         } catch (NoSuchElementException e) {
@@ -40,7 +40,7 @@ public class MeaningController {
     }
 
     @PutMapping("/meanings")
-    public Meaning updateMeaning(@RequestBody Meaning meaning) {
+    public MeaningDto updateMeaning(@RequestBody MeaningDto meaning) {
         try {
             return meaningService.update(meaning);
         } catch (NoSuchElementException e) {

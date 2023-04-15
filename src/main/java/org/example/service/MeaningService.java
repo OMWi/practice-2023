@@ -6,6 +6,7 @@ import org.example.repository.MeaningRepository;
 import org.example.repository.WordRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -18,27 +19,54 @@ public class MeaningService {
         this.meaningRepository = meaningRepository;
         this.wordRepository = wordRepository;
     }
+    
+    private MeaningDto toDto(Meaning meaning) {
+        var meaningDto = new MeaningDto();
+        meaningDto.setId(meaning.getId());
+        meaningDto.setLevel(meaning.getLevel());
+        meaningDto.setText(meaning.getText());
+        meaningDto.setWordId(meaning.getWord().getId());
+        return meaningDto;
+    }
 
-    public Meaning create(MeaningDto meaningDto) {
-        var word = wordRepository.findById(meaningDto.wordId).orElseThrow();
-        var meaning = new Meaning(meaningDto.level, meaningDto.text);
+    public MeaningDto create(MeaningDto meaningDto) {
+        var word = wordRepository.findById(meaningDto.getWordId()).orElseThrow();
+        var meaning = new Meaning(meaningDto.getLevel(), meaningDto.getText());
         meaning.setWord(word);
 //        word.addMeaning(meaning);
 //        wordRepository.save(word);
-        return meaningRepository.save(meaning);
+
+        var createdMeaning = meaningRepository.save(meaning);
+        return toDto(createdMeaning);
     }
 
-    public List<Meaning> list(Long wordId) {
-        return meaningRepository.findAllByWord_Id(wordId);
+    public List<MeaningDto> listByWordId(Long wordId) {
+        var meanings = meaningRepository.findAllByWord_Id(wordId);
+
+        var meaningDtoList = new ArrayList<MeaningDto>();
+        for (Meaning meaning : meanings) {
+            var meaningDto = toDto(meaning);
+            meaningDtoList.add(meaningDto);
+        }
+
+        return meaningDtoList;
     }
 
-    public Meaning get(Long meaningId) {
-        return meaningRepository.findById(meaningId).orElseThrow();
+    public MeaningDto get(Long meaningId) {
+        var meaning = meaningRepository.findById(meaningId).orElseThrow();
+        return toDto(meaning);
     }
 
-    public Meaning update(Meaning meaning) {
-        if (!meaningRepository.existsById(meaning.getId())) throw new NoSuchElementException();
-        return meaningRepository.save(meaning);
+    public MeaningDto update(MeaningDto meaningDto) {
+        var meaning = meaningRepository.findById(meaningDto.getId()).orElseThrow();
+        var word = wordRepository.findById(meaningDto.getWordId()).orElseThrow();
+        
+        meaning.setLevel(meaningDto.getLevel());
+        meaning.setText(meaningDto.getText());
+        meaning.setWord(word);
+
+        var updatedMeaning = meaningRepository.save(meaning);
+        return toDto(updatedMeaning);
     }
 
     public void delete(Long meaningId) {
