@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.dto.WordCategoryDto;
 import org.example.model.WordCategory;
 import org.example.service.WordCategoryService;
 import org.springframework.http.HttpStatus;
@@ -18,19 +19,19 @@ public class WordCategoryController {
         this.wordCategoryService = wordCategoryService;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public WordCategoryDto createWordCategory(@RequestBody WordCategoryDto wordCategoryDto) {
+        return wordCategoryService.create(wordCategoryDto);
+    }
+
     @GetMapping
-    public List<WordCategory> listWordCategories() {
+    public List<WordCategoryDto> listWordCategories() {
         return wordCategoryService.list();
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public WordCategory createWordCategory(@RequestBody WordCategory wordCategory) {
-        return wordCategoryService.create(wordCategory);
-    }
-
     @GetMapping("/{wordCategoryId}")
-    public WordCategory getWordCategory(@PathVariable("wordCategoryId") Long wordCategoryId) {
+    public WordCategoryDto getWordCategory(@PathVariable("wordCategoryId") Long wordCategoryId) {
         try {
             return wordCategoryService.get(wordCategoryId);
         } catch (NoSuchElementException e) {
@@ -39,9 +40,9 @@ public class WordCategoryController {
     }
 
     @PutMapping
-    public WordCategory updateWordCategory(@RequestBody WordCategory wordCategory) {
+    public WordCategoryDto updateWordCategory(@RequestBody WordCategoryDto wordCategoryDto) {
         try {
-            return wordCategoryService.update(wordCategory);
+            return wordCategoryService.update(wordCategoryDto);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

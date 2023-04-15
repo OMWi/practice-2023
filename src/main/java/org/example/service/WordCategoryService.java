@@ -1,9 +1,11 @@
 package org.example.service;
 
+import org.example.dto.WordCategoryDto;
 import org.example.model.WordCategory;
 import org.example.repository.WordCategoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -15,21 +17,40 @@ public class WordCategoryService {
         this.wordCategoryRepository = wordCategoryRepository;
     }
 
-    public WordCategory create(WordCategory wordCategory) {
-        return wordCategoryRepository.save(wordCategory);
+    private WordCategoryDto toDto(WordCategory category) {
+        var categoryDto = new WordCategoryDto();
+        categoryDto.setId(category.getId());
+        categoryDto.setCategory(category.getCategory());
+        return categoryDto;
     }
 
-    public List<WordCategory> list() {
-        return wordCategoryRepository.findAll();
+    public WordCategoryDto create(WordCategoryDto wordCategoryDto) {
+        var createdCategory = wordCategoryRepository.save(new WordCategory(wordCategoryDto.getCategory()));
+        return toDto(createdCategory);
     }
 
-    public WordCategory get(Long wordCategoryId) {
-        return wordCategoryRepository.findById(wordCategoryId).orElseThrow();
+    public List<WordCategoryDto> list() {
+        var categories =  wordCategoryRepository.findAll();
+
+        var categoryDtoList = new ArrayList<WordCategoryDto>();
+        for (WordCategory category : categories) {
+            var categoryDto = toDto(category);
+            categoryDtoList.add(categoryDto);
+        }
+
+        return categoryDtoList;
     }
 
-    public WordCategory update(WordCategory wordCategory) {
-        if (!wordCategoryRepository.existsById(wordCategory.getId())) throw new NoSuchElementException();
-        return wordCategoryRepository.save(wordCategory);
+    public WordCategoryDto get(Long wordCategoryId) {
+        var category = wordCategoryRepository.findById(wordCategoryId).orElseThrow();
+        return toDto(category);
+    }
+
+    public WordCategoryDto update(WordCategoryDto wordCategoryDto) {
+        var category = wordCategoryRepository.findById(wordCategoryDto.getId()).orElseThrow();
+        category.setCategory(wordCategoryDto.getCategory());
+        var updatedCategory = wordCategoryRepository.save(category);
+        return toDto(updatedCategory);
     }
 
     public void delete(Long wordCategoryId) {
