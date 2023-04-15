@@ -1,10 +1,10 @@
 package org.example.controller;
 
-import org.example.dto.UserDataDto;
-import org.example.dto.WordDto;
-import org.example.model.UserData;
-import org.example.model.Word;
-import org.example.model.WordList;
+import org.example.dto.userdata.UserDataCreationDto;
+import org.example.dto.userdata.UserDataDto;
+import org.example.dto.userdata.UserDataUpdationDto;
+import org.example.dto.word.WordDto;
+import org.example.dto.wordlist.WordListDto;
 import org.example.service.UserDataService;
 import org.example.service.WordListService;
 import org.example.service.WordService;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,20 +29,19 @@ public class UserDataController {
         this.wordListService = wordListService;
     }
 
-    @GetMapping
-    public List<UserData> listUserData() {
-        return userDataService.list();
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserData createUserData(@RequestBody UserDataDto userDataDto) {
-        System.out.println("create userData request");
+    public UserDataDto createUserData(@RequestBody UserDataCreationDto userDataDto) {
         return userDataService.create(userDataDto);
     }
 
+    @GetMapping
+    public List<UserDataDto> listUsersData() {
+        return userDataService.list();
+    }
+
     @GetMapping("/{userDataId}")
-    public UserData getUserData(@PathVariable("userDataId") Long userDataId) {
+    public UserDataDto getUserData(@PathVariable("userDataId") Long userDataId) {
         try {
             return userDataService.get(userDataId);
         } catch (NoSuchElementException e) {
@@ -50,7 +50,7 @@ public class UserDataController {
     }
 
     @PutMapping
-    public UserData updateUserData(@RequestBody UserDataDto userDataDto) {
+    public UserDataDto updateUserData(@RequestBody UserDataUpdationDto userDataDto) {
         try {
             return userDataService.update(userDataDto);
         } catch (NoSuchElementException e) {
@@ -68,8 +68,10 @@ public class UserDataController {
     }
 
     @GetMapping("/{userDataId}/words")
-    public List<Word> listUserWords(@PathVariable("userDataId") Long userId) {
-        return wordService.listByUser(userId);
+    public List<WordDto> listUserWords(@PathVariable("userDataId") Long userId) {
+//        return wordService.listByUser(userId);
+        // todo: implement
+        return new ArrayList<>();
     }
 
     @PostMapping("/{userDataId}/words")
@@ -89,8 +91,10 @@ public class UserDataController {
 
 
     @GetMapping("/{userDataId}/word-lists")
-    public List<WordList> listUserWordLists(@PathVariable("userDataId") Long userId) {
-        return wordListService.listByUser(userId);
+    public List<WordListDto> listUserWordLists(@PathVariable("userDataId") Long userId) {
+//        return wordListService.listByUser(userId);
+        // todo: implement
+        return new ArrayList<>();
     }
 
     @PostMapping("/{userDataId}/word-lists")

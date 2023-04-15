@@ -2,6 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class WordList {
     private int popularity = 0;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wordLists")
-    private List<Word> words;
+    private List<Word> words = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -26,7 +27,7 @@ public class WordList {
             joinColumns = {@JoinColumn(name = "wordlist_id")},
             inverseJoinColumns = {@JoinColumn(name = "userdata_id")}
     )
-    private List<UserData> users;
+    private List<UserData> userDataList;
 
     public WordList() {
     }
@@ -73,7 +74,7 @@ public class WordList {
         word.getWordLists().remove(this);
     }
 
-    public List<UserData> getUsers() {
-        return users;
+    public List<UserData> getUserDataList() {
+        return userDataList;
     }
 }

@@ -25,7 +25,7 @@ public class UserData {
     @OneToOne(mappedBy = "userData", cascade = CascadeType.ALL, orphanRemoval = true)
     private TelegramAccount telegramAccount;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userDataList")
     private List<WordList> wordLists;
 
     @OneToMany(
@@ -98,21 +98,12 @@ public class UserData {
 
     public void addWordList(WordList wordList) {
         this.wordLists.add(wordList);
-        wordList.getUsers().add(this);
+        wordList.getUserDataList().add(this);
     }
 
     public void removeWordList(WordList wordList) {
         this.wordLists.remove(wordList);
-        wordList.getUsers().remove(this);
+        wordList.getUserDataList().remove(this);
     }
 
-    public List<UserdataWord> getWords() {
-        return words;
-    }
-
-    public void addWord(Word word) {
-        var userdataWord = new UserdataWord(this, word);
-        this.words.add(userdataWord);
-        word.getUsers().add(userdataWord);
-    }
 }

@@ -1,4 +1,4 @@
-package org.example.dto;
+package org.example.dto.wordcategory;
 
 public class WordCategoryDto {
     private Long id;

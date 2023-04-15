@@ -1,14 +1,12 @@
 package org.example.dto.userdata;
 
-import org.example.dto.telegramaccount.TelegramAccountDto;
-
-public class UserDataDto {
+public class UserDataUpdationDto {
     private Long userId;
     private String username;
     private int points;
-    private TelegramAccountDto telegramAccountDto;
+    private Long telegramAccountId;
 
-    public UserDataDto() {
+    public UserDataUpdationDto() {
     }
 
     public Long getUserId() {
@@ -35,11 +33,11 @@ public class UserDataDto {
         this.points = points;
     }
 
-    public TelegramAccountDto getTelegramAccountDto() {
-        return telegramAccountDto;
+    public Long getTelegramAccountId() {
+        return telegramAccountId;
     }
 
-    public void setTelegramAccountDto(TelegramAccountDto telegramAccountDto) {
-        this.telegramAccountDto = telegramAccountDto;
+    public void setTelegramAccountId(Long telegramAccountId) {
+        this.telegramAccountId = telegramAccountId;
     }
 }

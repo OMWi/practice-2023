@@ -1,7 +1,6 @@
 package org.example.controller;
 
-import org.example.dto.WordCategoryDto;
-import org.example.model.WordCategory;
+import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.service.WordCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

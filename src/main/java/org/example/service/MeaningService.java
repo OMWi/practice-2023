@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.dto.MeaningDto;
+import org.example.dto.meaning.MeaningDto;
 import org.example.model.Meaning;
 import org.example.repository.MeaningRepository;
 import org.example.repository.WordRepository;
@@ -25,8 +25,6 @@ public class MeaningService {
         var word = wordRepository.findById(meaningDto.getWordId()).orElseThrow();
         var meaning = new Meaning(meaningDto.getLevel(), meaningDto.getText());
         meaning.setWord(word);
-//        word.addMeaning(meaning);
-//        wordRepository.save(word);
 
         var createdMeaning = meaningRepository.save(meaning);
         return ConverterDTO.meaningToDto(createdMeaning);

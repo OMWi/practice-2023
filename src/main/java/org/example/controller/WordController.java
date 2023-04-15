@@ -1,8 +1,8 @@
 package org.example.controller;
 
-import org.example.dto.WordCreationDto;
-import org.example.dto.WordDto;
-import org.example.dto.WordUpdationDto;
+import org.example.dto.word.WordCreationDto;
+import org.example.dto.word.WordDto;
+import org.example.dto.word.WordUpdationDto;
 import org.example.service.WordCategoryService;
 import org.example.service.WordService;
 import org.springframework.http.HttpStatus;

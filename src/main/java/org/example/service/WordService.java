@@ -1,9 +1,9 @@
 package org.example.service;
 
-import org.example.dto.MeaningDto;
-import org.example.dto.WordCreationDto;
-import org.example.dto.WordDto;
-import org.example.dto.WordUpdationDto;
+import org.example.dto.meaning.MeaningDto;
+import org.example.dto.word.WordCreationDto;
+import org.example.dto.word.WordDto;
+import org.example.dto.word.WordUpdationDto;
 import org.example.model.Meaning;
 import org.example.model.Word;
 import org.example.repository.WordCategoryRepository;

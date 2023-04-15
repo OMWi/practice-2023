@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.dto.WordCategoryDto;
+import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.model.WordCategory;
 import org.example.repository.WordCategoryRepository;
 import org.example.utils.ConverterDTO;

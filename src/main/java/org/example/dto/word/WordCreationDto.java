@@ -1,4 +1,6 @@
-package org.example.dto;
+package org.example.dto.word;
+
+import org.example.dto.meaning.MeaningDto;
 
 import java.util.List;
 

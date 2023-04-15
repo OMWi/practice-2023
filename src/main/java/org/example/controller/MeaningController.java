@@ -1,7 +1,6 @@
 package org.example.controller;
 
-import org.example.dto.MeaningDto;
-import org.example.model.Meaning;
+import org.example.dto.meaning.MeaningDto;
 import org.example.service.MeaningService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
