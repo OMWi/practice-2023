@@ -3,16 +3,20 @@ package org.example.controller;
 import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userdata.UserDataUpdationDto;
+import org.example.dto.userword.UserWordCreationDto;
+import org.example.dto.userword.UserWordDto;
+import org.example.dto.userword.UserWordUpdationDto;
 import org.example.dto.word.WordDto;
+import org.example.dto.wordlist.UserWordListDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.service.UserDataService;
+import org.example.service.UserWordService;
 import org.example.service.WordListService;
 import org.example.service.WordService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,11 +26,13 @@ public class UserDataController {
     private final UserDataService userDataService;
     private final WordService wordService;
     private final WordListService wordListService;
+    private final UserWordService userWordService;
 
-    public UserDataController(UserDataService userDataService, WordService wordService, WordListService wordListService) {
+    public UserDataController(UserDataService userDataService, WordService wordService, WordListService wordListService, UserWordService userWordService) {
         this.userDataService = userDataService;
         this.wordService = wordService;
         this.wordListService = wordListService;
+        this.userWordService = userWordService;
     }
 
     @PostMapping
@@ -67,43 +73,57 @@ public class UserDataController {
         }
     }
 
-    @GetMapping("/{userDataId}/words")
-    public List<WordDto> listUserWords(@PathVariable("userDataId") Long userId) {
-//        return wordService.listByUser(userId);
-        // todo: implement
-        return new ArrayList<>();
+    @PostMapping("{userDataId}/words")
+    public UserWordDto addUserWord(@PathVariable("userDataId") Long userId, @RequestBody UserWordCreationDto userWordDto) {
+        userWordDto.setUserId(userId);
+        return userWordService.create(userWordDto);
     }
 
-    @PostMapping("/{userDataId}/words")
-    public void addUserWord(@PathVariable("userDataId") Long userId, @RequestBody WordDto wordDto) {
-        // todo: implement add word to user(new word to learn)
+    @GetMapping("/{userDataId}/words")
+    public List<UserWordDto> listUserWords(@PathVariable("userDataId") Long userId) {
+        return userWordService.listByUserId(userId);
     }
 
     @PutMapping("/{userDataId}/words")
-    public void updateUserWord(@PathVariable("userDataId") Long userId, @RequestBody WordDto word) {
-        // todo: implement change user word status(word learned for example)
+    public UserWordDto updateUserWord(@PathVariable("userDataId") Long userId, @RequestBody UserWordUpdationDto userWordDto) {
+        try {
+            return userWordService.update(userWordDto);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{userDataId}/words/{wordId}")
     public void deleteUserWord(@PathVariable("userDataId") Long userId, @PathVariable("wordId") Long wordId) {
-        // todo: implement delete word from user's list
+        try {
+            userWordService.delete(userId, wordId);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
+
+    @PostMapping("/{userDataId}/word-lists")
+    public void addUserWordList(@PathVariable("userDataId") Long userId, @RequestBody UserWordListDto userWordListDto) {
+        try {
+            userWordListDto.setUserId(userId);
+            userDataService.addWordList(userWordListDto);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/{userDataId}/word-lists")
     public List<WordListDto> listUserWordLists(@PathVariable("userDataId") Long userId) {
-//        return wordListService.listByUser(userId);
-        // todo: implement
-        return new ArrayList<>();
-    }
-
-    @PostMapping("/{userDataId}/word-lists")
-    public void addUserWordList(@PathVariable("userDataId") Long userId, @RequestBody WordDto wordDto) {
-        // todo: implement add wordlist to user
+        return wordListService.listByUserid(userId);
     }
 
     @DeleteMapping("/{userDataId}/word-lists/{wordListId}")
     public void deleteUserWordList(@PathVariable("userDataId") Long userId, @PathVariable("wordListId") Long wordListId) {
-        // todo: implement wordlist deletion from user
+        try {
+            userDataService.deleteWordList(userId, wordListId);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }

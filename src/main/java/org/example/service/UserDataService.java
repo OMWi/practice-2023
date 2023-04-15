@@ -3,10 +3,12 @@ package org.example.service;
 import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userdata.UserDataUpdationDto;
+import org.example.dto.wordlist.UserWordListDto;
 import org.example.model.UserData;
 import org.example.repository.TelegramAccountRepository;
 import org.example.repository.UserCredentialsRepository;
 import org.example.repository.UserDataRepository;
+import org.example.repository.WordListRepository;
 import org.example.utils.ConverterDTO;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,13 @@ public class UserDataService {
     private final UserDataRepository userDataRepository;
     private final UserCredentialsRepository userCredentialsRepository;
     private final TelegramAccountRepository telegramAccountRepository;
+    private final WordListRepository wordListRepository;
 
-    public UserDataService(UserDataRepository userDataRepository, UserCredentialsRepository userCredentialsRepository, TelegramAccountRepository telegramAccountRepository) {
+    public UserDataService(UserDataRepository userDataRepository, UserCredentialsRepository userCredentialsRepository, TelegramAccountRepository telegramAccountRepository, WordListRepository wordListRepository) {
         this.userDataRepository = userDataRepository;
         this.userCredentialsRepository = userCredentialsRepository;
         this.telegramAccountRepository = telegramAccountRepository;
+        this.wordListRepository = wordListRepository;
     }
 
     public UserDataDto create(UserDataCreationDto userDataDto) {
@@ -64,5 +68,19 @@ public class UserDataService {
     public void delete(Long userDataId) {
         if (!userDataRepository.existsById(userDataId)) throw new NoSuchElementException();
         userDataRepository.deleteById(userDataId);
+    }
+
+    public void addWordList(UserWordListDto userWordListDto) {
+        var userData = userDataRepository.findById(userWordListDto.getUserId()).orElseThrow();
+        var wordList = wordListRepository.findById(userWordListDto.getWordListId()).orElseThrow();
+        userData.addWordList(wordList);
+        userDataRepository.save(userData);
+    }
+
+    public void deleteWordList(Long userId, Long wordListId) {
+        var userData = userDataRepository.findById(userId).orElseThrow();
+        var wordList = wordListRepository.findById(wordListId).orElseThrow();
+        userData.removeWordList(wordList);
+        userDataRepository.save(userData);
     }
 }

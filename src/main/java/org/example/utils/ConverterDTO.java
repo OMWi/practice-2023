@@ -3,6 +3,7 @@ package org.example.utils;
 import org.example.dto.meaning.MeaningDto;
 import org.example.dto.telegramaccount.TelegramAccountDto;
 import org.example.dto.userdata.UserDataDto;
+import org.example.dto.userword.UserWordDto;
 import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.dto.word.WordDto;
 import org.example.dto.wordlist.WordListDto;
@@ -87,5 +88,16 @@ public final class ConverterDTO {
         userDataDto.setPoints(userData.getPoints());
         userDataDto.setTelegramAccountDto(telegramAccountToDto(userData.getTelegramAccount()));
         return userDataDto;
+    }
+
+    public static UserWordDto userWordToDto(UserdataWord userWord) {
+        var userWordDto = new UserWordDto();
+        userWordDto.setUserId(userWord.getUserData().getId());
+        userWordDto.setWordId(userWord.getWord().getId());
+        userWordDto.setIsLearned(userWord.isLearned());
+        userWordDto.setGuessStreak(userWord.getGuessStreak());
+        userWordDto.setWord(userWord.getWord().getText());
+        userWordDto.setCategory(userWord.getWord().getCategory().getCategory());
+        return userWordDto;
     }
 }

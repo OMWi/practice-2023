@@ -50,6 +50,17 @@ public class WordService {
         return wordDtoList;
     }
 
+    public List<WordDto> listByUserId(Long userId) {
+        var words = wordRepository.findAllByUsers_UserDataId(userId);
+
+        var wordDtoList = new ArrayList<WordDto>();
+        for (Word word : words) {
+            wordDtoList.add(ConverterDTO.wordToDto(word));
+        }
+
+        return wordDtoList;
+    }
+
     public WordDto get(Long wordId) {
         var word = wordRepository.findById(wordId).orElseThrow();
         return ConverterDTO.wordToDto(word);
