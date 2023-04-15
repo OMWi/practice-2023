@@ -1,6 +1,8 @@
 package org.example.controller;
 
-import org.example.model.Word;
+import org.example.dto.WordCreationDto;
+import org.example.dto.WordDto;
+import org.example.dto.WordUpdationDto;
 import org.example.service.WordCategoryService;
 import org.example.service.WordService;
 import org.springframework.http.HttpStatus;
@@ -19,20 +21,19 @@ public class WordController {
         this.wordService = wordService;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public WordDto createWord(@RequestBody WordCreationDto wordDto) {
+        return wordService.create(wordDto);
+    }
+
     @GetMapping
-    public List<Word> listWords() {
+    public List<WordDto> listWords() {
         return wordService.list();
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Word createWord(@RequestBody Word word) {
-        System.out.println("create word request");
-        return wordService.create(word);
-    }
-
     @GetMapping("/{wordId}")
-    public Word getWord(@PathVariable("wordId") Long wordId) {
+    public WordDto getWord(@PathVariable("wordId") Long wordId) {
         try {
             return wordService.get(wordId);
         } catch (NoSuchElementException e) {
@@ -41,9 +42,9 @@ public class WordController {
     }
 
     @PutMapping
-    public Word updateWord(@RequestBody Word word) {
+    public WordDto updateWord(@RequestBody WordUpdationDto wordDto) {
         try {
-            return wordService.update(word);
+            return wordService.update(wordDto);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

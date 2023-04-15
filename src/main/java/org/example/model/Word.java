@@ -3,6 +3,7 @@ package org.example.model;
 import jakarta.persistence.*;
 import org.hibernate.Length;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ public class Word {
     private WordCategory category;
 
     @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Meaning> meanings;
+    private List<Meaning> meanings = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(

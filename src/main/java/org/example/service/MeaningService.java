@@ -4,6 +4,7 @@ import org.example.dto.MeaningDto;
 import org.example.model.Meaning;
 import org.example.repository.MeaningRepository;
 import org.example.repository.WordRepository;
+import org.example.utils.ConverterDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,15 +21,6 @@ public class MeaningService {
         this.wordRepository = wordRepository;
     }
     
-    private MeaningDto toDto(Meaning meaning) {
-        var meaningDto = new MeaningDto();
-        meaningDto.setId(meaning.getId());
-        meaningDto.setLevel(meaning.getLevel());
-        meaningDto.setText(meaning.getText());
-        meaningDto.setWordId(meaning.getWord().getId());
-        return meaningDto;
-    }
-
     public MeaningDto create(MeaningDto meaningDto) {
         var word = wordRepository.findById(meaningDto.getWordId()).orElseThrow();
         var meaning = new Meaning(meaningDto.getLevel(), meaningDto.getText());
@@ -37,7 +29,18 @@ public class MeaningService {
 //        wordRepository.save(word);
 
         var createdMeaning = meaningRepository.save(meaning);
-        return toDto(createdMeaning);
+        return ConverterDTO.meaningToDto(createdMeaning);
+    }
+
+    public List<MeaningDto> list() {
+        var meanings = meaningRepository.findAll();
+
+        var meaningDtoList = new ArrayList<MeaningDto>();
+        for (Meaning meaning : meanings) {
+            meaningDtoList.add(ConverterDTO.meaningToDto(meaning));
+        }
+
+        return meaningDtoList;
     }
 
     public List<MeaningDto> listByWordId(Long wordId) {
@@ -45,8 +48,7 @@ public class MeaningService {
 
         var meaningDtoList = new ArrayList<MeaningDto>();
         for (Meaning meaning : meanings) {
-            var meaningDto = toDto(meaning);
-            meaningDtoList.add(meaningDto);
+            meaningDtoList.add(ConverterDTO.meaningToDto(meaning));
         }
 
         return meaningDtoList;
@@ -54,7 +56,7 @@ public class MeaningService {
 
     public MeaningDto get(Long meaningId) {
         var meaning = meaningRepository.findById(meaningId).orElseThrow();
-        return toDto(meaning);
+        return ConverterDTO.meaningToDto(meaning);
     }
 
     public MeaningDto update(MeaningDto meaningDto) {
@@ -66,7 +68,7 @@ public class MeaningService {
         meaning.setWord(word);
 
         var updatedMeaning = meaningRepository.save(meaning);
-        return toDto(updatedMeaning);
+        return ConverterDTO.meaningToDto(updatedMeaning);
     }
 
     public void delete(Long meaningId) {

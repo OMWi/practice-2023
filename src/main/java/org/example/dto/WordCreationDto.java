@@ -2,21 +2,12 @@ package org.example.dto;
 
 import java.util.List;
 
-public class WordDto {
-    private Long id;
+public class WordCreationDto {
     private String text;
-    private WordCategoryDto categoryDto;
+    private Long categoryId;
     private List<MeaningDto> meaningDtoList;
 
-    public WordDto() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public WordCreationDto() {
     }
 
     public String getText() {
@@ -27,12 +18,12 @@ public class WordDto {
         this.text = text;
     }
 
-    public WordCategoryDto getCategoryDto() {
-        return categoryDto;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryDto(WordCategoryDto categoryDto) {
-        this.categoryDto = categoryDto;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public List<MeaningDto> getMeaningDtoList() {

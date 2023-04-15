@@ -25,6 +25,11 @@ public class MeaningController {
         return meaningService.create(meaningDto);
     }
 
+    @GetMapping("/meanings")
+    public List<MeaningDto> listMeanings() {
+        return meaningService.list();
+    }
+
     @GetMapping("/words/{wordId}/meanings")
     public List<MeaningDto> listMeaningsByWordId(@PathVariable("wordId") Long wordId) {
         return meaningService.listByWordId(wordId);
