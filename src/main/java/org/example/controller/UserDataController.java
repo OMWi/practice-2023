@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/api/v1/user-data")
+@RequestMapping("/api/v1/users-data")
 public class UserDataController {
     private final UserDataService userDataService;
     private final WordListService wordListService;

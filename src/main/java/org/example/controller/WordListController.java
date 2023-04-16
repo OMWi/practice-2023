@@ -33,12 +33,6 @@ public class WordListController {
         return wordListService.list();
     }
 
-    @GetMapping("/users-data/{userid}/word-lists")
-    @Secured({"ADMIN", "USER"})
-    public List<WordListDto> listWordListsByUserId(@PathVariable("userId") Long userId) {
-        return wordListService.listByUserid(userId);
-    }
-
     @GetMapping("/word-lists/{wordListId}")
     public WordListHasWordsDto getWordList(@PathVariable("wordListId") Long wordListId) {
         try {

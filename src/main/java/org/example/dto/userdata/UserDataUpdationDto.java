@@ -4,7 +4,6 @@ public class UserDataUpdationDto {
     private Long userId;
     private String username;
     private int points;
-    private Long telegramAccountId;
 
     public UserDataUpdationDto() {
     }
@@ -33,11 +32,4 @@ public class UserDataUpdationDto {
         this.points = points;
     }
 
-    public Long getTelegramAccountId() {
-        return telegramAccountId;
-    }
-
-    public void setTelegramAccountId(Long telegramAccountId) {
-        this.telegramAccountId = telegramAccountId;
-    }
 }

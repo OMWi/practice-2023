@@ -58,8 +58,6 @@ public class UserDataService {
 
         userData.setUsername(userDataDto.getUsername());
         userData.setPoints(userDataDto.getPoints());
-        var telegramAccount = telegramAccountRepository.findById(userDataDto.getTelegramAccountId()).orElseThrow();
-        userData.setTelegramAccount(telegramAccount);
 
         var updatedUserData = userDataRepository.save(userData);
         return ConverterDTO.userDataToDto(updatedUserData);
