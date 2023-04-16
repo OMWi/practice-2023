@@ -5,12 +5,13 @@ import org.example.dto.wordcategory.WordCategoryDto;
 
 import java.util.List;
 
-public class WordDto {
+public class WordHasMeaningsDto {
     private Long id;
     private String text;
     private WordCategoryDto categoryDto;
+    private List<MeaningDto> meaningDtoList;
 
-    public WordDto() {
+    public WordHasMeaningsDto() {
     }
 
     public Long getId() {
@@ -37,4 +38,11 @@ public class WordDto {
         this.categoryDto = categoryDto;
     }
 
+    public List<MeaningDto> getMeaningDtoList() {
+        return meaningDtoList;
+    }
+
+    public void setMeaningDtoList(List<MeaningDto> meaningDtoList) {
+        this.meaningDtoList = meaningDtoList;
+    }
 }

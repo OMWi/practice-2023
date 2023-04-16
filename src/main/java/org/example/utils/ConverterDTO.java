@@ -4,6 +4,7 @@ import org.example.dto.meaning.MeaningDto;
 import org.example.dto.telegramaccount.TelegramAccountDto;
 import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userword.UserWordDto;
+import org.example.dto.word.WordHasMeaningsDto;
 import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.dto.word.WordDto;
 import org.example.dto.wordlist.WordListDto;
@@ -34,6 +35,15 @@ public final class ConverterDTO {
 
     public static WordDto wordToDto(Word word) {
         var wordDto = new WordDto();
+        wordDto.setId(word.getId());
+        wordDto.setText(word.getText());
+        wordDto.setCategoryDto(wordCategoryToDto(word.getCategory()));
+
+        return wordDto;
+    }
+
+    public static WordHasMeaningsDto wordToDtoWithMeanings(Word word) {
+        var wordDto = new WordHasMeaningsDto();
         wordDto.setId(word.getId());
         wordDto.setText(word.getText());
         wordDto.setCategoryDto(wordCategoryToDto(word.getCategory()));

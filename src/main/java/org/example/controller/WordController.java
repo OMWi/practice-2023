@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.dto.word.WordCreationDto;
 import org.example.dto.word.WordDto;
+import org.example.dto.word.WordHasMeaningsDto;
 import org.example.dto.word.WordUpdationDto;
 import org.example.service.WordCategoryService;
 import org.example.service.WordService;
@@ -25,7 +26,7 @@ public class WordController {
     @PostMapping
     @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
-    public WordDto createWord(@RequestBody WordCreationDto wordDto) {
+    public WordHasMeaningsDto createWord(@RequestBody WordCreationDto wordDto) {
 
         return wordService.create(wordDto);
     }
@@ -36,7 +37,7 @@ public class WordController {
     }
 
     @GetMapping("/{wordId}")
-    public WordDto getWord(@PathVariable("wordId") Long wordId) {
+    public WordHasMeaningsDto getWord(@PathVariable("wordId") Long wordId) {
         try {
             return wordService.get(wordId);
         } catch (NoSuchElementException e) {
@@ -46,7 +47,7 @@ public class WordController {
 
     @PutMapping
     @Secured({"ADMIN"})
-    public WordDto updateWord(@RequestBody WordUpdationDto wordDto) {
+    public WordHasMeaningsDto updateWord(@RequestBody WordUpdationDto wordDto) {
         try {
             return wordService.update(wordDto);
         } catch (NoSuchElementException e) {

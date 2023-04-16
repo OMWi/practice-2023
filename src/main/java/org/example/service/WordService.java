@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.dto.meaning.MeaningDto;
 import org.example.dto.word.WordCreationDto;
 import org.example.dto.word.WordDto;
+import org.example.dto.word.WordHasMeaningsDto;
 import org.example.dto.word.WordUpdationDto;
 import org.example.model.Meaning;
 import org.example.model.Word;
@@ -25,7 +26,7 @@ public class WordService {
         this.wordCategoryRepository = wordCategoryRepository;
     }
 
-    public WordDto create(WordCreationDto wordDto) {
+    public WordHasMeaningsDto create(WordCreationDto wordDto) {
         var wordCategory = wordCategoryRepository.findById(wordDto.getCategoryId()).orElseThrow();
 
         var word = new Word(wordDto.getText(), wordCategory);
@@ -36,7 +37,7 @@ public class WordService {
         }
 
         var createdWord = wordRepository.save(word);
-        return ConverterDTO.wordToDto(createdWord);
+        return ConverterDTO.wordToDtoWithMeanings(createdWord);
     }
 
     public List<WordDto> list() {
@@ -61,19 +62,19 @@ public class WordService {
         return wordDtoList;
     }
 
-    public WordDto get(Long wordId) {
+    public WordHasMeaningsDto get(Long wordId) {
         var word = wordRepository.findById(wordId).orElseThrow();
-        return ConverterDTO.wordToDto(word);
+        return ConverterDTO.wordToDtoWithMeanings(word);
     }
 
-    public WordDto update(WordUpdationDto wordDto) {
+    public WordHasMeaningsDto update(WordUpdationDto wordDto) {
         var word = wordRepository.findById(wordDto.getId()).orElseThrow();
         var newCategory = wordCategoryRepository.findById(wordDto.getCategoryId()).orElseThrow();
 
         word.setCategory(newCategory);
         word.setText(wordDto.getText());
         var updatedWord = wordRepository.save(word);
-        return ConverterDTO.wordToDto(updatedWord);
+        return ConverterDTO.wordToDtoWithMeanings(updatedWord);
     }
 
     public void delete(Long wordId) {
