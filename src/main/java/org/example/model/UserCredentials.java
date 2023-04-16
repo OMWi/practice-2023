@@ -20,7 +20,7 @@ public class UserCredentials {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role;
+    private UserRole role = UserRole.USER;
 
     @OneToOne(mappedBy = "userCredentials", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserData userData;

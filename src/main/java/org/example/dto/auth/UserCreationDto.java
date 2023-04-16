@@ -1,19 +1,11 @@
-package org.example.dto.usercredentials;
+package org.example.dto.auth;
 
-public class UserCredentialsDto {
-    private Long id;
+public class UserCreationDto {
     private String email;
     private String password;
+    private String username;
 
-    public UserCredentialsDto() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public UserCreationDto() {
     }
 
     public String getEmail() {
@@ -30,5 +22,13 @@ public class UserCredentialsDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

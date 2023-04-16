@@ -1,69 +1,84 @@
 package org.example.service;
 
+import org.example.dto.auth.JwtDto;
+import org.example.dto.auth.UserCreationDto;
+import org.example.dto.usercredentials.UserCredentialsDto;
+import org.example.dto.userdata.UserDataDto;
 import org.example.enums.UserRole;
 import org.example.model.UserCredentials;
+import org.example.model.UserData;
 import org.example.repository.UserCredentialsRepository;
+import org.example.repository.UserDataRepository;
+import org.example.security.JwtUtils;
+import org.example.security.UserDetailsImpl;
+import org.example.utils.ConverterDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 @Service
-public class UserCredentialsService implements UserDetailsService {
-    private final UserCredentialsRepository userCredentialsRepository;
+public class UserCredentialsService {
+    @Autowired
+    UserCredentialsRepository userCredentialsRepository;
 
-    public UserCredentialsService(UserCredentialsRepository userCredentialsRepository) {
-        this.userCredentialsRepository = userCredentialsRepository;
-    }
+    @Autowired
+    UserDataRepository userDataRepository;
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("load user by username " + username);
-        UserCredentials userCredentials = userCredentialsRepository.findByEmail(username);
-        if (userCredentials == null) {
-            throw new UsernameNotFoundException("No userCredentials with email " + username);
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+
+    public UserDataDto register(UserCreationDto userDto) {
+        if (userCredentialsRepository.existsByEmail(userDto.getEmail())) {
+            throw new BadCredentialsException("Error: Email is already taken!");
         }
 
-        var authorities = new ArrayList<SimpleGrantedAuthority>();
-        if (userCredentials.getRole() == UserRole.USER) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        } else if (userCredentials.getRole() == UserRole.ADMIN) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }
 
-        return new User(userCredentials.getEmail(), userCredentials.getPassword(), authorities);
+        var userCredentials = new UserCredentials();
+        userCredentials.setEmail(userDto.getEmail());
+        userCredentials.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        var createdUserCredentials = userCredentialsRepository.save(userCredentials);
+
+        var userData = new UserData(createdUserCredentials, userDto.getUsername());
+//        var createdUserData = userDataRepository.save(userData);
+        return ConverterDTO.userDataToDto(userData);
     }
 
-    public UserCredentials create(UserCredentials userCredentials) {
-        if (userCredentialsRepository.existsByEmail(userCredentials.getEmail())) {
-            return null;
-        }
-        return userCredentialsRepository.save(userCredentials);
+    public JwtDto login(UserCredentialsDto userCredentialsDto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userCredentialsDto.getEmail(), userCredentialsDto.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String role = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .toList().get(0);
+        UserRole userRole = UserRole.valueOf(role);
+        return new JwtDto(jwt, userDetails.getId(), userDetails.getEmail(), userRole);
     }
 
-    public List<UserCredentials> list() {
-        return userCredentialsRepository.findAll();
-    }
 
-    public UserCredentials get(Long userId) {
-        return userCredentialsRepository.findById(userId).orElseThrow();
-    }
-
-    public UserCredentials update(UserCredentials userCredentials) {
-        if (!userCredentialsRepository.existsById(userCredentials.getId())) throw new NoSuchElementException();
-        return userCredentialsRepository.save(userCredentials);
-    }
-
-    public void delete(Long userId) {
-        if (!userCredentialsRepository.existsById(userId)) throw new NoSuchElementException();
-        userCredentialsRepository.deleteById(userId);
-    }
 }

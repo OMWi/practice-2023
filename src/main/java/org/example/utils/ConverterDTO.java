@@ -86,7 +86,6 @@ public final class ConverterDTO {
         userDataDto.setUserId(userData.getId());
         userDataDto.setUsername(userData.getUsername());
         userDataDto.setPoints(userData.getPoints());
-        userDataDto.setTelegramAccountDto(telegramAccountToDto(userData.getTelegramAccount()));
         return userDataDto;
     }
 

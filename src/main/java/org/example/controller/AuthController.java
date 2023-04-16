@@ -1,14 +1,21 @@
 package org.example.controller;
 
-import org.example.model.UserCredentials;
+import org.example.dto.auth.JwtDto;
+import org.example.dto.auth.UserCreationDto;
+import org.example.dto.usercredentials.UserCredentialsDto;
+import org.example.dto.userdata.UserDataDto;
+import org.example.security.JwtUtils;
 import org.example.service.UserCredentialsService;
+import org.example.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -17,44 +24,26 @@ public class AuthController {
     UserCredentialsService userCredentialsService;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    UserDataService userDataService;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    PasswordEncoder passwordEncoder;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserCredentials userCredentials) {
-        System.out.println("login request");
-
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userCredentials.getEmail(), userCredentials.getPassword())
-        );
-
-
-        return new ResponseEntity<>("login success", HttpStatus.OK);
-    }
-
-    @GetMapping({"/", "/welcome"})
-    public ResponseEntity<?> welcome() {
-        System.out.println("welcome request");
-
-        return new ResponseEntity<>("welcome", HttpStatus.OK);
-    }
+    @Autowired
+    JwtUtils jwtUtils;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserCredentials userCredentials) {
-        System.out.println("register request");
-
-        UserCredentials newUser = userCredentialsService.create(userCredentials);
-        if (newUser == null) {
-            return new ResponseEntity<>("register failure; user exists", HttpStatus.FORBIDDEN);
+    public UserDataDto registerUser(@RequestBody UserCreationDto userDto) {
+        try {
+            return userCredentialsService.register(userDto);
+        } catch (BadCredentialsException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
+    }
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(newUser.getEmail(), newUser.getPassword())
-        );
-
-        return new ResponseEntity<>("register success", HttpStatus.OK);
+    @PostMapping("/login")
+    public JwtDto login(@RequestBody UserCredentialsDto userCredentialsDto) {
+        return userCredentialsService.login(userCredentialsDto);
     }
 
 }

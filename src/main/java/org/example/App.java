@@ -8,25 +8,29 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class App implements CommandLineRunner {
+public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserCredentialsRepository userCredentialsRepository;
-
-    @Override
-    public void run(String... args) throws Exception {
-//        userCredentialsRepository.save(new UserCredentials(
-//                "user@gmail.com",
-//                passwordEncoder.encode("pass"),
-//                UserRole.USER
-//                ));
-    }
+//    @Autowired
+//    private BCryptPasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    private UserCredentialsRepository userCredentialsRepository;
+//
+//    @Override
+//    public void run(String... args) throws Exception {
+////        userCredentialsRepository.save(new UserCredentials(
+////                "user@gmail.com",
+////                passwordEncoder.encode("pass"),
+////                UserRole.USER
+////                ));
+//    }
 }

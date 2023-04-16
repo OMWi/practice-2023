@@ -6,7 +6,6 @@ public class UserDataDto {
     private Long userId;
     private String username;
     private int points;
-    private TelegramAccountDto telegramAccountDto;
 
     public UserDataDto() {
     }
@@ -35,11 +34,4 @@ public class UserDataDto {
         this.points = points;
     }
 
-    public TelegramAccountDto getTelegramAccountDto() {
-        return telegramAccountDto;
-    }
-
-    public void setTelegramAccountDto(TelegramAccountDto telegramAccountDto) {
-        this.telegramAccountDto = telegramAccountDto;
-    }
 }

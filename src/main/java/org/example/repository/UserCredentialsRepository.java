@@ -3,8 +3,10 @@ package org.example.repository;
 import org.example.model.UserCredentials;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserCredentialsRepository extends JpaRepository<UserCredentials, Long> {
-    UserCredentials findByEmail(String email);
+import java.util.Optional;
 
-    boolean existsByEmail(String email);
+public interface UserCredentialsRepository extends JpaRepository<UserCredentials, Long> {
+    Optional<UserCredentials> findByEmail(String email);
+
+    Boolean existsByEmail(String email);
 }

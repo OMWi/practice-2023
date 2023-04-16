@@ -40,6 +40,7 @@ public class UserData {
 
     public UserData(UserCredentials userCredentials, String username) {
         this.userCredentials = userCredentials;
+        this.id = userCredentials.getId();
         this.username = username;
     }
 
