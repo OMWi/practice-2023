@@ -1,13 +1,11 @@
 package org.example.controller;
 
-import org.example.dto.word.WordCreationDto;
-import org.example.dto.word.WordDto;
-import org.example.dto.word.WordUpdationDto;
 import org.example.dto.wordlist.WordListCreationDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.dto.wordlist.WordListHasWordsDto;
 import org.example.service.WordListService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,6 +22,7 @@ public class WordListController {
     }
 
     @PostMapping("/word-lists")
+    @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
     public WordListHasWordsDto createWordList(@RequestBody WordListCreationDto wordListDto) {
         return wordListService.create(wordListDto);
@@ -35,6 +34,7 @@ public class WordListController {
     }
 
     @GetMapping("/users-data/{userid}/word-lists")
+    @Secured({"ADMIN", "USER"})
     public List<WordListDto> listWordListsByUserId(@PathVariable("userId") Long userId) {
         return wordListService.listByUserid(userId);
     }
@@ -49,6 +49,7 @@ public class WordListController {
     }
 
     @PutMapping("/word-lists")
+    @Secured({"ADMIN"})
     public WordListHasWordsDto updateWordList(@RequestBody WordListDto wordListDto) {
         try {
             return wordListService.update(wordListDto);
@@ -58,6 +59,7 @@ public class WordListController {
     }
 
     @DeleteMapping("/word-lists/{wordListId}")
+    @Secured({"ADMIN"})
     public void deleteWordList(@PathVariable("wordListId") Long wordListId) {
         try {
             wordListService.delete(wordListId);

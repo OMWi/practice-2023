@@ -11,7 +11,7 @@ public class UserData {
     @Column(name = "user_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId("user_id")
     @JoinColumn(name = "user_id")
     private UserCredentials userCredentials;
@@ -39,9 +39,8 @@ public class UserData {
     }
 
     public UserData(UserCredentials userCredentials, String username) {
-        this.userCredentials = userCredentials;
-        this.id = userCredentials.getId();
-        this.username = username;
+        setUser(userCredentials);
+        setUsername(username);
     }
 
     @Override
@@ -67,6 +66,8 @@ public class UserData {
 
     public void setUser(UserCredentials userCredentials) {
         this.userCredentials = userCredentials;
+        userCredentials.setUserData(this);
+        setId(userCredentials.getId());
     }
 
     public String getUsername() {

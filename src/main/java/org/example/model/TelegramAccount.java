@@ -57,6 +57,7 @@ public class TelegramAccount {
 
     public void setUserData(UserData userData) {
         this.userData = userData;
+        userData.setTelegramAccount(this);
     }
 
     public long getChatId() {

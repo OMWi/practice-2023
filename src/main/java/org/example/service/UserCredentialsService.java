@@ -61,8 +61,9 @@ public class UserCredentialsService {
         var createdUserCredentials = userCredentialsRepository.save(userCredentials);
 
         var userData = new UserData(createdUserCredentials, userDto.getUsername());
-//        var createdUserData = userDataRepository.save(userData);
-        return ConverterDTO.userDataToDto(userData);
+        var createdUserData = userDataRepository.save(userData);
+//        var updatedUserCredentials = userCredentialsRepository.save(createdUserCredentials);
+        return ConverterDTO.userDataToDto(createdUserData);
     }
 
     public JwtDto login(UserCredentialsDto userCredentialsDto) {

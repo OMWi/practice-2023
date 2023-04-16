@@ -1,8 +1,10 @@
 package org.example.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.example.dto.meaning.MeaningDto;
 import org.example.service.MeaningService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,6 +21,7 @@ public class MeaningController {
     }
 
     @PostMapping("/meanings")
+    @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
     public MeaningDto createMeaning(@RequestBody MeaningDto meaningDto) {
         return meaningService.create(meaningDto);
@@ -44,6 +47,7 @@ public class MeaningController {
     }
 
     @PutMapping("/meanings")
+    @Secured({"ADMIN"})
     public MeaningDto updateMeaning(@RequestBody MeaningDto meaning) {
         try {
             return meaningService.update(meaning);
@@ -53,6 +57,7 @@ public class MeaningController {
     }
 
     @DeleteMapping("/meanings/{meaningId}")
+    @Secured({"ADMIN"})
     public void deleteMeaning(@PathVariable("meaningId") Long meaningId) {
         try {
             meaningService.delete(meaningId);

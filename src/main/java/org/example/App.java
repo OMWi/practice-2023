@@ -3,6 +3,7 @@ package org.example;
 import org.example.enums.UserRole;
 import org.example.model.UserCredentials;
 import org.example.repository.UserCredentialsRepository;
+import org.example.service.UserCredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,17 +21,10 @@ public class App {
     PasswordEncoder passwordEncoder;
 
 //    @Autowired
-//    private BCryptPasswordEncoder passwordEncoder;
-//
-//    @Autowired
-//    private UserCredentialsRepository userCredentialsRepository;
+//    private UserCredentialsService userCredentialsService;
 //
 //    @Override
 //    public void run(String... args) throws Exception {
-////        userCredentialsRepository.save(new UserCredentials(
-////                "user@gmail.com",
-////                passwordEncoder.encode("pass"),
-////                UserRole.USER
-////                ));
+//
 //    }
 }

@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.service.WordCategoryService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,6 +20,7 @@ public class WordCategoryController {
     }
 
     @PostMapping
+    @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
     public WordCategoryDto createWordCategory(@RequestBody WordCategoryDto wordCategoryDto) {
         return wordCategoryService.create(wordCategoryDto);
@@ -39,6 +41,7 @@ public class WordCategoryController {
     }
 
     @PutMapping
+    @Secured({"ADMIN"})
     public WordCategoryDto updateWordCategory(@RequestBody WordCategoryDto wordCategoryDto) {
         try {
             return wordCategoryService.update(wordCategoryDto);
@@ -48,6 +51,7 @@ public class WordCategoryController {
     }
 
     @DeleteMapping("/{wordCategoryId}")
+    @Secured({"ADMIN"})
     public void deleteWordCategory(@PathVariable("wordCategoryId") Long wordCategoryId) {
         try {
             wordCategoryService.delete(wordCategoryId);
