@@ -1,6 +1,5 @@
 package org.example.controller;
 
-import jakarta.annotation.security.RolesAllowed;
 import org.example.dto.meaning.MeaningDto;
 import org.example.service.MeaningService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class MeaningController {

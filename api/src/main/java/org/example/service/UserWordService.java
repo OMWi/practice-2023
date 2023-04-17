@@ -1,8 +1,8 @@
 package org.example.service;
 
-import org.example.dto.userword.UserWordCreationDto;
-import org.example.dto.userword.UserWordDto;
-import org.example.dto.userword.UserWordUpdationDto;
+import org.example.dto.word.UserWordCreationDto;
+import org.example.dto.word.UserWordDto;
+import org.example.dto.word.UserWordUpdationDto;
 import org.example.model.UserdataWord;
 import org.example.model.UserdataWordId;
 import org.example.repository.UserDataRepository;

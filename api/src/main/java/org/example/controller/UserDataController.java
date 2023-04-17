@@ -3,9 +3,9 @@ package org.example.controller;
 import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userdata.UserDataUpdationDto;
-import org.example.dto.userword.UserWordCreationDto;
-import org.example.dto.userword.UserWordDto;
-import org.example.dto.userword.UserWordUpdationDto;
+import org.example.dto.word.UserWordCreationDto;
+import org.example.dto.word.UserWordDto;
+import org.example.dto.word.UserWordUpdationDto;
 import org.example.dto.wordlist.UserWordListDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.service.UserDataService;
@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/users-data")
 public class UserDataController {
@@ -46,7 +47,7 @@ public class UserDataController {
     }
 
     @GetMapping("/{userDataId}")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "USER"})
     public UserDataDto getUserData(@PathVariable("userDataId") Long userDataId) {
         try {
             return userDataService.get(userDataId);
@@ -136,3 +137,4 @@ public class UserDataController {
         }
     }
 }
+

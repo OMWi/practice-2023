@@ -1,7 +1,5 @@
 package org.example.dto.userdata;
 
-import org.example.dto.telegramaccount.TelegramAccountDto;
-
 public class UserDataDto {
     private Long userId;
     private String username;

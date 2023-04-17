@@ -12,8 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/word-lists")
 public class WordListController {
     private final WordListService wordListService;
 
@@ -21,19 +22,19 @@ public class WordListController {
         this.wordListService = wordListService;
     }
 
-    @PostMapping("/word-lists")
+    @PostMapping
     @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
     public WordListHasWordsDto createWordList(@RequestBody WordListCreationDto wordListDto) {
         return wordListService.create(wordListDto);
     }
 
-    @GetMapping("/word-lists")
+    @GetMapping
     public List<WordListDto> listWordLists() {
         return wordListService.list();
     }
 
-    @GetMapping("/word-lists/{wordListId}")
+    @GetMapping("/{wordListId}")
     public WordListHasWordsDto getWordList(@PathVariable("wordListId") Long wordListId) {
         try {
             return wordListService.get(wordListId);
@@ -42,7 +43,7 @@ public class WordListController {
         }
     }
 
-    @PutMapping("/word-lists")
+    @PutMapping
     @Secured({"ADMIN"})
     public WordListHasWordsDto updateWordList(@RequestBody WordListDto wordListDto) {
         try {
@@ -52,7 +53,7 @@ public class WordListController {
         }
     }
 
-    @DeleteMapping("/word-lists/{wordListId}")
+    @DeleteMapping("/{wordListId}")
     @Secured({"ADMIN"})
     public void deleteWordList(@PathVariable("wordListId") Long wordListId) {
         try {

@@ -1,4 +1,4 @@
-package org.example.dto.userword;
+package org.example.dto.word;
 
 public class UserWordUpdationDto {
     private Long userId;

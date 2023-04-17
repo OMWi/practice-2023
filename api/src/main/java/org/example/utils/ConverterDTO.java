@@ -3,7 +3,7 @@ package org.example.utils;
 import org.example.dto.meaning.MeaningDto;
 import org.example.dto.telegramaccount.TelegramAccountDto;
 import org.example.dto.userdata.UserDataDto;
-import org.example.dto.userword.UserWordDto;
+import org.example.dto.word.UserWordDto;
 import org.example.dto.word.WordHasMeaningsDto;
 import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.dto.word.WordDto;
