@@ -28,7 +28,7 @@ const router = createBrowserRouter(
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<Profile />} loader={profileLoader} />
         <Route path="words" element={<Words />} loader={wordsLoader} />
-        <Route path="words/:wordsId" element={<Word />} loader={wordLoader} />
+        <Route path="words/:wordId" element={<Word />} loader={wordLoader} />
         <Route
           path="word-lists"
           element={<WordLists />}

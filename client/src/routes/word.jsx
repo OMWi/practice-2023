@@ -1,24 +1,19 @@
-import { Container, List, Typography } from "@mui/material";
+import {
+  Container,
+  Divider,
+  List,
+  ListItem,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import WordService from "../services/word";
+import { useLoaderData } from "react-router-dom";
 
-export async function loader() {
-  const word = {
-    id: 1,
-    text: "word",
-    meanings: [
-      {
-        id: 1,
-        level: 1,
-        text: "meaning 1",
-      },
-      {
-        id: 2,
-        level: 2,
-        text: "meaning 2",
-      },
-    ],
-    category: "noun",
-  };
-  return word;
+export async function loader({ params }) {
+  const id = params.wordId;
+  const wordData = (await WordService.get(id)).data;
+  return wordData;
 }
 
 export default function Word() {
@@ -26,16 +21,27 @@ export default function Word() {
 
   return (
     <Container maxWidth="md" sx={{ padding: 2 }}>
-      <Paper sx={{ padding: 1 }}>
+      <Paper sx={{ padding: 2 }}>
         <Stack>
-          <Typography variant="h3">{word.text}</Typography>
-          <Typography variant="subtitle1">{word.category}</Typography>
+          <Stack direction="row" alignItems="flex-end">
+            <Typography variant="h6" sx={{ display: "flex", flexGrow: 1 }}>
+              {word.text}
+            </Typography>
+            <Typography variant="subtitle1" fontStyle="italic" sx={{ ml: 1 }}>
+              {word.categoryDto.category}
+            </Typography>
+          </Stack>
+
+          <Divider />
+
           <List>
-            {meanings.length &&
-              meanings.map((meaning) => (
-                <ListItem key={meaning.id}>
-                  <Typography variant="body2">Level {meaning.level}</Typography>
-                  <Typography variant="body1">{meaning.text}</Typography>
+            {word.meaningDtoList.length > 0 &&
+              word.meaningDtoList.map((meaningDto) => (
+                <ListItem disablePadding key={meaningDto.id}>
+                  <Typography variant="body2">
+                    Level {meaningDto.level}
+                  </Typography>
+                  <Typography variant="body1">{meaningDto.text}</Typography>
                 </ListItem>
               ))}
           </List>

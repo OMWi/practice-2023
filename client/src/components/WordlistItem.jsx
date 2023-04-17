@@ -1,9 +1,16 @@
 import { ListItem, Paper, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function WordlistItem({ wordlistData }) {
+  const navigate = useNavigate();
+
   return (
-    <ListItem disablePadding sx={{ mb: 1 }}>
+    <ListItem
+      disablePadding
+      sx={{ mb: 1 }}
+      onClick={() => navigate(`/word-lists/${wordlistData.id}`)}
+    >
       <Paper square sx={{ width: 1 }}>
         <Stack sx={{ padding: 1 }}>
           <Typography variant="h6">{wordlistData.name}</Typography>

@@ -6,7 +6,11 @@ export default function WordItem({ wordData }) {
   const navigate = useNavigate();
 
   return (
-    <ListItem disablePadding sx={{ mb: 1 }}>
+    <ListItem
+      disablePadding
+      sx={{ mb: 1 }}
+      onClick={() => navigate(`/words/${wordData.id}`)}
+    >
       <Paper square sx={{ width: 1 }}>
         <Stack sx={{ padding: 1, width: 1 }}>
           <Stack direction="row" alignItems="flex-end">

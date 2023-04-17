@@ -17,13 +17,18 @@ import { useEffect, useState } from "react";
 export async function loader() {
   const user = AuthService.getCurrentUser();
   if (user) {
-    let userData = (await UserDataService.get(user.userId)).data;
-    let wordLists = (await UserDataService.getUserWordLists(user.userId)).data;
-    userData.wordLists = wordLists;
-    let words = (await UserDataService.getUserWords(user.userId)).data;
-    userData.words = words;
-    userData.email = user.email;
-    return userData;
+    let userData = {};
+    return Promise.all([
+      UserDataService.get(user.userId),
+      UserDataService.getUserWordLists(user.userId),
+      UserDataService.getUserWords(user.userId),
+    ]).then((responses) => {
+      userData = responses[0].data;
+      userData.wordLists = responses[1].data;
+      userData.words = responses[2].data;
+      userData.email = user.email;
+      return userData;
+    });
   } else {
     return null;
   }
