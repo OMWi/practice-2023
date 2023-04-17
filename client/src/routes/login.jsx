@@ -10,7 +10,7 @@ import {
   Container,
 } from "@mui/material";
 import { AccountCircleOutlined } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 import AuthService from "../services/auth";
 
@@ -19,6 +19,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [auth, setAuth] = useOutletContext();
 
   const validateEmail = () => {
     if (email === "") {
@@ -49,8 +50,9 @@ export default function Login() {
       .then((response) => {
         if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          setAuth(true);
+          navigate(`/profile`);
         }
-        navigate(`/profile`);
       })
       .catch((error) => {
         console.log(error);

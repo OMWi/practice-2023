@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 export default function WordItem({ wordData }) {
   return (
-    <ListItem key={wordData.id}>
+    <ListItem disablePadding>
       <Stack>
-        <Typography variant="body2">{wordData.text}</Typography>
+        <Typography variant="h6">{wordData.text}</Typography>
         <Typography variant="subtitle2">{wordData.category}</Typography>
       </Stack>
     </ListItem>
@@ -14,7 +14,6 @@ export default function WordItem({ wordData }) {
 
 WordItem.propTypes = {
   wordData: PropTypes.shape({
-    id: PropTypes.number,
     text: PropTypes.string,
     category: PropTypes.string,
   }),

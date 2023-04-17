@@ -8,7 +8,7 @@ export default function Root() {
   return (
     <>
       <Navbar auth={auth}></Navbar>
-      <Outlet></Outlet>
+      <Outlet context={[auth, setAuth]}></Outlet>
     </>
   );
 }
