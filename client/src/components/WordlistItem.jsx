@@ -1,7 +1,7 @@
 import { ListItem, Paper, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
-export default function WordItem({ wordlistData }) {
+export default function WordlistItem({ wordlistData }) {
   return (
     <ListItem disablePadding sx={{ mb: 1 }}>
       <Paper square sx={{ width: 1 }}>
@@ -16,8 +16,9 @@ export default function WordItem({ wordlistData }) {
   );
 }
 
-WordItem.propTypes = {
+WordlistItem.propTypes = {
   wordlistData: PropTypes.shape({
+    id: PropTypes.number,
     name: PropTypes.string,
     popularity: PropTypes.number,
   }),

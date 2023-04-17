@@ -36,9 +36,7 @@ export default function Profile() {
   const [auth, setAuth] = useOutletContext();
 
   useEffect(() => {
-    const user = AuthService.getCurrentUser();
-    if (!auth || !user) {
-      setAuth(false);
+    if (!auth) {
       navigate("/login");
     }
   }, [auth]);
@@ -72,7 +70,7 @@ export default function Profile() {
 
             {userData.words.length > 0 && (
               <>
-                <Stack alignItems="center">
+                <Stack alignItems="center" sx={{ mt: 3 }}>
                   <Typography variant="h5">My Words</Typography>
                 </Stack>
                 <List>
@@ -94,7 +92,7 @@ export default function Profile() {
 
             {userData.wordLists.length > 0 && (
               <>
-                <Stack alignItems="center">
+                <Stack alignItems="center" sx={{ mt: 4 }}>
                   <Typography variant="h5">Selected Word Lists</Typography>
                 </Stack>
                 <List>

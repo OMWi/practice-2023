@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 export default function Root() {
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(localStorage.getItem("user") !== null);
 
   return (
     <>

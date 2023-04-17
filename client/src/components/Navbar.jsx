@@ -13,11 +13,11 @@ export default function Navbar({ auth }) {
       <Container maxWidth="lg">
         <Toolbar>
           <Stack direction="row" alignItems="center" spacing={1.5}>
-            <Link href="/">
-              <Typography variant="h6">Home</Typography>
-            </Link>
             <Link href="/words">
               <Typography variant="h6">Words</Typography>
+            </Link>
+            <Link href="/word-lists">
+              <Typography variant="h6">Word Lists</Typography>
             </Link>
           </Stack>
           <Stack

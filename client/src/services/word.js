@@ -4,12 +4,12 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:8080/api/v1/words";
 
 class WordService {
-  async list() {
+  list() {
     return axios.get(API_URL);
   }
 
-  async get(wordId) {
-    return axios.get(API_URL + `/${wordId}`);
+  get(wordId) {
+    return axios.get(`${API_URL}/${wordId}`);
   }
 }
 

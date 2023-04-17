@@ -33,6 +33,7 @@ export default function UserWordItem({ userWordData }) {
 
 UserWordItem.propTypes = {
   userWordData: PropTypes.shape({
+    wordId: PropTypes.wordId,
     word: PropTypes.string,
     isLearned: PropTypes.bool,
     guessStreak: PropTypes.number,

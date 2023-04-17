@@ -1,21 +1,11 @@
-import { Container, List, ListItem, Stack, Typography } from "@mui/material";
+import { Container, List, Stack, Typography } from "@mui/material";
 import { useLoaderData } from "react-router-dom";
 
+import WordService from "../services/word";
+import WordItem from "../components/WordItem";
+
 export async function loader() {
-  const wordsData = [
-    {
-      id: 1,
-      text: "word 1",
-    },
-    {
-      id: 2,
-      text: "word 2",
-    },
-    {
-      id: 3,
-      text: "word 3",
-    },
-  ];
+  const wordsData = (await WordService.list()).data;
   return wordsData;
 }
 
@@ -24,16 +14,24 @@ export default function Words() {
 
   return (
     <Container maxWidth="md" sx={{ padding: 0 }}>
-      <Stack alignItems="center">
+      {words.length > 0 ? (
         <List>
-          {words.length &&
-            words.map((word) => (
-              <ListItem key={word.id}>
-                <Typography variant="h6">{word.text}</Typography>
-              </ListItem>
-            ))}
+          {words.map((word) => (
+            <WordItem
+              key={word.id}
+              wordData={{
+                id: word.id,
+                text: word.text,
+                category: word.categoryDto.category,
+              }}
+            />
+          ))}
         </List>
-      </Stack>
+      ) : (
+        <Stack alignItems="center">
+          <Typography variant="h4">No Words found</Typography>
+        </Stack>
+      )}
     </Container>
   );
 }
