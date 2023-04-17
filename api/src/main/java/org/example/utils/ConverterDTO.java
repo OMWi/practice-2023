@@ -3,7 +3,8 @@ package org.example.utils;
 import org.example.dto.meaning.MeaningDto;
 import org.example.dto.telegramaccount.TelegramAccountDto;
 import org.example.dto.userdata.UserDataDto;
-import org.example.dto.word.UserWordDto;
+import org.example.dto.userword.UserWordDto;
+import org.example.dto.userword.UserWordHasMeaningsDto;
 import org.example.dto.word.WordHasMeaningsDto;
 import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.dto.word.WordDto;
@@ -107,6 +108,24 @@ public final class ConverterDTO {
         userWordDto.setGuessStreak(userWord.getGuessStreak());
         userWordDto.setWord(userWord.getWord().getText());
         userWordDto.setCategory(userWord.getWord().getCategory().getCategory());
+        return userWordDto;
+    }
+
+    public static UserWordHasMeaningsDto userWordToDtoWithMeanings(UserdataWord userWord) {
+        var userWordDto = new UserWordHasMeaningsDto();
+        userWordDto.setUserId(userWord.getUserData().getId());
+        userWordDto.setWordId(userWord.getWord().getId());
+        userWordDto.setIsLearned(userWord.isLearned());
+        userWordDto.setGuessStreak(userWord.getGuessStreak());
+        userWordDto.setWord(userWord.getWord().getText());
+        userWordDto.setCategory(userWord.getWord().getCategory().getCategory());
+
+        var meaningDtoList = new ArrayList<MeaningDto>();
+        var wordMeanings = userWord.getWord().getMeanings();
+        for (Meaning meaning : wordMeanings) {
+            meaningDtoList.add(meaningToDto(meaning));
+        }
+        userWordDto.setMeaningDtoList(meaningDtoList);
         return userWordDto;
     }
 }

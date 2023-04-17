@@ -1,8 +1,9 @@
 package org.example.service;
 
-import org.example.dto.word.UserWordCreationDto;
-import org.example.dto.word.UserWordDto;
-import org.example.dto.word.UserWordUpdationDto;
+import org.example.dto.userword.UserWordDto;
+import org.example.dto.userword.UserWordHasMeaningsDto;
+import org.example.dto.userword.UserWordIdDto;
+import org.example.dto.userword.UserWordUpdationDto;
 import org.example.model.UserdataWord;
 import org.example.model.UserdataWordId;
 import org.example.repository.UserDataRepository;
@@ -27,9 +28,9 @@ public class UserWordService {
         this.wordRepository = wordRepository;
     }
 
-    public UserWordDto create(UserWordCreationDto userWordDto) {
-        var userData = userDataRepository.findById(userWordDto.getUserId()).orElseThrow();
-        var word = wordRepository.findById(userWordDto.getWordId()).orElseThrow();
+    public UserWordDto create(Long userId, Long wordId) {
+        var userData = userDataRepository.findById(userId).orElseThrow();
+        var word = wordRepository.findById(wordId).orElseThrow();
 
         var userWord = new UserdataWord(userData, word);
         var createdUserWord = userWordRepository.save(userWord);
@@ -48,20 +49,50 @@ public class UserWordService {
         return userWordsDtoList;
     }
 
-    public UserWordDto get(Long userId, Long wordId) {
+    public UserWordHasMeaningsDto get(Long userId, Long wordId) {
         var userWordId = new UserdataWordId(userId, wordId);
         var userWord = userWordRepository.findById(userWordId).orElseThrow();
 
-        return ConverterDTO.userWordToDto(userWord);
+        return ConverterDTO.userWordToDtoWithMeanings(userWord);
     }
 
-    public UserWordDto update(UserWordUpdationDto userWordDto) {
-        var userWordId = new UserdataWordId(userWordDto.getUserId(), userWordDto.getWordId());
+    public UserWordDto update(Long userId, UserWordUpdationDto userWordDto) {
+        var userWordId = new UserdataWordId(userId, userWordDto.getWordId());
         var userWord = userWordRepository.findById(userWordId).orElseThrow();
 
         userWord.setGuessStreak(userWordDto.getGuessStreak());
         userWord.setLearned(userWordDto.getIsLearned());
 
+        var updatedUserWord = userWordRepository.save(userWord);
+        return ConverterDTO.userWordToDto(updatedUserWord);
+    }
+
+    public UserWordDto incGuessStreak(Long userId, UserWordIdDto userWordDto) {
+        var userWordId = new UserdataWordId(userId, userWordDto.getWordId());
+        var userWord = userWordRepository.findById(userWordId).orElseThrow();
+        var userData = userDataRepository.findById(userId).orElseThrow();
+
+        userWord.setGuessStreak(userWord.getGuessStreak() + 1);
+        if (userWord.getGuessStreak() >= 5) {
+            userWord.setLearned(true);
+            userData.setPoints(userData.getPoints() + 10);
+        }
+        userData.setPoints(userData.getPoints() + 1);
+
+        userDataRepository.save(userData);
+        var updatedUserWord = userWordRepository.save(userWord);
+        return ConverterDTO.userWordToDto(updatedUserWord);
+    }
+
+    public UserWordDto setLearned(Long userId, UserWordIdDto userWordDto) {
+        var userWordId = new UserdataWordId(userId, userWordDto.getWordId());
+        var userWord = userWordRepository.findById(userWordId).orElseThrow();
+        var userData = userDataRepository.findById(userId).orElseThrow();
+
+        userWord.setLearned(true);
+        userData.setPoints(userData.getPoints() + 10);
+
+        userDataRepository.save(userData);
         var updatedUserWord = userWordRepository.save(userWord);
         return ConverterDTO.userWordToDto(updatedUserWord);
     }

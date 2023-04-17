@@ -3,10 +3,10 @@ package org.example.controller;
 import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userdata.UserDataUpdationDto;
-import org.example.dto.word.UserWordCreationDto;
-import org.example.dto.word.UserWordDto;
-import org.example.dto.word.UserWordUpdationDto;
-import org.example.dto.wordlist.UserWordListDto;
+import org.example.dto.userword.UserWordDto;
+import org.example.dto.userword.UserWordHasMeaningsDto;
+import org.example.dto.userword.UserWordIdDto;
+import org.example.dto.userword.UserWordUpdationDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.service.UserDataService;
 import org.example.service.UserWordService;
@@ -46,11 +46,11 @@ public class UserDataController {
         return userDataService.list();
     }
 
-    @GetMapping("/{userDataId}")
+    @GetMapping("/{userId}")
     @Secured({"ADMIN", "USER"})
-    public UserDataDto getUserData(@PathVariable("userDataId") Long userDataId) {
+    public UserDataDto getUserData(@PathVariable("userId") Long userId) {
         try {
-            return userDataService.get(userDataId);
+            return userDataService.get(userId);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -66,42 +66,72 @@ public class UserDataController {
         }
     }
 
-    @DeleteMapping("/{userDataId}")
+    @DeleteMapping("/{userId}")
     @Secured({"ADMIN"})
-    public void deleteUserData(@PathVariable("userDataId") Long userDataId) {
+    public void deleteUserData(@PathVariable("userId") Long userId) {
         try {
-            userDataService.delete(userDataId);
+            userDataService.delete(userId);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("{userDataId}/words")
+
+    @PostMapping("{userId}/words/{wordId}")
     @Secured({"ADMIN", "USER"})
-    public UserWordDto addUserWord(@PathVariable("userDataId") Long userId, @RequestBody UserWordCreationDto userWordDto) {
-        userWordDto.setUserId(userId);
-        return userWordService.create(userWordDto);
+    public UserWordDto addUserWord(@PathVariable("userId") Long userId, @PathVariable("wordId") Long wordId) {
+        return userWordService.create(userId, wordId);
     }
 
-    @GetMapping("/{userDataId}/words")
+    @GetMapping("/{userId}/words")
     @Secured({"ADMIN", "USER"})
-    public List<UserWordDto> listUserWords(@PathVariable("userDataId") Long userId) {
+    public List<UserWordDto> listUserWords(@PathVariable("userId") Long userId) {
         return userWordService.listByUserId(userId);
     }
 
-    @PutMapping("/{userDataId}/words")
+    @GetMapping("/{userId}/words/{wordId}")
     @Secured({"ADMIN", "USER"})
-    public UserWordDto updateUserWord(@PathVariable("userDataId") Long userId, @RequestBody UserWordUpdationDto userWordDto) {
+    public UserWordHasMeaningsDto getUserWord(@PathVariable("userId") Long userId, @PathVariable("wordId") Long wordId) {
         try {
-            return userWordService.update(userWordDto);
+            return userWordService.get(userId, wordId);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{userDataId}/words/{wordId}")
+    @PutMapping("/{userId}/words")
     @Secured({"ADMIN", "USER"})
-    public void deleteUserWord(@PathVariable("userDataId") Long userId, @PathVariable("wordId") Long wordId) {
+    public UserWordDto updateUserWord(@PathVariable("userId") Long userId, @RequestBody UserWordUpdationDto userWordDto) {
+        try {
+            return userWordService.update(userId, userWordDto);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{userId}/words/inc")
+    @Secured({"ADMIN", "USER"})
+    public UserWordDto incUserWordGuessStreak(@PathVariable("userId") Long userId, UserWordIdDto userWordDto) {
+        try {
+            return userWordService.incGuessStreak(userId, userWordDto);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{userId}/words/learned")
+    @Secured({"ADMIN", "USER"})
+    public UserWordDto setUserWordLearned(@PathVariable("userId") Long userId, UserWordIdDto userWordDto) {
+        try {
+            return userWordService.setLearned(userId, userWordDto);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{userId}/words/{wordId}")
+    @Secured({"ADMIN", "USER"})
+    public void deleteUserWord(@PathVariable("userId") Long userId, @PathVariable("wordId") Long wordId) {
         try {
             userWordService.delete(userId, wordId);
         } catch (NoSuchElementException e) {
@@ -110,26 +140,25 @@ public class UserDataController {
     }
 
 
-    @PostMapping("/{userDataId}/word-lists")
+    @PostMapping("/{userId}/word-lists/{wordListId}")
     @Secured({"ADMIN", "USER"})
-    public void addUserWordList(@PathVariable("userDataId") Long userId, @RequestBody UserWordListDto userWordListDto) {
+    public void addUserWordList(@PathVariable("userId") Long userId, @PathVariable Long wordListId) {
         try {
-            userWordListDto.setUserId(userId);
-            userDataService.addWordList(userWordListDto);
+            userDataService.addWordList(userId, wordListId);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/{userDataId}/word-lists")
+    @GetMapping("/{userId}/word-lists")
     @Secured({"ADMIN", "USER"})
-    public List<WordListDto> listUserWordLists(@PathVariable("userDataId") Long userId) {
+    public List<WordListDto> listUserWordLists(@PathVariable("userId") Long userId) {
         return wordListService.listByUserid(userId);
     }
 
-    @DeleteMapping("/{userDataId}/word-lists/{wordListId}")
+    @DeleteMapping("/{userId}/word-lists/{wordListId}")
     @Secured({"ADMIN", "USER"})
-    public void deleteUserWordList(@PathVariable("userDataId") Long userId, @PathVariable("wordListId") Long wordListId) {
+    public void deleteUserWordList(@PathVariable("userId") Long userId, @PathVariable("wordListId") Long wordListId) {
         try {
             userDataService.deleteWordList(userId, wordListId);
         } catch (NoSuchElementException e) {

@@ -1,14 +1,19 @@
-package org.example.dto.word;
+package org.example.dto.userword;
 
-public class UserWordDto {
+import org.example.dto.meaning.MeaningDto;
+
+import java.util.List;
+
+public class UserWordHasMeaningsDto {
     private Long userId;
     private Long wordId;
     private boolean isLearned;
     private int guessStreak;
     private String word;
     private String category;
+    private List<MeaningDto> meaningDtoList;
 
-    public UserWordDto() {
+    public UserWordHasMeaningsDto() {
     }
 
     public Long getUserId() {
@@ -57,5 +62,13 @@ public class UserWordDto {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public List<MeaningDto> getMeaningDtoList() {
+        return meaningDtoList;
+    }
+
+    public void setMeaningDtoList(List<MeaningDto> meaningDtoList) {
+        this.meaningDtoList = meaningDtoList;
     }
 }

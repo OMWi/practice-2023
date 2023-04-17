@@ -68,9 +68,9 @@ public class UserDataService {
         userDataRepository.deleteById(userDataId);
     }
 
-    public void addWordList(UserWordListDto userWordListDto) {
-        var userData = userDataRepository.findById(userWordListDto.getUserId()).orElseThrow();
-        var wordList = wordListRepository.findById(userWordListDto.getWordListId()).orElseThrow();
+    public void addWordList(Long userId, Long wordListId) {
+        var userData = userDataRepository.findById(userId).orElseThrow();
+        var wordList = wordListRepository.findById(wordListId).orElseThrow();
         userData.addWordList(wordList);
         userDataRepository.save(userData);
     }

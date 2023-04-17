@@ -1,7 +1,6 @@
-package org.example.dto.word;
+package org.example.dto.userword;
 
 public class UserWordUpdationDto {
-    private Long userId;
     private Long wordId;
     private boolean isLearned;
     private int guessStreak;
@@ -23,14 +22,6 @@ public class UserWordUpdationDto {
 
     public void setGuessStreak(int guessStreak) {
         this.guessStreak = guessStreak;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getWordId() {
