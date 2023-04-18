@@ -50,18 +50,15 @@ export default function Profile() {
     <Container maxWidth="md" sx={{ padding: 2 }}>
       <Paper sx={{ padding: 2 }}>
         {userData && (
-          <>
-            <Stack alignItems="center">
-              <Typography variant="h4">
-                {userData.username} - {userData.email}
-              </Typography>
-            </Stack>
-            <Stack alignItems="flex-end">
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                {userData.points} points
-              </Typography>
+          <Stack spacing={3}>
+            <Stack direction="row" spacing={1}>
+              <Stack alignItems="center" sx={{ flexGrow: 1 }}>
+                <Typography variant="h4">
+                  {userData.username} - {userData.email}
+                </Typography>
+              </Stack>
               <Button
-                variant="contained"
+                variant="outlined"
                 color="error"
                 onClick={() => {
                   AuthService.logout();
@@ -73,9 +70,18 @@ export default function Profile() {
               </Button>
             </Stack>
 
+            <Stack alignItems="flex-end" spacing={1}>
+              <Stack direction="row" spacing={1}>
+                <Typography variant="h6">{userData.points} points</Typography>
+                <Button variant="contained" onClick={() => navigate("/learn")}>
+                  Learn Word
+                </Button>
+              </Stack>
+            </Stack>
+
             {userData.words.length > 0 && (
               <>
-                <Stack alignItems="center" sx={{ mt: 3 }}>
+                <Stack alignItems="center">
                   <Typography variant="h5">My Words</Typography>
                 </Stack>
                 <List>
@@ -97,7 +103,7 @@ export default function Profile() {
 
             {userData.wordLists.length > 0 && (
               <>
-                <Stack alignItems="center" sx={{ mt: 4 }}>
+                <Stack alignItems="center">
                   <Typography variant="h5">Selected Word Lists</Typography>
                 </Stack>
                 <List>
@@ -114,7 +120,7 @@ export default function Profile() {
                 </List>
               </>
             )}
-          </>
+          </Stack>
         )}
       </Paper>
     </Container>

@@ -56,6 +56,14 @@ public class UserWordService {
         return ConverterDTO.userWordToDtoWithMeanings(userWord);
     }
 
+    public UserWordHasMeaningsDto getRandomNotLearned(Long userId) {
+        var userWord = userWordRepository.findRandomUnlearned(userId);
+        if (userWord == null) {
+            throw new NoSuchElementException();
+        }
+        return ConverterDTO.userWordToDtoWithMeanings(userWord);
+    }
+
     public UserWordDto update(Long userId, UserWordUpdationDto userWordDto) {
         var userWordId = new UserdataWordId(userId, userWordDto.getWordId());
         var userWord = userWordRepository.findById(userWordId).orElseThrow();

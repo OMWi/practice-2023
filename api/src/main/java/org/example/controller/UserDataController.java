@@ -102,6 +102,16 @@ public class UserDataController {
         }
     }
 
+    @GetMapping("{userId}/words/random")
+    @Secured({"ADMIN", "USER"})
+    public UserWordHasMeaningsDto getRandomNotLearnedWord(@PathVariable("userId") Long userId) {
+        try {
+            return userWordService.getRandomNotLearned(userId);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/{userId}/words")
     @Secured({"ADMIN", "USER"})
     public UserWordDto updateUserWord(@PathVariable("userId") Long userId, @RequestBody UserWordUpdationDto userWordDto) {
@@ -114,7 +124,7 @@ public class UserDataController {
 
     @PutMapping("/{userId}/words/inc")
     @Secured({"ADMIN", "USER"})
-    public UserWordDto incUserWordGuessStreak(@PathVariable("userId") Long userId, UserWordIdDto userWordDto) {
+    public UserWordDto incUserWordGuessStreak(@PathVariable("userId") Long userId, @RequestBody UserWordIdDto userWordDto) {
         try {
             return userWordService.incGuessStreak(userId, userWordDto);
         } catch (NoSuchElementException e) {
@@ -124,7 +134,7 @@ public class UserDataController {
 
     @PutMapping("/{userId}/words/learned")
     @Secured({"ADMIN", "USER"})
-    public UserWordDto setUserWordLearned(@PathVariable("userId") Long userId, UserWordIdDto userWordDto) {
+    public UserWordDto setUserWordLearned(@PathVariable("userId") Long userId, @RequestBody UserWordIdDto userWordDto) {
         try {
             return userWordService.setLearned(userId, userWordDto);
         } catch (NoSuchElementException e) {

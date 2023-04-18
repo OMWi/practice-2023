@@ -18,6 +18,12 @@ const UserDataService = {
     });
   },
 
+  getRandomUnlearnedUserWord(userId) {
+    return axios.get(`${API_URL}/${userId}/words/random`, {
+      headers: authHeader(),
+    });
+  },
+
   addUserWord(userId, wordId) {
     return axios.post(
       `${API_URL}/${userId}/words/${wordId}`,
@@ -25,6 +31,27 @@ const UserDataService = {
       {
         headers: authHeader(),
       },
+    );
+  },
+
+  incUserWordGuessStreak(userId, wordId) {
+    console.log(userId, wordId);
+    return axios.put(
+      `${API_URL}/${userId}/words/inc`,
+      { wordId: wordId },
+      { headers: authHeader() },
+    );
+  },
+
+  setZeroGuessStreak(userId, wordId) {
+    return axios.put(
+      `${API_URL}/${userId}/words`,
+      {
+        wordId: wordId,
+        isLearned: false,
+        guessStreak: 0,
+      },
+      { headers: authHeader() },
     );
   },
 
