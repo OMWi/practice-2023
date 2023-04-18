@@ -8,54 +8,37 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 
-import WordService from "../services/word";
-import AuthService from "../services/auth";
 import UserDataService from "../services/user-data";
+import AuthService from "../services/auth";
 
 export async function loader({ params }) {
-  const id = params.wordId;
-  const wordData = (await WordService.get(id)).data;
-  return wordData;
+  const wordId = params.wordId;
+  const user = AuthService.getCurrentUser();
+  if (!user) return null;
+  const userWordData = (await UserDataService.getUserWord(user.userId, wordId))
+    .data;
+  console.log(userWordData);
+  return userWordData;
 }
 
-export default function Word() {
+export default function UserWord() {
   const word = useLoaderData();
   const navigate = useNavigate();
 
-  const [canAdd, setCanAdd] = useState(false);
-
-  useEffect(() => {
+  const handleDelete = async () => {
     const user = AuthService.getCurrentUser();
-    if (!user) {
-      setCanAdd(false);
-      return;
-    }
-    UserDataService.getUserWord(user.userId, word.id)
+    if (!user) return;
+    UserDataService.deleteUserWord(user.userId, word.wordId)
       .then((response) => {
-        if (response.status === 200) {
-          setCanAdd(false);
-        }
+        navigate("/profile");
         return response;
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          setCanAdd(true);
-        }
+        return error;
       });
-  }, [canAdd]);
-
-  const handleAdd = async () => {
-    const user = AuthService.getCurrentUser();
-    if (!user || !canAdd) return;
-    const result = await UserDataService.addUserWord(user.userId, word.id);
-    console.log(result);
-    if (result.status === 200) {
-      navigate("/profile");
-    }
   };
 
   return (
@@ -64,7 +47,7 @@ export default function Word() {
         <Stack>
           <Stack direction="row" alignItems="flex-end">
             <Typography variant="h5" sx={{ display: "flex", flexGrow: 1 }}>
-              {word.text}
+              {word.word}
             </Typography>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Typography
@@ -73,18 +56,27 @@ export default function Word() {
                 fontStyle="italic"
                 sx={{ ml: 1 }}
               >
-                {word.categoryDto.category}
+                {word.category}
               </Typography>
-              {canAdd && (
-                <Button
-                  variant="outlined"
-                  endIcon={<AddIcon />}
-                  onClick={() => handleAdd()}
-                >
-                  Add
-                </Button>
-              )}
+              <Button
+                variant="outlined"
+                endIcon={<DeleteOutlineIcon />}
+                onClick={() => handleDelete()}
+                color="error"
+              >
+                Delete
+              </Button>
             </Stack>
+          </Stack>
+
+          <Divider sx={{ my: 0.5 }} />
+
+          <Stack>
+            <Typography variant="subtitle2">
+              {word.isLearned
+                ? `Word Learned`
+                : `Current guess streak: ${word.guessStreak}`}
+            </Typography>
           </Stack>
 
           <Divider sx={{ my: 0.5 }} />

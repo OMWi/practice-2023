@@ -10,13 +10,12 @@ const AuthService = {
     });
   },
 
-  async register(username, email, password) {
-    const response = await axios.post(`${API_URL}/register`, {
+  register(username, email, password) {
+    return axios.post(`${API_URL}/register`, {
       username: username,
       email: email,
       password: password,
     });
-    return response.data;
   },
 
   logout() {

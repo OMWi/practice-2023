@@ -1,9 +1,23 @@
 import { ListItem, Paper, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function UserWordItem({ userWordData }) {
+  const navigate = useNavigate();
+
   return (
-    <ListItem disablePadding sx={{ mb: 1 }}>
+    <ListItem
+      disablePadding
+      sx={{
+        mb: 1,
+        "&:hover": {
+          cursor: "pointer",
+        },
+      }}
+      onClick={() => {
+        navigate(`/profile/words/${userWordData.wordId}`);
+      }}
+    >
       <Paper square sx={{ width: 1 }}>
         <Stack sx={{ padding: 1, width: 1 }}>
           <Stack direction="row" alignItems="flex-end">

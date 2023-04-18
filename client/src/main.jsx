@@ -18,6 +18,7 @@ import Word, { loader as wordLoader } from "./routes/word";
 import Profile, { loader as profileLoader } from "./routes/profile";
 import WordLists, { loader as wordListsLoader } from "./routes/word-lists";
 import WordList, { loader as wordListLoader } from "./routes/word-list";
+import UserWord, { loader as userWordLoader } from "./routes/user-word";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,11 @@ const router = createBrowserRouter(
         <Route path="profile" element={<Profile />} loader={profileLoader} />
         <Route path="words" element={<Words />} loader={wordsLoader} />
         <Route path="words/:wordId" element={<Word />} loader={wordLoader} />
+        <Route
+          path="profile/words/:wordId"
+          element={<UserWord />}
+          loader={userWordLoader}
+        />
         <Route
           path="word-lists"
           element={<WordLists />}

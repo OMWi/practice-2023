@@ -12,8 +12,50 @@ const UserDataService = {
     return axios.get(`${API_URL}/${userId}/words`, { headers: authHeader() });
   },
 
+  getUserWord(userId, wordId) {
+    return axios.get(`${API_URL}/${userId}/words/${wordId}`, {
+      headers: authHeader(),
+    });
+  },
+
+  addUserWord(userId, wordId) {
+    return axios.post(
+      `${API_URL}/${userId}/words/${wordId}`,
+      {},
+      {
+        headers: authHeader(),
+      },
+    );
+  },
+
+  deleteUserWord(userId, wordId) {
+    return axios.delete(`${API_URL}/${userId}/words/${wordId}`, {
+      headers: authHeader(),
+    });
+  },
+
   getUserWordLists(userId) {
     return axios.get(`${API_URL}/${userId}/word-lists`, {
+      headers: authHeader(),
+    });
+  },
+
+  getUserWordList(userId, wordListId) {
+    return axios.get(`${API_URL}/${userId}/word-lists/${wordListId}`, {
+      headers: authHeader(),
+    });
+  },
+
+  addUserWordList(userId, wordListId) {
+    return axios.post(
+      `${API_URL}/${userId}/word-lists/${wordListId}`,
+      {},
+      { headers: authHeader() },
+    );
+  },
+
+  deleteUserWordList(userId, wordListId) {
+    return axios.delete(`${API_URL}/${userId}/word-lists/${wordListId}`, {
       headers: authHeader(),
     });
   },

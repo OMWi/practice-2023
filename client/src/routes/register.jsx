@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import {
   Stack,
   Avatar,
@@ -10,11 +11,15 @@ import {
   Container,
 } from "@mui/material";
 import { AccountCircleOutlined } from "@mui/icons-material";
+import AuthService from "../services/auth";
 
 export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [auth, setAuth] = useOutletContext();
+  const navigate = useNavigate();
 
   const validateUserName = () => {
     if (userName === "") {
@@ -43,8 +48,28 @@ export default function Register() {
     return { valid: true, helperText: "" };
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (
+      !validateEmail().valid ||
+      !validatePassword().valid ||
+      !validateUserName().valid
+    ) {
+      return;
+    }
+    try {
+      const registerResponse = (
+        await AuthService.register(userName, email, password)
+      ).data;
+      const loginResponse = (await AuthService.login(email, password)).data;
+      if (loginResponse.token) {
+        localStorage.setItem("user", JSON.stringify(loginResponse));
+        setAuth(true);
+        navigate("/profile");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

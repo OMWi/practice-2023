@@ -8,7 +8,12 @@ export default function WordItem({ wordData }) {
   return (
     <ListItem
       disablePadding
-      sx={{ mb: 1 }}
+      sx={{
+        mb: 1,
+        "&:hover": {
+          cursor: "pointer",
+        },
+      }}
       onClick={() => navigate(`/words/${wordData.id}`)}
     >
       <Paper square sx={{ width: 1 }}>
