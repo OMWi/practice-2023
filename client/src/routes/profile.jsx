@@ -12,7 +12,7 @@ import AuthService from "../services/auth";
 import UserDataService from "../services/user-data";
 import UserWordItem from "../components/UserWordItem";
 import WordlistItem from "../components/WordlistItem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export async function loader() {
   const user = AuthService.getCurrentUser();

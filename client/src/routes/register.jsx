@@ -18,7 +18,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [auth, setAuth] = useOutletContext();
+  const setAuth = useOutletContext()[1];
   const navigate = useNavigate();
 
   const validateUserName = () => {
@@ -58,9 +58,7 @@ export default function Register() {
       return;
     }
     try {
-      const registerResponse = (
-        await AuthService.register(userName, email, password)
-      ).data;
+      await AuthService.register(userName, email, password);
       const loginResponse = (await AuthService.login(email, password)).data;
       if (loginResponse.token) {
         localStorage.setItem("user", JSON.stringify(loginResponse));

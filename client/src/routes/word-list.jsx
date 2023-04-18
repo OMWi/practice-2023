@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
 import {
   Container,
   Divider,
@@ -8,13 +10,10 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
 
 import WordListService from "../services/word-list";
 import WordItem from "../components/WordItem";
 import UserDataService from "../services/user-data";
-import { useEffect } from "react";
-import { useState } from "react";
 import AuthService from "../services/auth";
 
 export async function loader({ params }) {
@@ -25,10 +24,9 @@ export async function loader({ params }) {
 
 export default function WordList() {
   const wordList = useLoaderData();
-  const navigate = useNavigate();
 
   const [inUserList, setInUserList] = useState(false);
-  const [auth, setAuth] = useOutletContext();
+  const auth = useOutletContext()[0];
 
   useEffect(() => {
     if (!auth) {

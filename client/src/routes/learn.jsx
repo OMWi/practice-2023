@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLoaderData, useOutletContext, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -13,7 +13,6 @@ import {
 
 import UserDataService from "../services/user-data";
 import AuthService from "../services/auth";
-import { useState } from "react";
 
 export async function loader() {
   const user = AuthService.getCurrentUser();
@@ -28,7 +27,7 @@ export async function loader() {
 export default function LearnWord() {
   const word = useLoaderData();
   const navigate = useNavigate();
-  const [auth, setAuth] = useOutletContext();
+  const auth = useOutletContext()[0];
 
   const [visibleMeanings, setVisibleMeanings] = useState(false);
 

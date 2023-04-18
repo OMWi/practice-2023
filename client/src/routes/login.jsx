@@ -19,7 +19,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [auth, setAuth] = useOutletContext();
+  const setAuth = useOutletContext()[1];
 
   const validateEmail = () => {
     if (email === "") {
