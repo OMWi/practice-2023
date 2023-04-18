@@ -3,10 +3,8 @@ package org.example.service;
 import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userdata.UserDataUpdationDto;
-import org.example.dto.wordlist.UserWordListDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.model.UserData;
-import org.example.repository.TelegramAccountRepository;
 import org.example.repository.UserCredentialsRepository;
 import org.example.repository.UserDataRepository;
 import org.example.repository.WordListRepository;
@@ -21,13 +19,11 @@ import java.util.NoSuchElementException;
 public class UserDataService {
     private final UserDataRepository userDataRepository;
     private final UserCredentialsRepository userCredentialsRepository;
-    private final TelegramAccountRepository telegramAccountRepository;
     private final WordListRepository wordListRepository;
 
-    public UserDataService(UserDataRepository userDataRepository, UserCredentialsRepository userCredentialsRepository, TelegramAccountRepository telegramAccountRepository, WordListRepository wordListRepository) {
+    public UserDataService(UserDataRepository userDataRepository, UserCredentialsRepository userCredentialsRepository, WordListRepository wordListRepository) {
         this.userDataRepository = userDataRepository;
         this.userCredentialsRepository = userCredentialsRepository;
-        this.telegramAccountRepository = telegramAccountRepository;
         this.wordListRepository = wordListRepository;
     }
 

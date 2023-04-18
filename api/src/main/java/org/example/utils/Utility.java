@@ -1,9 +1,7 @@
 package org.example.utils;
 
-import org.example.enums.UserRole;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public final class Utility {
     private static final System.Logger logger = System.getLogger(Utility.class.getName());

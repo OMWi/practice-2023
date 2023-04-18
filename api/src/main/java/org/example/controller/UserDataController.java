@@ -8,14 +8,11 @@ import org.example.dto.userword.UserWordHasMeaningsDto;
 import org.example.dto.userword.UserWordIdDto;
 import org.example.dto.userword.UserWordUpdationDto;
 import org.example.dto.wordlist.WordListDto;
-import org.example.security.UserDetailsImpl;
 import org.example.service.UserDataService;
 import org.example.service.UserWordService;
 import org.example.service.WordListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
