@@ -8,11 +8,14 @@ import org.example.dto.userword.UserWordHasMeaningsDto;
 import org.example.dto.userword.UserWordIdDto;
 import org.example.dto.userword.UserWordUpdationDto;
 import org.example.dto.wordlist.WordListDto;
+import org.example.security.UserDetailsImpl;
 import org.example.service.UserDataService;
 import org.example.service.UserWordService;
 import org.example.service.WordListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -154,6 +157,16 @@ public class UserDataController {
     @Secured({"ADMIN", "USER"})
     public List<WordListDto> listUserWordLists(@PathVariable("userId") Long userId) {
         return wordListService.listByUserid(userId);
+    }
+
+    @GetMapping("/{userId}/word-lists/{wordListId}")
+    @Secured({"ADMIN", "USER"})
+    public WordListDto getWordList(@PathVariable("userId") Long userId, @PathVariable("wordListId") Long wordListId) {
+        try {
+            return userDataService.getWordList(userId, wordListId);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{userId}/word-lists/{wordListId}")

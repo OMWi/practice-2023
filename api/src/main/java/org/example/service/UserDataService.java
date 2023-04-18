@@ -4,6 +4,7 @@ import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userdata.UserDataUpdationDto;
 import org.example.dto.wordlist.UserWordListDto;
+import org.example.dto.wordlist.WordListDto;
 import org.example.model.UserData;
 import org.example.repository.TelegramAccountRepository;
 import org.example.repository.UserCredentialsRepository;
@@ -73,6 +74,12 @@ public class UserDataService {
         var wordList = wordListRepository.findById(wordListId).orElseThrow();
         userData.addWordList(wordList);
         userDataRepository.save(userData);
+    }
+
+    public WordListDto getWordList(Long userId, Long wordListId) {
+        var userData = userDataRepository.findById(userId).orElseThrow();
+        var filteredWordList = userData.getWordLists().stream().filter(wordList -> wordList.getId().equals(wordListId)).findFirst().orElseThrow();
+        return ConverterDTO.wordListToDto(filteredWordList);
     }
 
     public void deleteWordList(Long userId, Long wordListId) {

@@ -54,7 +54,6 @@ public class UserCredentialsService {
             throw new BadCredentialsException("Error: Email is already taken!");
         }
 
-
         var userCredentials = new UserCredentials();
         userCredentials.setEmail(userDto.getEmail());
         userCredentials.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -62,7 +61,7 @@ public class UserCredentialsService {
 
         var userData = new UserData(createdUserCredentials, userDto.getUsername());
         var createdUserData = userDataRepository.save(userData);
-//        var updatedUserCredentials = userCredentialsRepository.save(createdUserCredentials);
+
         return ConverterDTO.userDataToDto(createdUserData);
     }
 
