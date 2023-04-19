@@ -98,7 +98,7 @@ export default function Word() {
                     alignItems="flex-start"
                     sx={{ width: 1 }}
                   >
-                    <Typography variant="body1">
+                    <Typography variant="body1" sx={{ minWidth: "50px" }}>
                       {index + 1}. [L{meaningDto.level}]
                     </Typography>
                     <Typography
