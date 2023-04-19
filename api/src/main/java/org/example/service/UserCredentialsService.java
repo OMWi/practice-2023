@@ -4,9 +4,12 @@ import org.example.dto.auth.JwtDto;
 import org.example.dto.auth.UserCreationDto;
 import org.example.dto.usercredentials.UserCredentialsDto;
 import org.example.dto.userdata.UserDataDto;
+import org.example.enums.LogType;
 import org.example.enums.UserRole;
+import org.example.model.Log;
 import org.example.model.UserCredentials;
 import org.example.model.UserData;
+import org.example.repository.LogRepository;
 import org.example.repository.UserCredentialsRepository;
 import org.example.repository.UserDataRepository;
 import org.example.security.JwtUtils;
@@ -32,6 +35,9 @@ public class UserCredentialsService {
     UserDataRepository userDataRepository;
 
     @Autowired
+    LogRepository logRepository;
+
+    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
@@ -54,6 +60,9 @@ public class UserCredentialsService {
         var userData = new UserData(createdUserCredentials, userDto.getUsername());
         var createdUserData = userDataRepository.save(userData);
 
+        var log = new Log(userCredentials, LogType.REGISTER);
+        logRepository.save(log);
+
         return ConverterDTO.userDataToDto(createdUserData);
     }
 
@@ -69,6 +78,14 @@ public class UserCredentialsService {
                 .map(item -> item.getAuthority())
                 .toList().get(0);
         UserRole userRole = UserRole.valueOf(role);
+
+        var userCredentials = userCredentialsRepository.findById(userDetails.getId()).orElse(null);
+        if (userCredentials != null) {
+            var log = new Log(userCredentials, LogType.LOGIN);
+            logRepository.save(log);
+        }
+
+
         return new JwtDto(jwt, userDetails.getId(), userDetails.getEmail(), userRole);
     }
 
