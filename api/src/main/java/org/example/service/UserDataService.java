@@ -70,6 +70,8 @@ public class UserDataService {
         var wordList = wordListRepository.findById(wordListId).orElseThrow();
         userData.addWordList(wordList);
         userDataRepository.save(userData);
+        wordList.setPopularity(wordList.getPopularity()+1);
+        wordListRepository.save(wordList);
     }
 
     public WordListDto getWordList(Long userId, Long wordListId) {
