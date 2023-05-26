@@ -2,6 +2,7 @@ package org.example.dto.userword;
 
 import org.example.dto.meaning.MeaningDto;
 
+import java.sql.Date;
 import java.util.List;
 
 public class UserWordHasMeaningsDto {
@@ -10,6 +11,9 @@ public class UserWordHasMeaningsDto {
     private boolean isLearned;
     private int guessStreak;
     private String word;
+    private String difficulty;
+    private Date intervalChangeDate;
+    private int interval;
     private String category;
     private List<MeaningDto> meaningDtoList;
 
@@ -70,5 +74,29 @@ public class UserWordHasMeaningsDto {
 
     public void setMeaningDtoList(List<MeaningDto> meaningDtoList) {
         this.meaningDtoList = meaningDtoList;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Date getIntervalChangeDate() {
+        return intervalChangeDate;
+    }
+
+    public void setIntervalChangeDate(Date intervalChangeDate) {
+        this.intervalChangeDate = intervalChangeDate;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
     }
 }

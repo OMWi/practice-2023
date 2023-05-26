@@ -1,7 +1,9 @@
 package org.example.service;
 
+import org.example.dto.meaning.MeaningCreationDto;
 import org.example.dto.meaning.MeaningDto;
 import org.example.model.Meaning;
+import org.example.repository.DifficultyRepository;
 import org.example.repository.MeaningRepository;
 import org.example.repository.WordRepository;
 import org.example.utils.ConverterDTO;
@@ -15,15 +17,19 @@ import java.util.NoSuchElementException;
 public class MeaningService {
     private final MeaningRepository meaningRepository;
     private final WordRepository wordRepository;
+    private final DifficultyRepository difficultyRepository;
 
-    public MeaningService(MeaningRepository meaningRepository, WordRepository wordRepository) {
+    public MeaningService(MeaningRepository meaningRepository, WordRepository wordRepository, DifficultyRepository difficultyRepository) {
         this.meaningRepository = meaningRepository;
         this.wordRepository = wordRepository;
+        this.difficultyRepository = difficultyRepository;
     }
     
-    public MeaningDto create(MeaningDto meaningDto) {
+    public MeaningDto create(MeaningCreationDto meaningDto) {
         var word = wordRepository.findById(meaningDto.getWordId()).orElseThrow();
-        var meaning = new Meaning(meaningDto.getLevel(), meaningDto.getText());
+        var difficulty = difficultyRepository.findById(meaningDto.getDifficultyId()).orElseThrow();
+
+        var meaning = new Meaning(difficulty, meaningDto.getMeaning());
         meaning.setWord(word);
 
         var createdMeaning = meaningRepository.save(meaning);
@@ -57,13 +63,14 @@ public class MeaningService {
         return ConverterDTO.meaningToDto(meaning);
     }
 
-    public MeaningDto update(MeaningDto meaningDto) {
+    public MeaningDto update(MeaningCreationDto meaningDto) {
         var meaning = meaningRepository.findById(meaningDto.getId()).orElseThrow();
         var word = wordRepository.findById(meaningDto.getWordId()).orElseThrow();
+        var difficulty = difficultyRepository.findById(meaningDto.getDifficultyId()).orElseThrow();
         
-        meaning.setLevel(meaningDto.getLevel());
-        meaning.setText(meaningDto.getText());
+        meaning.setMeaning(meaningDto.getMeaning());
         meaning.setWord(word);
+        meaning.setDifficulty(difficulty);
 
         var updatedMeaning = meaningRepository.save(meaning);
         return ConverterDTO.meaningToDto(updatedMeaning);

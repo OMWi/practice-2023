@@ -8,6 +8,10 @@ const UserDataService = {
     return axios.get(`${API_URL}/${userId}`, { headers: authHeader() });
   },
 
+  getTop(limit) {
+    return axios.get(`${API_URL}/top/${limit}`, { headers: authHeader() });
+  },
+
   getUserWords(userId) {
     return axios.get(`${API_URL}/${userId}/words`, { headers: authHeader() });
   },

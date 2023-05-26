@@ -1,5 +1,7 @@
 package org.example.dto.userword;
 
+import java.sql.Date;
+
 public class UserWordDto {
     private Long userId;
     private Long wordId;
@@ -7,6 +9,9 @@ public class UserWordDto {
     private int guessStreak;
     private String word;
     private String category;
+    private String difficulty;
+    private Date intervalChangeDate;
+    private int interval;
 
     public UserWordDto() {
     }
@@ -57,5 +62,29 @@ public class UserWordDto {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Date getIntervalChangeDate() {
+        return intervalChangeDate;
+    }
+
+    public void setIntervalChangeDate(Date intervalChangeDate) {
+        this.intervalChangeDate = intervalChangeDate;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
     }
 }

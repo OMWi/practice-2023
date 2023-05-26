@@ -7,9 +7,10 @@ import java.util.List;
 
 public class WordHasMeaningsDto {
     private Long id;
-    private String text;
+    private String word;
     private WordCategoryDto categoryDto;
     private List<MeaningDto> meaningDtoList;
+    private String difficulty;
 
     public WordHasMeaningsDto() {
     }
@@ -22,12 +23,12 @@ public class WordHasMeaningsDto {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getWord() {
+        return word;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public WordCategoryDto getCategoryDto() {
@@ -44,5 +45,13 @@ public class WordHasMeaningsDto {
 
     public void setMeaningDtoList(List<MeaningDto> meaningDtoList) {
         this.meaningDtoList = meaningDtoList;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 }

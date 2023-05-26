@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.dto.meaning.MeaningCreationDto;
 import org.example.dto.meaning.MeaningDto;
 import org.example.service.MeaningService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class MeaningController {
     @PostMapping("/meanings")
     @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
-    public MeaningDto createMeaning(@RequestBody MeaningDto meaningDto) {
+    public MeaningDto createMeaning(@RequestBody MeaningCreationDto meaningDto) {
         return meaningService.create(meaningDto);
     }
 
@@ -48,7 +49,7 @@ public class MeaningController {
 
     @PutMapping("/meanings")
     @Secured({"ADMIN"})
-    public MeaningDto updateMeaning(@RequestBody MeaningDto meaning) {
+    public MeaningDto updateMeaning(@RequestBody MeaningCreationDto meaning) {
         try {
             return meaningService.update(meaning);
         } catch (NoSuchElementException e) {

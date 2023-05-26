@@ -3,6 +3,7 @@ package org.example.dto.wordlist;
 import java.util.List;
 
 public class WordListCreationDto {
+    private Long difficultyId;
     private String name;
     private List<Long> wordIdList;
 
@@ -23,5 +24,13 @@ public class WordListCreationDto {
 
     public void setWordIdList(List<Long> wordIdList) {
         this.wordIdList = wordIdList;
+    }
+
+    public Long getDifficultyId() {
+        return difficultyId;
+    }
+
+    public void setDifficultyId(Long difficultyId) {
+        this.difficultyId = difficultyId;
     }
 }

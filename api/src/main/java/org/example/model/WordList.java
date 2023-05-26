@@ -15,8 +15,15 @@ public class WordList {
     @Column(nullable = false)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "difficulty_id")
+    private Difficulty difficulty;
+
     @Column(nullable = false)
-    private int popularity = 0;
+    private long popularity = 0;
+
+    @Column(nullable = false)
+    private long likes = 0;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wordLists")
     private List<Word> words = new ArrayList<>();
@@ -32,8 +39,9 @@ public class WordList {
     public WordList() {
     }
 
-    public WordList(String name) {
+    public WordList(String name, Difficulty difficulty) {
         this.name = name;
+        this.difficulty = difficulty;
     }
 
     public Long getId() {
@@ -52,11 +60,11 @@ public class WordList {
         this.name = name;
     }
 
-    public int getPopularity() {
+    public long getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(int popularity) {
+    public void setPopularity(long popularity) {
         this.popularity = popularity;
     }
 
@@ -76,5 +84,21 @@ public class WordList {
 
     public List<UserData> getUserDataList() {
         return userDataList;
+    }
+
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }

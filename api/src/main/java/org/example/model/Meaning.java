@@ -10,11 +10,12 @@ public class Meaning {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private int level;
+    @ManyToOne
+    @JoinColumn(name = "difficulty_id")
+    private Difficulty difficulty;
 
     @Column(nullable = false, length = Length.LONG)
-    private String text;
+    private String meaning;
 
     @ManyToOne
     private Word word;
@@ -22,17 +23,18 @@ public class Meaning {
     public Meaning() {
     }
 
-    public Meaning(int level, String text) {
-        this.level = level;
-        this.text = text;
+    public Meaning(Difficulty difficulty, String meaning) {
+        this.difficulty = difficulty;
+        this.meaning = meaning;
     }
 
     @Override
     public String toString() {
         return "Meaning{" +
                 "id=" + id +
-                ", level=" + level +
-                ", text='" + text + '\'' +
+                ", difficulty=" + difficulty.getDifficulty() +
+                ", meaning='" + meaning + '\'' +
+                ", word=" + word.getWord() +
                 '}';
     }
 
@@ -44,20 +46,12 @@ public class Meaning {
         this.id = id;
     }
 
-    public int getLevel() {
-        return level;
+    public String getMeaning() {
+        return meaning;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setMeaning(String meaning) {
+        this.meaning = meaning;
     }
 
     public Word getWord() {
@@ -66,5 +60,13 @@ public class Meaning {
 
     public void setWord(Word word) {
         this.word = word;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }

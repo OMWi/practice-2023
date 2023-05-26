@@ -3,7 +3,9 @@ package org.example.dto.wordlist;
 public class WordListDto {
     private Long id;
     private String name;
-    private int popularity;
+    private String difficulty;
+    private Long likes;
+    private Long popularity;
 
     public WordListDto() {
     }
@@ -24,11 +26,27 @@ public class WordListDto {
         this.name = name;
     }
 
-    public int getPopularity() {
+    public Long getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(int popularity) {
+    public void setPopularity(Long popularity) {
         this.popularity = popularity;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Long likes) {
+        this.likes = likes;
     }
 }

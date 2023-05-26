@@ -7,7 +7,9 @@ import java.util.List;
 public class WordListHasWordsDto {
     private Long id;
     private String name;
-    private int popularity;
+    private String difficulty;
+    private Long likes;
+    private Long popularity;
     private List<WordDto> wordDtoList;
 
     public WordListHasWordsDto() {
@@ -29,11 +31,11 @@ public class WordListHasWordsDto {
         this.name = name;
     }
 
-    public int getPopularity() {
+    public Long getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(int popularity) {
+    public void setPopularity(Long popularity) {
         this.popularity = popularity;
     }
 
@@ -43,5 +45,21 @@ public class WordListHasWordsDto {
 
     public void setWordDtoList(List<WordDto> wordDtoList) {
         this.wordDtoList = wordDtoList;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Long likes) {
+        this.likes = likes;
     }
 }

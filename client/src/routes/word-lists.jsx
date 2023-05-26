@@ -12,18 +12,11 @@ export default function WordLists() {
   const wordLists = useLoaderData();
 
   return (
-    <Container maxWidth="md" sx={{ padding: 0 }}>
+    <Container maxWidth="lg" sx={{ padding: 1 }}>
       {wordLists.length > 0 ? (
         <List>
           {wordLists.map((wordList) => (
-            <WordlistItem
-              key={wordList.id}
-              wordlistData={{
-                id: wordList.id,
-                name: wordList.name,
-                popularity: wordList.popularity,
-              }}
-            />
+            <WordlistItem key={wordList.id} wordlistData={wordList} />
           ))}
         </List>
       ) : (

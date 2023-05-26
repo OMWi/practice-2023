@@ -1,11 +1,12 @@
 package org.example.dto.userdata;
 
-public class UserDataUpdationDto {
+public class UserDataHaveRowNumberDto {
     private Long userId;
     private String username;
     private int exp;
+    private long position;
 
-    public UserDataUpdationDto() {
+    public UserDataHaveRowNumberDto() {
     }
 
     public Long getUserId() {
@@ -32,4 +33,11 @@ public class UserDataUpdationDto {
         this.exp = exp;
     }
 
+    public long getPosition() {
+        return position;
+    }
+
+    public void setPosition(long position) {
+        this.position = position;
+    }
 }

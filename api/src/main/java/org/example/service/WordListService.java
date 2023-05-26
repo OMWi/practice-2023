@@ -4,6 +4,7 @@ import org.example.dto.wordlist.WordListCreationDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.dto.wordlist.WordListHasWordsDto;
 import org.example.model.WordList;
+import org.example.repository.DifficultyRepository;
 import org.example.repository.WordListRepository;
 import org.example.repository.WordRepository;
 import org.example.utils.ConverterDTO;
@@ -17,14 +18,18 @@ import java.util.NoSuchElementException;
 public class WordListService {
     private final WordListRepository wordListRepository;
     private final WordRepository wordRepository;
+    private final DifficultyRepository difficultyRepository;
 
-    public WordListService(WordListRepository wordListRepository, WordRepository wordRepository) {
+    public WordListService(WordListRepository wordListRepository, WordRepository wordRepository, DifficultyRepository difficultyRepository) {
         this.wordListRepository = wordListRepository;
         this.wordRepository = wordRepository;
+        this.difficultyRepository = difficultyRepository;
     }
 
     public WordListHasWordsDto create(WordListCreationDto wordListDto) {
-        var wordList = new WordList(wordListDto.getName());
+        var difficulty = difficultyRepository.findById(wordListDto.getDifficultyId()).orElseThrow();
+
+        var wordList = new WordList(wordListDto.getName(), difficulty);
 
         for (Long wordId : wordListDto.getWordIdList()) {
             var word = wordRepository.findById(wordId).orElseThrow();

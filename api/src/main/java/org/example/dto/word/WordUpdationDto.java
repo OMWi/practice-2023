@@ -2,7 +2,7 @@ package org.example.dto.word;
 
 public class WordUpdationDto {
     private Long id;
-    private String text;
+    private String word;
     private Long categoryId;
 
     public WordUpdationDto() {
@@ -16,12 +16,12 @@ public class WordUpdationDto {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getWord() {
+        return word;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public Long getCategoryId() {

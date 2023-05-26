@@ -14,7 +14,11 @@ public class Word {
     private Long id;
 
     @Column(nullable = false, length = Length.LONG)
-    private String text;
+    private String word;
+
+    @ManyToOne
+    @JoinColumn(name = "difficulty_id")
+    private Difficulty difficulty;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -41,16 +45,17 @@ public class Word {
     public Word() {
     }
 
-    public Word(String text, WordCategory category) {
-        this.text = text;
+    public Word(String word, WordCategory category, Difficulty difficulty) {
+        this.word = word;
         this.category = category;
+        this.difficulty = difficulty;
     }
 
     @Override
     public String toString() {
         return "Word{" +
                 "id=" + id +
-                ", text='" + text + '\'' +
+                ", text='" + word + '\'' +
                 ", category=" + category +
                 '}';
     }
@@ -63,12 +68,12 @@ public class Word {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getWord() {
+        return word;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public WordCategory getCategory() {
@@ -99,5 +104,13 @@ public class Word {
 
     public List<WordList> getWordLists() {
         return wordLists;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }

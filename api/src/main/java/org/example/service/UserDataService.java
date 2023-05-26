@@ -2,13 +2,16 @@ package org.example.service;
 
 import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
+import org.example.dto.userdata.UserDataHaveRowNumberDto;
 import org.example.dto.userdata.UserDataUpdationDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.model.UserData;
 import org.example.repository.UserCredentialsRepository;
 import org.example.repository.UserDataRepository;
 import org.example.repository.WordListRepository;
+import org.example.security.UserDetailsImpl;
 import org.example.utils.ConverterDTO;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,6 +48,42 @@ public class UserDataService {
         return userDataDtoList;
     }
 
+    public List<UserDataHaveRowNumberDto> getLeaderboard() {
+        var usersData = userDataRepository.findTop100ByOrderByExpDesc();
+        var userDataDtoList = new ArrayList<UserDataHaveRowNumberDto>();
+        long ranking = 1;
+        for (UserData userData : usersData) {
+            var userDataDto = new UserDataHaveRowNumberDto();
+            userDataDto.setUserId(userData.getId());
+            userDataDto.setUsername(userData.getUsername());
+            userDataDto.setExp(userData.getExp());
+            userDataDto.setPosition(ranking++);
+            userDataDtoList.add(userDataDto);
+        }
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            return userDataDtoList;
+        }
+
+        var userId = ((UserDetailsImpl) authentication.getPrincipal()).getId();
+        if (userDataDtoList.stream().anyMatch(userDataDto -> userDataDto.getUserId().equals(userId))) {
+            return userDataDtoList;
+        }
+
+        var currentUserData = userDataRepository.findById(userId).orElseThrow();
+        long currentUserPosition = userDataRepository.countByExpGreaterThan(currentUserData.getExp()) + 1;
+
+        var userDataDto = new UserDataHaveRowNumberDto();
+        userDataDto.setUserId(userId);
+        userDataDto.setUsername(currentUserData.getUsername());
+        userDataDto.setExp(currentUserData.getExp());
+        userDataDto.setPosition(currentUserPosition);
+        userDataDtoList.add(userDataDto);
+
+        return userDataDtoList;
+    }
+
     public UserDataDto get(Long userDataId) {
         var userData = userDataRepository.findById(userDataId).orElseThrow();
         return ConverterDTO.userDataToDto(userData);
@@ -54,7 +93,7 @@ public class UserDataService {
         var userData = userDataRepository.findById(userDataDto.getUserId()).orElseThrow();
 
         userData.setUsername(userDataDto.getUsername());
-        userData.setPoints(userDataDto.getPoints());
+        userData.setExp(userDataDto.getExp());
 
         var updatedUserData = userDataRepository.save(userData);
         return ConverterDTO.userDataToDto(updatedUserData);

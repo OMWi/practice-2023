@@ -2,6 +2,8 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
+
 @Entity
 @Table(name = "userdata_word")
 public class UserdataWord {
@@ -24,6 +26,12 @@ public class UserdataWord {
     @Column(nullable = false, name = "guess_streak")
     private int guessStreak = 0;
 
+    @Column(nullable = false, name = "interval_change_date")
+    private Date intervalChangeDate = new Date(System.currentTimeMillis());
+
+    @Column(nullable = false, name = "repeat_interval")
+    private int interval = 0;
+
     public UserdataWord() {
     }
 
@@ -37,10 +45,12 @@ public class UserdataWord {
     public String toString() {
         return "UserdataWord{" +
                 "id=" + id +
-                ", userData=" + userData +
-                ", word=" + word +
+                ", userData=" + userData.getUser().getEmail() +
+                ", word=" + word.getWord() +
                 ", isLearned=" + isLearned +
                 ", guessStreak=" + guessStreak +
+                ", intervalChangeDate=" + intervalChangeDate +
+                ", interval=" + interval +
                 '}';
     }
 
@@ -82,5 +92,21 @@ public class UserdataWord {
 
     public void setGuessStreak(int guessStreak) {
         this.guessStreak = guessStreak;
+    }
+
+    public Date getIntervalChangeDate() {
+        return intervalChangeDate;
+    }
+
+    public void setIntervalChangeDate(Date intervalChangeDate) {
+        this.intervalChangeDate = intervalChangeDate;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
     }
 }

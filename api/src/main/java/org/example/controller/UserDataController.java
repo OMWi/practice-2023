@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.dto.userdata.UserDataCreationDto;
 import org.example.dto.userdata.UserDataDto;
+import org.example.dto.userdata.UserDataHaveRowNumberDto;
 import org.example.dto.userdata.UserDataUpdationDto;
 import org.example.dto.userword.UserWordDto;
 import org.example.dto.userword.UserWordHasMeaningsDto;
@@ -44,6 +45,11 @@ public class UserDataController {
     @Secured({"ADMIN"})
     public List<UserDataDto> listUsersData() {
         return userDataService.list();
+    }
+
+    @GetMapping("/leaderboard")
+    public List<UserDataHaveRowNumberDto> topUsers() {
+        return userDataService.getLeaderboard();
     }
 
     @GetMapping("/{userId}")

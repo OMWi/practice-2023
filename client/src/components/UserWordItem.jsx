@@ -1,4 +1,4 @@
-import { ListItem, Paper, Stack, Typography } from "@mui/material";
+import { Chip, ListItem, Paper, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +18,22 @@ export default function UserWordItem({ userWordData }) {
         navigate(`/profile/words/${userWordData.wordId}`);
       }}
     >
-      <Paper square sx={{ width: 1 }}>
+      <Paper
+        square
+        sx={{
+          width: 1,
+          "&:hover": {
+            bgcolor: "selected.main",
+          },
+        }}
+      >
         <Stack sx={{ padding: 1, width: 1 }}>
           <Stack direction="row" alignItems="flex-end">
+            <Chip
+              size="small"
+              label={userWordData.difficulty}
+              variant="outlined"
+            />
             <Typography variant="h6" sx={{ display: "flex", flexGrow: 1 }}>
               {userWordData.word}
             </Typography>

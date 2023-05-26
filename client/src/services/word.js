@@ -3,8 +3,15 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/v1/words";
 
 const WordService = {
-  list() {
-    return axios.get(API_URL);
+  list(page, size) {
+    let params = {};
+    if (page) {
+      params.page = page - 1;
+    }
+    if (size) {
+      params.size = size;
+    }
+    return axios.get(API_URL, { params: params });
   },
 
   get(wordId) {

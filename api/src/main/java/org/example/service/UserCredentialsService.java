@@ -79,15 +79,12 @@ public class UserCredentialsService {
                 .toList().get(0);
         UserRole userRole = UserRole.valueOf(role);
 
-        var userCredentials = userCredentialsRepository.findById(userDetails.getId()).orElse(null);
-        if (userCredentials != null) {
-            var log = new Log(userCredentials, LogType.LOGIN);
-            logRepository.save(log);
-        }
+        var userCredentials = userCredentialsRepository.findById(userDetails.getId()).orElseThrow();
+        var log = new Log(userCredentials, LogType.LOGIN);
+        logRepository.save(log);
+        var userData = userDataRepository.findById(userDetails.getId()).orElseThrow();
 
-
-        return new JwtDto(jwt, userDetails.getId(), userDetails.getEmail(), userRole);
+        return new JwtDto(jwt, userDetails.getId(), userDetails.getEmail(), userRole, userData.getUsername());
     }
-
 
 }

@@ -83,9 +83,9 @@ public class UserWordService {
         userWord.setGuessStreak(userWord.getGuessStreak() + 1);
         if (userWord.getGuessStreak() >= 5) {
             userWord.setLearned(true);
-            userData.setPoints(userData.getPoints() + 10);
+            userData.setExp(userData.getExp() + 10);
         }
-        userData.setPoints(userData.getPoints() + 1);
+        userData.setExp(userData.getExp() + 1);
 
         userDataRepository.save(userData);
         var updatedUserWord = userWordRepository.save(userWord);
@@ -98,7 +98,7 @@ public class UserWordService {
         var userData = userDataRepository.findById(userId).orElseThrow();
 
         userWord.setLearned(true);
-        userData.setPoints(userData.getPoints() + 10);
+        userData.setExp(userData.getExp() + 10);
 
         userDataRepository.save(userData);
         var updatedUserWord = userWordRepository.save(userWord);

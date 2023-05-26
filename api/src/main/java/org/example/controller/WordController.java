@@ -1,11 +1,10 @@
 package org.example.controller;
 
-import org.example.dto.word.WordCreationDto;
-import org.example.dto.word.WordDto;
-import org.example.dto.word.WordHasMeaningsDto;
-import org.example.dto.word.WordUpdationDto;
+import org.example.dto.word.*;
 import org.example.service.WordCategoryService;
 import org.example.service.WordService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +27,17 @@ public class WordController {
     @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
     public WordHasMeaningsDto createWord(@RequestBody WordCreationDto wordDto) {
-
         return wordService.create(wordDto);
     }
 
     @GetMapping
-    public List<WordDto> listWords() {
-        return wordService.list();
+    public WordPageDto listWords(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search
+    ) {
+        Pageable paging = PageRequest.of(page, size);
+        return wordService.list(paging);
     }
 
     @GetMapping("/{wordId}")

@@ -7,6 +7,10 @@ import {
   createRoutesFromElements,
   Link as RouterLink,
 } from "react-router-dom";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
 import Root from "./routes/root";
@@ -20,6 +24,7 @@ import WordLists, { loader as wordListsLoader } from "./routes/word-lists";
 import WordList, { loader as wordListLoader } from "./routes/word-list";
 import UserWord, { loader as userWordLoader } from "./routes/user-word";
 import LearnWord, { loader as learnWordLoader } from "./routes/learn";
+import LeaderBoard, { loader as leaderBoardLoader } from "./routes/leaderboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +37,11 @@ const router = createBrowserRouter(
         <Route path="words" element={<Words />} loader={wordsLoader} />
         <Route path="words/:wordId" element={<Word />} loader={wordLoader} />
         <Route path="learn" element={<LearnWord />} loader={learnWordLoader} />
+        <Route
+          path="leaderboard"
+          element={<LeaderBoard />}
+          loader={leaderBoardLoader}
+        />
         <Route
           path="profile/words/:wordId"
           element={<UserWord />}
@@ -59,15 +69,29 @@ const LinkBehavior = React.forwardRef((props, ref) => {
 });
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#ADC2A9",
+    },
+    secondary: {
+      main: "#99A799",
+    },
+    background: {
+      main: "#faf7f2",
+    },
+    selected: {
+      main: "#D3E4CD",
+    },
+  },
   components: {
     MuiLink: {
       defaultProps: {
         component: LinkBehavior,
         underline: "none",
-        color: "white",
+        color: "black",
         sx: {
           "&:hover": {
-            color: "lightgray",
+            color: "selected.main",
           },
         },
       },

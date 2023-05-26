@@ -1,4 +1,4 @@
-import { ListItem, Paper, Stack, Typography } from "@mui/material";
+import { Chip, ListItem, Paper, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -16,12 +16,38 @@ export default function WordlistItem({ wordlistData }) {
       }}
       onClick={() => navigate(`/word-lists/${wordlistData.id}`)}
     >
-      <Paper square sx={{ width: 1 }}>
-        <Stack sx={{ padding: 1 }}>
-          <Typography variant="h6">{wordlistData.name}</Typography>
-          <Typography variant="subtitle2">
-            Word List selected count: {wordlistData.popularity}
-          </Typography>
+      <Paper
+        square
+        sx={{
+          width: 1,
+          "&:hover": {
+            bgcolor: "selected.main",
+          },
+        }}
+      >
+        <Stack sx={{ padding: 1 }} direction="row">
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            sx={{ flexGrow: 1 }}
+          >
+            <Chip
+              size="small"
+              label={wordlistData.difficulty}
+              variant="outlined"
+            />
+            <Typography variant="h6">{wordlistData.name}</Typography>
+          </Stack>
+
+          <Stack>
+            <Typography variant="body2" textAlign="end">
+              Bookmarked: {wordlistData.popularity} times
+            </Typography>
+            <Typography variant="body2" textAlign="end">
+              Favorited: {wordlistData.popularity} times
+            </Typography>
+          </Stack>
         </Stack>
       </Paper>
     </ListItem>

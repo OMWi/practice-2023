@@ -4,8 +4,9 @@ import org.example.dto.wordcategory.WordCategoryDto;
 
 public class WordDto {
     private Long id;
-    private String text;
+    private String word;
     private WordCategoryDto categoryDto;
+    private String difficulty;
 
     public WordDto() {
     }
@@ -18,12 +19,12 @@ public class WordDto {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getWord() {
+        return word;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public WordCategoryDto getCategoryDto() {
@@ -34,4 +35,11 @@ public class WordDto {
         this.categoryDto = categoryDto;
     }
 
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
 }

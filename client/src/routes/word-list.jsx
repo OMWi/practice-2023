@@ -7,6 +7,7 @@ import {
   Stack,
   Typography,
   Button,
+  Chip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -39,7 +40,7 @@ export default function WordList() {
         setInUserList(true);
         return response;
       })
-      .catch((error) => console.log(error));
+      .catch((error) => error);
   }, [inUserList]);
 
   const handleAdd = async () => {
@@ -68,7 +69,14 @@ export default function WordList() {
     <Container maxWidth="md" sx={{ padding: 2 }}>
       <Stack>
         <Stack direction="row" sx={{ width: 1 }}>
-          <Stack sx={{ flexGrow: 1 }} alignItems="center">
+          <Stack
+            direction="row"
+            justifyContent="center"
+            spacing={1}
+            sx={{ flexGrow: 1 }}
+            alignItems="center"
+          >
+            <Chip size="small" label={wordList.difficulty} color="primary" />
             <Typography variant="h5">{wordList.name}</Typography>
           </Stack>
           {auth &&
@@ -95,14 +103,7 @@ export default function WordList() {
         {wordList.wordDtoList.length > 0 && (
           <List>
             {wordList.wordDtoList.map((word) => (
-              <WordItem
-                key={word.id}
-                wordData={{
-                  id: word.id,
-                  text: word.text,
-                  category: word.categoryDto.category,
-                }}
-              />
+              <WordItem key={word.id} wordData={word} />
             ))}
           </List>
         )}

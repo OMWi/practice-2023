@@ -1,12 +1,12 @@
 package org.example.dto.meaning;
 
-public class MeaningDto {
+public class MeaningCreationDto {
     private Long id;
-    private String difficulty;
+    private Long difficultyId;
     private String meaning;
     private Long wordId;
 
-    public MeaningDto() {
+    public MeaningCreationDto() {
     }
 
     public Long getId() {
@@ -17,12 +17,12 @@ public class MeaningDto {
         this.id = id;
     }
 
-    public String getDifficulty() {
-        return difficulty;
+    public Long getDifficultyId() {
+        return difficultyId;
     }
 
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
+    public void setDifficultyId(Long difficultyId) {
+        this.difficultyId = difficultyId;
     }
 
     public String getMeaning() {

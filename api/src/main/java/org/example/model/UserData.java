@@ -2,6 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -20,10 +21,10 @@ public class UserData {
     private String username;
 
     @Column(nullable = false)
-    private int points = 0;
+    private int exp = 0;
 
-    @OneToOne(mappedBy = "userData", cascade = CascadeType.ALL, orphanRemoval = true)
-    private TelegramAccount telegramAccount;
+    @Column
+    private Date subscriptionExpirationDate = null;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userDataList")
     private List<WordList> wordLists;
@@ -47,8 +48,10 @@ public class UserData {
     public String toString() {
         return "UserData{" +
                 "id=" + id +
+                ", userCredentials=" + userCredentials +
                 ", username='" + username + '\'' +
-                ", points=" + points +
+                ", exp=" + exp +
+                ", subscriptionExpirationDate=" + subscriptionExpirationDate +
                 '}';
     }
 
@@ -78,20 +81,12 @@ public class UserData {
         this.username = username;
     }
 
-    public int getPoints() {
-        return points;
+    public int getExp() {
+        return exp;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public TelegramAccount getTelegramAccount() {
-        return telegramAccount;
-    }
-
-    public void setTelegramAccount(TelegramAccount telegramAccount) {
-        this.telegramAccount = telegramAccount;
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 
     public List<WordList> getWordLists() {
@@ -108,4 +103,11 @@ public class UserData {
         wordList.getUserDataList().remove(this);
     }
 
+    public Date getSubscriptionExpirationDate() {
+        return subscriptionExpirationDate;
+    }
+
+    public void setSubscriptionExpirationDate(Date subscriptionExpirationDate) {
+        this.subscriptionExpirationDate = subscriptionExpirationDate;
+    }
 }

@@ -3,7 +3,8 @@ package org.example.dto.userdata;
 public class UserDataDto {
     private Long userId;
     private String username;
-    private int points;
+    private int exp;
+    private Boolean isSubscriber;
 
     public UserDataDto() {
     }
@@ -24,12 +25,19 @@ public class UserDataDto {
         this.username = username;
     }
 
-    public int getPoints() {
-        return points;
+    public int getExp() {
+        return exp;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 
+    public Boolean getIsSubscriber() {
+        return isSubscriber;
+    }
+
+    public void setIsSubscriber(Boolean isSubscriber) {
+        this.isSubscriber = isSubscriber;
+    }
 }

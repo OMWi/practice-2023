@@ -26,7 +26,11 @@ public class WordListController {
     @Secured({"ADMIN"})
     @ResponseStatus(HttpStatus.CREATED)
     public WordListHasWordsDto createWordList(@RequestBody WordListCreationDto wordListDto) {
-        return wordListService.create(wordListDto);
+        try {
+            return wordListService.create(wordListDto);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping

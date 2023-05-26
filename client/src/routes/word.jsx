@@ -7,6 +7,7 @@ import {
   Stack,
   Typography,
   Button,
+  Chip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useLoaderData, useNavigate } from "react-router-dom";
@@ -62,9 +63,10 @@ export default function Word() {
     <Container maxWidth="md" sx={{ padding: 2 }}>
       <Paper sx={{ padding: 2 }}>
         <Stack>
-          <Stack direction="row" alignItems="flex-end">
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Chip size="small" label={word.difficulty} color="primary" />
             <Typography variant="h5" sx={{ display: "flex", flexGrow: 1 }}>
-              {word.text}
+              {word.word}
             </Typography>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Typography
@@ -92,20 +94,24 @@ export default function Word() {
           <List>
             {word.meaningDtoList.length > 0 &&
               word.meaningDtoList.map((meaningDto, index) => (
-                <ListItem disablePadding key={meaningDto.id}>
+                <ListItem disablePadding key={meaningDto.id} sx={{ my: 1 }}>
                   <Stack
                     direction="row"
                     alignItems="flex-start"
+                    spacing={1}
                     sx={{ width: 1 }}
                   >
-                    <Typography variant="body1" sx={{ minWidth: "50px" }}>
-                      {index + 1}. [L{meaningDto.level}]
-                    </Typography>
+                    <Chip
+                      size="small"
+                      label={meaningDto.difficulty}
+                      variant="outlined"
+                    />
+                    <Typography variant="body1">{index + 1}.</Typography>
                     <Typography
                       variant="body1"
                       sx={{ mx: 1, overflow: "auto" }}
                     >
-                      {meaningDto.text}
+                      {meaningDto.meaning}
                     </Typography>
                   </Stack>
                 </ListItem>
