@@ -11,6 +11,13 @@ public class WordDto {
     public WordDto() {
     }
 
+    public WordDto(Long id, String word, WordCategoryDto categoryDto, String difficulty) {
+        this.id = id;
+        this.word = word;
+        this.categoryDto = categoryDto;
+        this.difficulty = difficulty;
+    }
+
     public Long getId() {
         return id;
     }

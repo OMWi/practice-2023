@@ -28,7 +28,7 @@ export default function UserWordItem({ userWordData }) {
         }}
       >
         <Stack sx={{ padding: 1, width: 1 }}>
-          <Stack direction="row" alignItems="flex-end">
+          <Stack direction="row" alignItems="center" spacing={1}>
             <Chip
               size="small"
               label={userWordData.difficulty}
@@ -48,9 +48,7 @@ export default function UserWordItem({ userWordData }) {
           </Stack>
 
           <Typography variant="subtitle2">
-            {userWordData.isLearned
-              ? "Learned"
-              : `Current guess streak: ${userWordData.guessStreak}`}
+            {userWordData.isLearned ? "Learned" : ""}
           </Typography>
         </Stack>
       </Paper>

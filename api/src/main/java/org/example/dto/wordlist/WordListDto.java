@@ -10,6 +10,14 @@ public class WordListDto {
     public WordListDto() {
     }
 
+    public WordListDto(Long id, String name, String difficulty, Long likes, Long popularity) {
+        this.id = id;
+        this.name = name;
+        this.difficulty = difficulty;
+        this.likes = likes;
+        this.popularity = popularity;
+    }
+
     public Long getId() {
         return id;
     }

@@ -21,7 +21,6 @@ import {
   useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-
 import WordService from "../services/word";
 import WordCategoryService from "../services/word-category";
 import DifficultyService from "../services/difficulty";
@@ -39,7 +38,7 @@ export default function Words() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const wordsPage = useLoaderData();
+  const [wordsPage, setWordsPage] = useState(useLoaderData());
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -47,6 +46,7 @@ export default function Words() {
 
   const [categories, setCategories] = useState([]);
   const [difficulties, setDifficulties] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const [difficulty, setDifficulty] = useState("");
   const [category, setCategory] = useState("");
@@ -61,6 +61,13 @@ export default function Words() {
     fetchData();
   }, []);
 
+  const handleSearch = async () => {
+    const newWordsPage = (
+      await WordService.list(page, size, searchText, category, difficulty)
+    ).data;
+    setWordsPage(newWordsPage);
+  };
+
   return (
     <Container maxWidth="lg" sx={{ padding: 1 }}>
       <Stack
@@ -73,6 +80,8 @@ export default function Words() {
             size="small"
             fullWidth
             label="Search"
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -128,6 +137,9 @@ export default function Words() {
             disableElevation
             size="small"
             sx={{ minWidth: "80px" }}
+            onClick={() => {
+              handleSearch();
+            }}
           >
             Search
           </Button>

@@ -5,15 +5,27 @@ import java.sql.Date;
 public class UserWordDto {
     private Long userId;
     private Long wordId;
-    private boolean isLearned;
-    private int guessStreak;
+    private Boolean isLearned;
+    private Integer guessStreak;
     private String word;
     private String category;
     private String difficulty;
     private Date intervalChangeDate;
-    private int interval;
+    private Integer interval;
 
     public UserWordDto() {
+    }
+
+    public UserWordDto(Long userId, Long wordId, boolean isLearned, int guessStreak, String word, String category, String difficulty, Date intervalChangeDate, int interval) {
+        this.userId = userId;
+        this.wordId = wordId;
+        this.isLearned = isLearned;
+        this.guessStreak = guessStreak;
+        this.word = word;
+        this.category = category;
+        this.difficulty = difficulty;
+        this.intervalChangeDate = intervalChangeDate;
+        this.interval = interval;
     }
 
     public Long getUserId() {
@@ -32,19 +44,19 @@ public class UserWordDto {
         this.wordId = wordId;
     }
 
-    public boolean getIsLearned() {
+    public Boolean getIsLearned() {
         return isLearned;
     }
 
-    public void setIsLearned(boolean learned) {
+    public void setIsLearned(Boolean learned) {
         isLearned = learned;
     }
 
-    public int getGuessStreak() {
+    public Integer getGuessStreak() {
         return guessStreak;
     }
 
-    public void setGuessStreak(int guessStreak) {
+    public void setGuessStreak(Integer guessStreak) {
         this.guessStreak = guessStreak;
     }
 
@@ -80,11 +92,12 @@ public class UserWordDto {
         this.intervalChangeDate = intervalChangeDate;
     }
 
-    public int getInterval() {
+    public Integer getInterval() {
         return interval;
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(Integer interval) {
         this.interval = interval;
     }
+
 }

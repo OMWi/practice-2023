@@ -15,6 +15,15 @@ public class WordListHasWordsDto {
     public WordListHasWordsDto() {
     }
 
+    public WordListHasWordsDto(Long id, String name, String difficulty, Long likes, Long popularity, List<WordDto> wordDtoList) {
+        this.id = id;
+        this.name = name;
+        this.difficulty = difficulty;
+        this.likes = likes;
+        this.popularity = popularity;
+        this.wordDtoList = wordDtoList;
+    }
+
     public Long getId() {
         return id;
     }

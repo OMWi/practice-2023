@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface WordListRepository extends JpaRepository<WordList, Long> {
-    List<WordList> findAllByUserDataList_Id(Long wordId);
+//    List<WordList> findAllByUserDataList_Id(Long wordId);
 }

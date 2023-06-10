@@ -19,22 +19,29 @@ public class WordList {
     @JoinColumn(name = "difficulty_id")
     private Difficulty difficulty;
 
-    @Column(nullable = false)
-    private long popularity = 0;
-
-    @Column(nullable = false)
-    private long likes = 0;
+//    @Column(nullable = false)
+//    private long popularity = 0;
+//
+//    @Column(nullable = false)
+//    private long likes = 0;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wordLists")
     private List<Word> words = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "userdata_wordlist",
-            joinColumns = {@JoinColumn(name = "wordlist_id")},
-            inverseJoinColumns = {@JoinColumn(name = "userdata_id")}
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "userdata_wordlist",
+//            joinColumns = {@JoinColumn(name = "wordlist_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "userdata_id")}
+//    )
+//    private List<UserData> userDataList;
+
+    @OneToMany(
+            mappedBy = "wordList",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private List<UserData> userDataList;
+    private List<UserdataWordlist> users;
 
     public WordList() {
     }
@@ -60,13 +67,13 @@ public class WordList {
         this.name = name;
     }
 
-    public long getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(long popularity) {
-        this.popularity = popularity;
-    }
+//    public long getPopularity() {
+//        return popularity;
+//    }
+//
+//    public void setPopularity(long popularity) {
+//        this.popularity = popularity;
+//    }
 
     public List<Word> getWords() {
         return words;
@@ -82,17 +89,17 @@ public class WordList {
         word.getWordLists().remove(this);
     }
 
-    public List<UserData> getUserDataList() {
-        return userDataList;
-    }
+//    public List<UserData> getUserDataList() {
+//        return userDataList;
+//    }
 
-    public long getLikes() {
-        return likes;
-    }
-
-    public void setLikes(long likes) {
-        this.likes = likes;
-    }
+//    public long getLikes() {
+//        return likes;
+//    }
+//
+//    public void setLikes(long likes) {
+//        this.likes = likes;
+//    }
 
     public Difficulty getDifficulty() {
         return difficulty;
@@ -101,4 +108,7 @@ public class WordList {
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
+
+    public List<UserdataWordlist> getUsers() {return users;}
+
 }

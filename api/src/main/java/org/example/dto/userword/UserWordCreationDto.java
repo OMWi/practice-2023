@@ -1,18 +1,10 @@
 package org.example.dto.userword;
 
-public class UserWordUpdationDto {
+public class UserWordCreationDto {
     private Long wordId;
     private Boolean isFavorite;
 
-    public UserWordUpdationDto() {
-    }
-
-    public Boolean getIsFavorite() {
-        return isFavorite;
-    }
-
-    public void setIsFavorite(Boolean favorite) {
-        isFavorite = favorite;
+    public UserWordCreationDto() {
     }
 
     public Long getWordId() {
@@ -21,5 +13,13 @@ public class UserWordUpdationDto {
 
     public void setWordId(Long wordId) {
         this.wordId = wordId;
+    }
+
+    public Boolean getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

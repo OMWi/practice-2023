@@ -26,15 +26,18 @@ export async function loader() {
   const user = AuthService.getCurrentUser();
   if (user) {
     let userData = {};
+    console.log("start fetcing data");
     return Promise.all([
-      UserDataService.get(user.userId),
-      UserDataService.getUserWordLists(user.userId),
-      UserDataService.getUserWords(user.userId),
+      UserDataService.getUserData(user.userId),
+      UserDataService.listUserWordLists(user.userId),
+      UserDataService.listUserWords(user.userId),
     ]).then((responses) => {
+      console.log("all data fetched");
       userData = responses[0].data;
       userData.wordLists = responses[1].data;
       userData.words = responses[2].data;
       userData.email = user.email;
+      console.log("user data: ", userData);
       return userData;
     });
   } else {
@@ -60,7 +63,7 @@ export default function Profile() {
   }, [auth]);
 
   return (
-    <Container maxWidth="lg" sx={{ padding: 2, height: 1 }}>
+    <Container maxWidth="lg" sx={{ padding: 1, height: 1 }}>
       <Stack
         direction={isSmallScreen ? "column" : "row"}
         height={1}
@@ -162,33 +165,45 @@ export default function Profile() {
             </Stack>
           )}
           {tabIndex === 1 && userData.words.length > 0 && (
-            <>
-              <Stack alignItems="center">
-                <Typography variant="h5">My Words</Typography>
-              </Stack>
-              <Stack direction="row" spacing={1}>
+            <Stack spacing={1}>
+              <Stack alignItems="center" direction="row">
+                <Stack sx={{ flexGrow: 1 }}>
+                  <Typography variant="h5">My Words</Typography>
+                </Stack>
                 <Button variant="contained" onClick={() => navigate("/learn")}>
-                  Learn Word
+                  Learn
                 </Button>
               </Stack>
+              <Divider />
               <List>
                 {userData.words.map((word) => (
                   <UserWordItem key={word.wordId} userWordData={word} />
                 ))}
               </List>
-            </>
+            </Stack>
           )}
           {tabIndex === 2 && userData.wordLists.length > 0 && (
-            <>
-              <Stack alignItems="center">
-                <Typography variant="h5">Selected Word Lists</Typography>
+            <Stack spacing={1}>
+              <Stack alignItems="center" direction="row">
+                <Stack sx={{ flexGrow: 1 }}>
+                  <Typography variant="h5">Saved Lists</Typography>
+                </Stack>
+                <Button
+                  variant="contained"
+                  onClick={() => navigate("/word-list-create")}
+                >
+                  Create
+                </Button>
               </Stack>
+
+              <Divider />
+
               <List>
                 {userData.wordLists.map((wordList) => (
                   <WordlistItem key={wordList.id} wordlistData={wordList} />
                 ))}
               </List>
-            </>
+            </Stack>
           )}
         </Paper>
       </Stack>

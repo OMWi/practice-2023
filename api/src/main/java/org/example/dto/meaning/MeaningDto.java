@@ -9,6 +9,13 @@ public class MeaningDto {
     public MeaningDto() {
     }
 
+    public MeaningDto(Long id, String difficulty, String meaning, Long wordId) {
+        this.id = id;
+        this.difficulty = difficulty;
+        this.meaning = meaning;
+        this.wordId = wordId;
+    }
+
     public Long getId() {
         return id;
     }

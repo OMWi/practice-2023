@@ -9,6 +9,13 @@ public class UserDataDto {
     public UserDataDto() {
     }
 
+    public UserDataDto(Long userId, String username, int exp, Boolean isSubscriber) {
+        this.userId = userId;
+        this.username = username;
+        this.exp = exp;
+        this.isSubscriber = isSubscriber;
+    }
+
     public Long getUserId() {
         return userId;
     }

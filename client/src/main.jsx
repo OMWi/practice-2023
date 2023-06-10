@@ -25,6 +25,7 @@ import WordList, { loader as wordListLoader } from "./routes/word-list";
 import UserWord, { loader as userWordLoader } from "./routes/user-word";
 import LearnWord, { loader as learnWordLoader } from "./routes/learn";
 import LeaderBoard, { loader as leaderBoardLoader } from "./routes/leaderboard";
+import WordListCreate from "./routes/list-create";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +58,7 @@ const router = createBrowserRouter(
           element={<WordList />}
           loader={wordListLoader}
         />
+        <Route path="word-list-create" element={<WordListCreate />} />
       </Route>
     </Route>,
   ),

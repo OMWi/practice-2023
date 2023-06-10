@@ -5,6 +5,7 @@ import org.example.dto.wordlist.WordListDto;
 import org.example.dto.wordlist.WordListHasWordsDto;
 import org.example.model.WordList;
 import org.example.repository.DifficultyRepository;
+import org.example.repository.UserWordListRepository;
 import org.example.repository.WordListRepository;
 import org.example.repository.WordRepository;
 import org.example.utils.ConverterDTO;
@@ -19,11 +20,13 @@ public class WordListService {
     private final WordListRepository wordListRepository;
     private final WordRepository wordRepository;
     private final DifficultyRepository difficultyRepository;
+    private final UserWordListRepository userWordListRepository;
 
-    public WordListService(WordListRepository wordListRepository, WordRepository wordRepository, DifficultyRepository difficultyRepository) {
+    public WordListService(WordListRepository wordListRepository, WordRepository wordRepository, DifficultyRepository difficultyRepository, UserWordListRepository userWordListRepository) {
         this.wordListRepository = wordListRepository;
         this.wordRepository = wordRepository;
         this.difficultyRepository = difficultyRepository;
+        this.userWordListRepository = userWordListRepository;
     }
 
     public WordListHasWordsDto create(WordListCreationDto wordListDto) {
@@ -37,7 +40,9 @@ public class WordListService {
         }
 
         var createdWordList = wordListRepository.save(wordList);
-        return ConverterDTO.wordListToDtoWithWords(createdWordList);
+        var popularity = userWordListRepository.count();
+        var likes = userWordListRepository.countByIsFavoriteTrue();
+        return ConverterDTO.wordListToDtoWithWords(createdWordList, likes, popularity);
     }
 
     public List<WordListDto> list() {
@@ -45,18 +50,9 @@ public class WordListService {
 
         var wordListDtoList = new ArrayList<WordListDto>();
         for (WordList wordList : wordLists) {
-            wordListDtoList.add(ConverterDTO.wordListToDto(wordList));
-        }
-
-        return wordListDtoList;
-    }
-
-    public List<WordListDto> listByUserid(Long userId) {
-        var wordLists = wordListRepository.findAllByUserDataList_Id(userId);
-
-        var wordListDtoList = new ArrayList<WordListDto>();
-        for (WordList wordList : wordLists) {
-            wordListDtoList.add(ConverterDTO.wordListToDto(wordList));
+            var popularity = userWordListRepository.count();
+            var likes = userWordListRepository.countByIsFavoriteTrue();
+            wordListDtoList.add(ConverterDTO.wordListToDto(wordList, likes, popularity));
         }
 
         return wordListDtoList;
@@ -64,17 +60,19 @@ public class WordListService {
 
     public WordListHasWordsDto get(Long wordListId) {
         var wordList = wordListRepository.findById(wordListId).orElseThrow();
-        return ConverterDTO.wordListToDtoWithWords(wordList);
+        var popularity = userWordListRepository.count();
+        var likes = userWordListRepository.countByIsFavoriteTrue();
+        return ConverterDTO.wordListToDtoWithWords(wordList, likes, popularity);
     }
 
     public WordListHasWordsDto update(WordListDto wordListDto) {
         var wordList = wordListRepository.findById(wordListDto.getId()).orElseThrow();
 
         wordList.setName(wordListDto.getName());
-        wordList.setPopularity(wordListDto.getPopularity());
-
         var updatedWordList = wordListRepository.save(wordList);
-        return ConverterDTO.wordListToDtoWithWords(updatedWordList);
+        var popularity = userWordListRepository.count();
+        var likes = userWordListRepository.countByIsFavoriteTrue();
+        return ConverterDTO.wordListToDtoWithWords(updatedWordList, likes, popularity);
     }
 
     public void delete(Long wordListId) {

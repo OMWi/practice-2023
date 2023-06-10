@@ -8,9 +8,14 @@ import {
   Typography,
   Button,
   Chip,
+  IconButton,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 import WordListService from "../services/word-list";
 import WordItem from "../components/WordItem";
@@ -26,43 +31,85 @@ export async function loader({ params }) {
 export default function WordList() {
   const wordList = useLoaderData();
 
-  const [inUserList, setInUserList] = useState(false);
-  const auth = useOutletContext()[0];
+  const [isAdded, setIsAdded] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isGuest, setIsGuest] = useState(true);
 
   useEffect(() => {
-    if (!auth) {
-      setInUserList(false);
+    const user = AuthService.getCurrentUser();
+    if (!user) {
       return;
     }
-    const user = AuthService.getCurrentUser();
+    setIsGuest(false);
+
     UserDataService.getUserWordList(user.userId, wordList.id)
       .then((response) => {
-        setInUserList(true);
+        console.log(response);
+        setIsAdded(true);
+        setIsFavorite(response.data.isFavorite);
         return response;
       })
-      .catch((error) => error);
-  }, [inUserList]);
+      .catch(() => {});
+  }, []);
 
   const handleAdd = async () => {
     const user = AuthService.getCurrentUser();
     if (!user) return;
-    UserDataService.addUserWordList(user.userId, wordList.id)
-      .then((response) => {
-        setInUserList(true);
-        return response;
-      })
-      .catch((error) => console.log(error));
+
+    UserDataService.addUserWordList(user.userId, wordList.id, false).then(
+      (response) => {
+        console.log(response);
+        setIsAdded(true);
+      },
+    );
   };
 
-  const handleDelete = async () => {
+  const handleRemove = async () => {
     const user = AuthService.getCurrentUser();
     if (!user) return;
-    UserDataService.deleteUserWordList(user.userId, wordList.id)
-      .then((response) => {
-        setInUserList(false);
-        return response;
-      })
-      .catch((error) => console.log(error));
+
+    UserDataService.deleteUserWordList(user.userId, wordList.id).then(
+      (response) => {
+        console.log(response);
+        setIsAdded(false);
+        setIsFavorite(false);
+      },
+    );
+  };
+
+  const handleFavorited = async () => {
+    const user = AuthService.getCurrentUser();
+    if (!user) return;
+
+    if (isAdded) {
+      UserDataService.updateUserWordList(user.userId, wordList.id, true).then(
+        (response) => {
+          console.log(response);
+          setIsFavorite(true);
+        },
+      );
+      return;
+    }
+
+    UserDataService.addUserWordList(user.userId, wordList.id, true).then(
+      (response) => {
+        console.log(response);
+        setIsAdded(true);
+        setIsFavorite(true);
+      },
+    );
+  };
+
+  const handleUnfavorited = async () => {
+    const user = AuthService.getCurrentUser();
+    if (!user) return;
+
+    UserDataService.updateUserWordList(user.userId, wordList.id, false).then(
+      (response) => {
+        console.log(response);
+        setIsFavorite(false);
+      },
+    );
   };
 
   return (
@@ -79,7 +126,26 @@ export default function WordList() {
             <Chip size="small" label={wordList.difficulty} color="primary" />
             <Typography variant="h5">{wordList.name}</Typography>
           </Stack>
-          {auth &&
+          {isAdded ? (
+            <IconButton onClick={handleRemove}>
+              <BookmarkIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={handleAdd}>
+              <BookmarkBorderIcon />
+            </IconButton>
+          )}
+
+          {isFavorite ? (
+            <IconButton onClick={handleUnfavorited}>
+              <FavoriteIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={handleFavorited}>
+              <FavoriteBorderIcon />
+            </IconButton>
+          )}
+          {/* {auth &&
             (inUserList ? (
               <Button
                 variant="outlined"
@@ -97,7 +163,7 @@ export default function WordList() {
               >
                 Add
               </Button>
-            ))}
+            ))} */}
         </Stack>
         <Divider sx={{ my: 0.5 }} />
         {wordList.wordDtoList.length > 0 && (

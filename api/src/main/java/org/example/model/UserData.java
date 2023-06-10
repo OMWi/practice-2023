@@ -26,8 +26,15 @@ public class UserData {
     @Column
     private Date subscriptionExpirationDate = null;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userDataList")
-    private List<WordList> wordLists;
+//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userDataList")
+//    private List<WordList> wordLists;
+
+    @OneToMany(
+            mappedBy = "userData",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserdataWordlist> wordLists;
 
     @OneToMany(
             mappedBy = "userData",
@@ -89,19 +96,19 @@ public class UserData {
         this.exp = exp;
     }
 
-    public List<WordList> getWordLists() {
-        return wordLists;
-    }
-
-    public void addWordList(WordList wordList) {
-        this.wordLists.add(wordList);
-        wordList.getUserDataList().add(this);
-    }
-
-    public void removeWordList(WordList wordList) {
-        this.wordLists.remove(wordList);
-        wordList.getUserDataList().remove(this);
-    }
+//    public List<WordList> getWordLists() {
+//        return wordLists;
+//    }
+//
+//    public void addWordList(WordList wordList) {
+//        this.wordLists.add(wordList);
+//        wordList.getUserDataList().add(this);
+//    }
+//
+//    public void removeWordList(WordList wordList) {
+//        this.wordLists.remove(wordList);
+//        wordList.getUserDataList().remove(this);
+//    }
 
     public Date getSubscriptionExpirationDate() {
         return subscriptionExpirationDate;

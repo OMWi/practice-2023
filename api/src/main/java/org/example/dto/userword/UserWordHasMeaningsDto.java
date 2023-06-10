@@ -20,6 +20,19 @@ public class UserWordHasMeaningsDto {
     public UserWordHasMeaningsDto() {
     }
 
+    public UserWordHasMeaningsDto(Long userId, Long wordId, boolean isLearned, int guessStreak, String word, String difficulty, Date intervalChangeDate, int interval, String category, List<MeaningDto> meaningDtoList) {
+        this.userId = userId;
+        this.wordId = wordId;
+        this.isLearned = isLearned;
+        this.guessStreak = guessStreak;
+        this.word = word;
+        this.difficulty = difficulty;
+        this.intervalChangeDate = intervalChangeDate;
+        this.interval = interval;
+        this.category = category;
+        this.meaningDtoList = meaningDtoList;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -99,4 +112,5 @@ public class UserWordHasMeaningsDto {
     public void setInterval(int interval) {
         this.interval = interval;
     }
+
 }

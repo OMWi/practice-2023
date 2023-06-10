@@ -1,5 +1,4 @@
 import { Chip, ListItem, Paper, Stack, Typography } from "@mui/material";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 export default function WordItem({ wordData }) {
@@ -46,11 +45,3 @@ export default function WordItem({ wordData }) {
     </ListItem>
   );
 }
-
-WordItem.propTypes = {
-  wordData: PropTypes.shape({
-    id: PropTypes.number,
-    text: PropTypes.string,
-    category: PropTypes.string,
-  }),
-};

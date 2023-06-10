@@ -21,16 +21,16 @@ public class UserdataWord {
     private Word word;
 
     @Column(nullable = false, name = "is_learned")
-    private boolean isLearned = false;
+    private Boolean isLearned = false;
 
     @Column(nullable = false, name = "guess_streak")
-    private int guessStreak = 0;
+    private Integer guessStreak = 0;
 
     @Column(nullable = false, name = "interval_change_date")
     private Date intervalChangeDate = new Date(System.currentTimeMillis());
 
     @Column(nullable = false, name = "repeat_interval")
-    private int interval = 0;
+    private Integer interval = 0;
 
     public UserdataWord() {
     }
@@ -78,19 +78,19 @@ public class UserdataWord {
         this.word = word;
     }
 
-    public boolean isLearned() {
+    public Boolean getIsLearned() {
         return isLearned;
     }
 
-    public void setLearned(boolean learned) {
+    public void setIsLearned(Boolean learned) {
         isLearned = learned;
     }
 
-    public int getGuessStreak() {
+    public Integer getGuessStreak() {
         return guessStreak;
     }
 
-    public void setGuessStreak(int guessStreak) {
+    public void setGuessStreak(Integer guessStreak) {
         this.guessStreak = guessStreak;
     }
 
@@ -102,11 +102,11 @@ public class UserdataWord {
         this.intervalChangeDate = intervalChangeDate;
     }
 
-    public int getInterval() {
+    public Integer getInterval() {
         return interval;
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(Integer interval) {
         this.interval = interval;
     }
 }

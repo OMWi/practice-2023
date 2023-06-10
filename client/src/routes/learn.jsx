@@ -9,7 +9,11 @@ import {
   Stack,
   Typography,
   Button,
+  Chip,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 
 import UserDataService from "../services/user-data";
 import AuthService from "../services/auth";
@@ -38,25 +42,27 @@ export default function LearnWord() {
   }, [auth]);
 
   const handleCorrectAnswer = async () => {
-    await UserDataService.incUserWordGuessStreak(
-      AuthService.getCurrentUser().userId,
-      word.wordId,
-    );
+    console.log("rework needed");
+    // await UserDataService.incUserWordGuessStreak(
+    //   AuthService.getCurrentUser().userId,
+    //   word.wordId,
+    // );
     setVisibleMeanings(false);
     navigate("/learn");
   };
 
   const handleWrongAnswer = async () => {
-    await UserDataService.setZeroGuessStreak(
-      AuthService.getCurrentUser().userId,
-      word.wordId,
-    );
+    console.log("rework needed");
+    // await UserDataService.setZeroGuessStreak(
+    //   AuthService.getCurrentUser().userId,
+    //   word.wordId,
+    // );
     setVisibleMeanings(false);
     navigate("/learn");
   };
 
   return (
-    <Container maxWidth="md" sx={{ padding: 2 }}>
+    <Container maxWidth="md" sx={{ padding: 1 }}>
       {auth && !word && (
         <Stack alignItems="center">
           <Typography variant="h4">
@@ -68,23 +74,28 @@ export default function LearnWord() {
       {auth && word && (
         <Paper sx={{ padding: 2 }}>
           <Stack spacing={1}>
-            <Stack direction="row" alignItems="flex-end">
-              <Typography variant="h5" sx={{ display: "flex", flexGrow: 1 }}>
-                {word.word}
-              </Typography>
+            <Stack direction="row">
+              <Stack sx={{ flexGrow: 1 }}>
+                <Typography textAlign="center" variant="h5">
+                  {word.word}
+                </Typography>
+              </Stack>
+
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Typography
                   textAlign="center"
                   variant="subtitle1"
                   fontStyle="italic"
-                  sx={{ ml: 1 }}
+                  // sx={{ ml: 1 }}
                 >
                   {word.category}
                 </Typography>
               </Stack>
             </Stack>
 
-            <Divider sx={{ my: 0.5 }} />
+            <Divider />
+
+            {/* <Divider sx={{ my: 0.5 }} />
 
             <Stack>
               <Typography variant="subtitle2">
@@ -94,43 +105,52 @@ export default function LearnWord() {
               </Typography>
             </Stack>
 
-            <Divider sx={{ my: 0.5 }} />
+            <Divider sx={{ my: 0.5 }} /> */}
+
+            <List sx={visibleMeanings ? {} : { filter: "blur(20px)" }}>
+              {word.meaningDtoList.length > 0 &&
+                word.meaningDtoList.map((meaningDto, index) => (
+                  <ListItem disablePadding key={meaningDto.id} sx={{ mb: 1 }}>
+                    <Stack
+                      direction="row"
+                      alignItems="flex-start"
+                      sx={{ width: 1 }}
+                    >
+                      <Chip
+                        size="small"
+                        label={meaningDto.difficulty}
+                        variant="outlined"
+                      />
+
+                      {/* <Typography variant="body1">
+                            {index + 1}. [{meaningDto.difficulty}]
+                          </Typography> */}
+                      <Typography
+                        variant="body1"
+                        sx={{ mx: 1, overflow: "auto" }}
+                      >
+                        {meaningDto.meaning}
+                      </Typography>
+                    </Stack>
+                  </ListItem>
+                ))}
+            </List>
 
             {visibleMeanings ? (
               <>
-                <List>
-                  {word.meaningDtoList.length > 0 &&
-                    word.meaningDtoList.map((meaningDto, index) => (
-                      <ListItem disablePadding key={meaningDto.id}>
-                        <Stack
-                          direction="row"
-                          alignItems="flex-start"
-                          sx={{ width: 1 }}
-                        >
-                          <Typography variant="body1">
-                            {index + 1}. [L{meaningDto.level}]
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            sx={{ mx: 1, overflow: "auto" }}
-                          >
-                            {meaningDto.text}
-                          </Typography>
-                        </Stack>
-                      </ListItem>
-                    ))}
-                </List>
                 <Stack direction="row" justifyContent="space-between">
                   <Button
                     color="error"
                     variant="contained"
                     onClick={() => handleWrongAnswer()}
+                    startIcon={<CloseIcon />}
                   >
                     Wrong
                   </Button>
                   <Button
                     variant="contained"
                     onClick={() => handleCorrectAnswer()}
+                    startIcon={<CheckIcon />}
                   >
                     Correct
                   </Button>
@@ -139,7 +159,8 @@ export default function LearnWord() {
             ) : (
               <Stack alignItems="center">
                 <Button
-                  variant="outlined"
+                  variant="contained"
+                  startIcon={<VisibilityIcon />}
                   onClick={() => setVisibleMeanings(true)}
                 >
                   Show Meanings

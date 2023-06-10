@@ -104,25 +104,25 @@ public class UserDataService {
         userDataRepository.deleteById(userDataId);
     }
 
-    public void addWordList(Long userId, Long wordListId) {
-        var userData = userDataRepository.findById(userId).orElseThrow();
-        var wordList = wordListRepository.findById(wordListId).orElseThrow();
-        userData.addWordList(wordList);
-        userDataRepository.save(userData);
-        wordList.setPopularity(wordList.getPopularity()+1);
-        wordListRepository.save(wordList);
-    }
-
-    public WordListDto getWordList(Long userId, Long wordListId) {
-        var userData = userDataRepository.findById(userId).orElseThrow();
-        var filteredWordList = userData.getWordLists().stream().filter(wordList -> wordList.getId().equals(wordListId)).findFirst().orElseThrow();
-        return ConverterDTO.wordListToDto(filteredWordList);
-    }
-
-    public void deleteWordList(Long userId, Long wordListId) {
-        var userData = userDataRepository.findById(userId).orElseThrow();
-        var wordList = wordListRepository.findById(wordListId).orElseThrow();
-        userData.removeWordList(wordList);
-        userDataRepository.save(userData);
-    }
+//    public void addWordList(Long userId, Long wordListId) {
+//        var userData = userDataRepository.findById(userId).orElseThrow();
+//        var wordList = wordListRepository.findById(wordListId).orElseThrow();
+//        userData.addWordList(wordList);
+//        userDataRepository.save(userData);
+//        wordList.setPopularity(wordList.getPopularity()+1);
+//        wordListRepository.save(wordList);
+//    }
+//
+//    public WordListDto getWordList(Long userId, Long wordListId) {
+//        var userData = userDataRepository.findById(userId).orElseThrow();
+//        var filteredWordList = userData.getWordLists().stream().filter(wordList -> wordList.getId().equals(wordListId)).findFirst().orElseThrow();
+//        return ConverterDTO.wordListToDto(filteredWordList);
+//    }
+//
+//    public void deleteWordList(Long userId, Long wordListId) {
+//        var userData = userDataRepository.findById(userId).orElseThrow();
+//        var wordList = wordListRepository.findById(wordListId).orElseThrow();
+//        userData.removeWordList(wordList);
+//        userDataRepository.save(userData);
+//    }
 }

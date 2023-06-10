@@ -8,6 +8,11 @@ public class WordCategoryDto {
     public WordCategoryDto() {
     }
 
+    public WordCategoryDto(Long id, String category) {
+        this.id = id;
+        this.category = category;
+    }
+
     public Long getId() {
         return id;
     }

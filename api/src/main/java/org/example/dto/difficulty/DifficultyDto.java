@@ -7,6 +7,11 @@ public class DifficultyDto {
     public DifficultyDto() {
     }
 
+    public DifficultyDto(Long id, String difficulty) {
+        this.id = id;
+        this.difficulty = difficulty;
+    }
+
     public Long getId() {
         return id;
     }

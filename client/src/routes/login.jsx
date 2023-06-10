@@ -8,6 +8,7 @@ import {
   Box,
   Typography,
   Container,
+  Paper,
 } from "@mui/material";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -60,63 +61,71 @@ export default function Login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <AccountCircleOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={(event) => setEmail(event.target.value)}
-            error={!validateEmail().valid}
-            helperText={validateEmail().helperText}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={(event) => setPassword(event.target.value)}
-            error={!validatePassword().valid}
-            helperText={validatePassword().helperText}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+    <Container maxWidth="xs" sx={{ padding: 1 }}>
+      <Paper square sx={{ padding: 2, marginTop: 6 }}>
+        <Stack
+          alignItems="center"
+          sx={{
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <AccountCircleOutlined />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Login
-          </Button>
-          <Stack alignItems="flex-end">
-            <Link href="/register" variant="body2">
-              Don't have an account? Register
-            </Link>
-          </Stack>
-        </Box>
-      </Box>
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              size="small"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={(event) => setEmail(event.target.value)}
+              error={!validateEmail().valid}
+              helperText={validateEmail().helperText}
+            />
+            <TextField
+              margin="normal"
+              size="small"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={(event) => setPassword(event.target.value)}
+              error={!validatePassword().valid}
+              helperText={validatePassword().helperText}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Login
+            </Button>
+            <Stack alignItems="flex-end">
+              <Link href="/register" variant="body2">
+                Don't have an account? Register
+              </Link>
+            </Stack>
+          </Box>
+        </Stack>
+      </Paper>
     </Container>
   );
 }
