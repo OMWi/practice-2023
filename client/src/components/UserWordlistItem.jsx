@@ -1,7 +1,9 @@
 import { Chip, ListItem, Paper, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-export default function WordlistItem({ wordlistData }) {
+export default function UserWordlistItem({ wordlistData }) {
   const navigate = useNavigate();
 
   return (
@@ -13,7 +15,7 @@ export default function WordlistItem({ wordlistData }) {
           cursor: "pointer",
         },
       }}
-      onClick={() => navigate(`/word-lists/${wordlistData.id}`)}
+      onClick={() => navigate(`/word-lists/${wordlistData.wordListId}`)}
     >
       <Paper
         square
@@ -39,13 +41,12 @@ export default function WordlistItem({ wordlistData }) {
             <Typography variant="h6">{wordlistData.name}</Typography>
           </Stack>
 
-          <Stack>
-            <Typography variant="body2" textAlign="end">
-              Bookmarked: {wordlistData.popularity} times
-            </Typography>
-            <Typography variant="body2" textAlign="end">
-              Favorited: {wordlistData.likes} times
-            </Typography>
+          <Stack justifyContent="center" alignItems="center">
+            {wordlistData.isFavorite ? (
+              <FavoriteIcon />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
           </Stack>
         </Stack>
       </Paper>

@@ -7,7 +7,6 @@ import org.example.dto.userdata.UserDataUpdationDto;
 import org.example.dto.userword.*;
 import org.example.dto.userwordlist.UserWordListCreationDto;
 import org.example.dto.wordlist.UserWordListDto;
-import org.example.dto.wordlist.WordListDto;
 import org.example.enums.UserRole;
 import org.example.security.UserDetailsImpl;
 import org.example.service.UserDataService;
@@ -64,7 +63,7 @@ public class UserDataController {
     }
 
     @GetMapping("/leaderboard")
-    public List<UserDataHaveRowNumberDto> topUsers() {
+    public List<UserDataHaveRowNumberDto> getLeaderboard() {
         return userDataService.getLeaderboard();
     }
 
@@ -158,6 +157,31 @@ public class UserDataController {
         }
     }
 
+    @GetMapping("/{userId}/words/learn")
+    @Secured({"ADMIN", "USER"})
+    public UserWordHasMeaningsDto getQuestionWord(@PathVariable("userId") Long userId) {
+        try {
+            confirmUserAuthority(userId);
+            return userWordService.getQuestionWord(userId);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{userId}/words/learn")
+    @Secured({"ADMIN", "USER"})
+    public UserWordDto handleQuestionResult(@PathVariable("userId") Long userId, @RequestBody QuestionResultDto questionResultDto) {
+        if (questionResultDto.getIsCorrect() == null || questionResultDto.getWordId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            confirmUserAuthority(userId);
+            return userWordService.handleQuestionResult(userId, questionResultDto);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 //    user word lists methods
     @PostMapping("/{userId}/word-lists")
@@ -191,7 +215,6 @@ public class UserDataController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
-
 
     @PutMapping("/{userId}/word-lists")
     @Secured({"ADMIN", "USER"})

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLoaderData, useLocation } from "react-router-dom";
+import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -29,7 +29,13 @@ import WordItem from "../components/WordItem";
 export async function loader({ request }) {
   const searchParams = new URL(request.url).searchParams;
   const wordsPage = (
-    await WordService.list(searchParams.get("page"), searchParams.get("size"))
+    await WordService.list(
+      searchParams.get("page") || 1,
+      searchParams.get("size") || 10,
+      searchParams.get("search"),
+      searchParams.get("category"),
+      searchParams.get("difficulty"),
+    )
   ).data;
   return wordsPage;
 }
@@ -37,19 +43,25 @@ export async function loader({ request }) {
 export default function Words() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
-  const [wordsPage, setWordsPage] = useState(useLoaderData());
+  const loaderData = useLoaderData();
+  const [wordsPage, setWordsPage] = useState(loaderData);
+  useEffect(() => {
+    setWordsPage(loaderData);
+  }, [loaderData]);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const page = parseInt(query.get("page") || "1", 10);
+  const size = parseInt(query.get("size") || "10", 10);
 
   const [categories, setCategories] = useState([]);
   const [difficulties, setDifficulties] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(query.get("search") || "");
 
-  const [difficulty, setDifficulty] = useState("");
-  const [category, setCategory] = useState("");
+  const [difficulty, setDifficulty] = useState(query.get("difficulty") || "");
+  const [category, setCategory] = useState(query.get("category") || "");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,11 +73,39 @@ export default function Words() {
     fetchData();
   }, []);
 
+  const getNavigationUrl = (page, size) => {
+    let url = "/words";
+    if (
+      page === 1 &&
+      size === 10 &&
+      searchText === "" &&
+      difficulty === "" &&
+      category === ""
+    ) {
+      return url;
+    }
+
+    url += "?";
+    if (page !== 1) {
+      url += `page=${page}&`;
+    }
+    if (size !== 10) {
+      url += `size=${size}&`;
+    }
+    if (searchText !== "") {
+      url += `search=${searchText}&`;
+    }
+    if (category !== "") {
+      url += `category=${category}&`;
+    }
+    if (difficulty !== "") {
+      url += `difficulty=${difficulty}&`;
+    }
+    return url.substring(0, url.length - 1);
+  };
+
   const handleSearch = async () => {
-    const newWordsPage = (
-      await WordService.list(page, size, searchText, category, difficulty)
-    ).data;
-    setWordsPage(newWordsPage);
+    navigate(getNavigationUrl(page, size));
   };
 
   return (
@@ -81,7 +121,12 @@ export default function Words() {
             fullWidth
             label="Search"
             value={searchText}
-            onChange={(event) => setSearchText(event.target.value)}
+            onChange={(event) => {
+              setSearchText(event.target.value);
+            }}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -122,11 +167,13 @@ export default function Words() {
               labelId="select-difficulty-label"
               value={difficulty}
               label="Difficulty"
-              onChange={(event) => setDifficulty(event.target.value)}
+              onChange={(event) => {
+                setDifficulty(event.target.value);
+              }}
             >
               <MenuItem value="">Any</MenuItem>
               {difficulties.map((difficulty) => (
-                <MenuItem key={difficulty.id} value={difficulty.difficulty}>
+                <MenuItem key={difficulty.id} value={difficulty.id}>
                   {difficulty.difficulty}
                 </MenuItem>
               ))}
@@ -161,7 +208,7 @@ export default function Words() {
             renderItem={(item) => (
               <PaginationItem
                 component={Link}
-                to={`/words${item.page === 1 ? "" : `?page=${item.page}`}`}
+                to={getNavigationUrl(item.page, size)}
                 {...item}
               />
             )}

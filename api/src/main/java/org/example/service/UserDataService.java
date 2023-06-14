@@ -51,13 +51,17 @@ public class UserDataService {
     public List<UserDataHaveRowNumberDto> getLeaderboard() {
         var usersData = userDataRepository.findTop100ByOrderByExpDesc();
         var userDataDtoList = new ArrayList<UserDataHaveRowNumberDto>();
-        long ranking = 1;
         for (UserData userData : usersData) {
             var userDataDto = new UserDataHaveRowNumberDto();
             userDataDto.setUserId(userData.getId());
             userDataDto.setUsername(userData.getUsername());
             userDataDto.setExp(userData.getExp());
-            userDataDto.setPosition(ranking++);
+            long position = usersData
+                    .stream()
+                    .filter(item -> item.getExp() > userData.getExp())
+                    .count()
+                    + 1;
+            userDataDto.setPosition(position);
             userDataDtoList.add(userDataDto);
         }
 

@@ -43,8 +43,8 @@ public class WordService {
     return ConverterDTO.wordToDtoWithMeanings(createdWord);
   }
 
-  public WordPageDto list(Pageable paging) {
-    Page<Word> wordsPage = wordRepository.findAll(paging);
+  public WordPageDto list(Pageable paging, String searchText, Integer categoryId, Integer difficultyId) {
+    Page<Word> wordsPage = wordRepository.findAllByCondition(paging, searchText, categoryId, difficultyId);
 
     var wordDtoList = new ArrayList<WordDto>();
     for (Word word : wordsPage.getContent()) {
@@ -60,22 +60,22 @@ public class WordService {
     return wordPageDto;
   }
 
-  public WordPageDto listByUserId(Long userId, Pageable paging) {
-    Page<Word> wordsPage = wordRepository.findAllByUsers_UserDataId(userId, paging);
-
-    var wordDtoList = new ArrayList<WordDto>();
-    for (Word word : wordsPage.getContent()) {
-      wordDtoList.add(ConverterDTO.wordToDto(word));
-    }
-
-    var wordPageDto = new WordPageDto();
-    wordPageDto.setWords(wordDtoList);
-    wordPageDto.setCurrentPage(wordsPage.getNumber());
-    wordPageDto.setTotalItems(wordsPage.getTotalElements());
-    wordPageDto.setTotalPages(wordsPage.getTotalPages());
-
-    return wordPageDto;
-  }
+//  public WordPageDto listByUserId(Long userId, Pageable paging) {
+//    Page<Word> wordsPage = wordRepository.findAllByUsers_UserDataId(userId, paging);
+//
+//    var wordDtoList = new ArrayList<WordDto>();
+//    for (Word word : wordsPage.getContent()) {
+//      wordDtoList.add(ConverterDTO.wordToDto(word));
+//    }
+//
+//    var wordPageDto = new WordPageDto();
+//    wordPageDto.setWords(wordDtoList);
+//    wordPageDto.setCurrentPage(wordsPage.getNumber());
+//    wordPageDto.setTotalItems(wordsPage.getTotalElements());
+//    wordPageDto.setTotalPages(wordsPage.getTotalPages());
+//
+//    return wordPageDto;
+//  }
 
   public WordHasMeaningsDto get(Long wordId) {
     var word = wordRepository.findById(wordId).orElseThrow();

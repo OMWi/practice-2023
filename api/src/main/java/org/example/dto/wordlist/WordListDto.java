@@ -1,21 +1,22 @@
 package org.example.dto.wordlist;
 
+import org.example.dto.userdata.UserDataDto;
+
 public class WordListDto {
     private Long id;
     private String name;
     private String difficulty;
     private Long likes;
     private Long popularity;
+    private UserDataDto owner;
 
-    public WordListDto() {
-    }
-
-    public WordListDto(Long id, String name, String difficulty, Long likes, Long popularity) {
+    public WordListDto(Long id, String name, String difficulty, Long likes, Long popularity, UserDataDto owner) {
         this.id = id;
         this.name = name;
         this.difficulty = difficulty;
         this.likes = likes;
         this.popularity = popularity;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -56,5 +57,13 @@ public class WordListDto {
 
     public void setLikes(Long likes) {
         this.likes = likes;
+    }
+
+    public UserDataDto getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserDataDto owner) {
+        this.owner = owner;
     }
 }

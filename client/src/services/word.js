@@ -3,7 +3,7 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/v1/words";
 
 const WordService = {
-  list(page, size, searchText, category, difficulty) {
+  list(page, size, searchText, categoryId, difficultyId) {
     let params = {};
     if (page) {
       params.page = page - 1;
@@ -14,11 +14,11 @@ const WordService = {
     if (searchText && searchText !== "") {
       params.searchText = searchText;
     }
-    if (category && category !== "") {
-      params.category = parseInt(category);
+    if (categoryId && categoryId !== "") {
+      params.categoryId = categoryId;
     }
-    if (difficulty && difficulty !== "") {
-      params.difficulty = parseInt(difficulty);
+    if (difficultyId && difficultyId !== "") {
+      params.difficultyId = difficultyId;
     }
     return axios.get(API_URL, { params: params });
   },

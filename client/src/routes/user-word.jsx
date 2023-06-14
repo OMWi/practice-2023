@@ -7,8 +7,10 @@ import {
   Stack,
   Typography,
   Button,
+  IconButton,
+  Chip,
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 import UserDataService from "../services/user-data";
@@ -33,7 +35,7 @@ export default function UserWord() {
     if (!user) return;
     UserDataService.deleteUserWord(user.userId, word.wordId)
       .then((response) => {
-        navigate("/profile");
+        navigate(-1);
         return response;
       })
       .catch((error) => {
@@ -41,11 +43,36 @@ export default function UserWord() {
       });
   };
 
+  console.log(word);
+
+  const getLearningStatus = () => {
+    if (word.isLearned) {
+      return `Awesome! You have mastered this word. Keep it up!`;
+    }
+
+    const lastIntervalChangeDate = new Date(word.intervalChangeDate);
+    const nextRepeatDate = new Date();
+    nextRepeatDate.setDate(lastIntervalChangeDate.getDate() + word.interval);
+    const today = new Date();
+    if (nextRepeatDate.valueOf() > today.valueOf()) {
+      const differenceMs = nextRepeatDate.getTime() - today.getTime();
+      const diffDays = Math.round(
+        Math.abs(differenceMs / (1000 * 60 * 60 * 24)),
+      );
+      let message = "This word will be availabe for repetition";
+      if (diffDays < 2) return `${message} tommorow`;
+      return `${message} in ${diffDays} days`;
+    } else {
+      return "This word is availabe for repetition";
+    }
+  };
+
   return (
     <Container maxWidth="md" sx={{ padding: 2 }}>
       <Paper sx={{ padding: 2 }}>
         <Stack>
-          <Stack direction="row" alignItems="flex-end">
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Chip size="small" label={word.difficulty} color="primary" />
             <Typography variant="h5" sx={{ display: "flex", flexGrow: 1 }}>
               {word.word}
             </Typography>
@@ -58,25 +85,16 @@ export default function UserWord() {
               >
                 {word.category}
               </Typography>
-              <Button
-                variant="outlined"
-                endIcon={<DeleteOutlineIcon />}
-                onClick={() => handleDelete()}
-                color="error"
-              >
-                Delete
-              </Button>
+              <IconButton onClick={handleDelete}>
+                <BookmarkIcon />
+              </IconButton>
             </Stack>
           </Stack>
 
-          <Divider sx={{ my: 0.5 }} />
+          {/* <Divider sx={{ my: 0.5 }} /> */}
 
           <Stack>
-            <Typography variant="subtitle2">
-              {word.isLearned
-                ? `Word Learned`
-                : `Current guess streak: ${word.guessStreak}`}
-            </Typography>
+            <Typography variant="subtitle2">{getLearningStatus()}</Typography>
           </Stack>
 
           <Divider sx={{ my: 0.5 }} />
@@ -84,20 +102,23 @@ export default function UserWord() {
           <List>
             {word.meaningDtoList.length > 0 &&
               word.meaningDtoList.map((meaningDto, index) => (
-                <ListItem disablePadding key={meaningDto.id}>
+                <ListItem disablePadding key={meaningDto.id} sx={{ my: 1 }}>
                   <Stack
                     direction="row"
                     alignItems="flex-start"
+                    spacing={1}
                     sx={{ width: 1 }}
                   >
-                    <Typography variant="body1" sx={{ minWidth: "50px" }}>
-                      {index + 1}. [L{meaningDto.level}]
-                    </Typography>
+                    <Chip
+                      size="small"
+                      label={meaningDto.difficulty}
+                      variant="outlined"
+                    />
                     <Typography
                       variant="body1"
                       sx={{ mx: 1, overflow: "auto" }}
                     >
-                      {meaningDto.text}
+                      {meaningDto.meaning}
                     </Typography>
                   </Stack>
                 </ListItem>

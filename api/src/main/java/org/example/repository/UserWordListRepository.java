@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserWordListRepository extends JpaRepository<UserdataWordlist, UserdataWordlistId> {
     public List<UserdataWordlist> findAllByUserData_Id(Long userId);
-    public long count();
-    public long countByIsFavoriteTrue();
+    public long countByWordList_Id(Long wordListId);
+    public long countByWordList_IdAndIsFavoriteTrue(Long wordListId);
 }

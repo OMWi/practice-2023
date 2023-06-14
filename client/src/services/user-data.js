@@ -9,8 +9,8 @@ const UserDataService = {
     return axios.get(`${API_URL}/${userId}`, { headers: authHeader() });
   },
 
-  listTopUsersData(limit) {
-    return axios.get(`${API_URL}/top/${limit}`, { headers: authHeader() });
+  getLeaderboard() {
+    return axios.get(`${API_URL}/leaderboard`, { headers: authHeader() });
   },
 
   // user words methods
@@ -38,6 +38,23 @@ const UserDataService = {
     return axios.delete(`${API_URL}/${userId}/words/${wordId}`, {
       headers: authHeader(),
     });
+  },
+
+  getQuestionWord(userId) {
+    return axios.get(`${API_URL}/${userId}/words/learn`, {
+      headers: authHeader(),
+    });
+  },
+
+  handleQuestionAnswer(userId, wordId, isCorrect) {
+    return axios.post(
+      `${API_URL}/${userId}/words/learn`,
+      {
+        wordId: wordId,
+        isCorrect: isCorrect,
+      },
+      { headers: authHeader() },
+    );
   },
 
   // user word lists methods

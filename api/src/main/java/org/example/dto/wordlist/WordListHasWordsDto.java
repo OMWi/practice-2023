@@ -1,5 +1,6 @@
 package org.example.dto.wordlist;
 
+import org.example.dto.userdata.UserDataDto;
 import org.example.dto.word.WordDto;
 
 import java.util.List;
@@ -10,17 +11,19 @@ public class WordListHasWordsDto {
     private String difficulty;
     private Long likes;
     private Long popularity;
+    private UserDataDto owner;
     private List<WordDto> wordDtoList;
 
     public WordListHasWordsDto() {
     }
 
-    public WordListHasWordsDto(Long id, String name, String difficulty, Long likes, Long popularity, List<WordDto> wordDtoList) {
+    public WordListHasWordsDto(Long id, String name, String difficulty, Long likes, Long popularity, UserDataDto owner, List<WordDto> wordDtoList) {
         this.id = id;
         this.name = name;
         this.difficulty = difficulty;
         this.likes = likes;
         this.popularity = popularity;
+        this.owner = owner;
         this.wordDtoList = wordDtoList;
     }
 
@@ -70,5 +73,13 @@ public class WordListHasWordsDto {
 
     public void setLikes(Long likes) {
         this.likes = likes;
+    }
+
+    public UserDataDto getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserDataDto owner) {
+        this.owner = owner;
     }
 }

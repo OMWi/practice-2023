@@ -32,10 +32,12 @@ public class WordController {
   public WordPageDto listWords(
           @RequestParam(defaultValue = "0") int page,
           @RequestParam(defaultValue = "10") int size,
-          @RequestParam(required = false) String search
+          @RequestParam(required = false) String searchText,
+          @RequestParam(required = false) Integer categoryId,
+          @RequestParam(required = false) Integer difficultyId
   ) {
     Pageable paging = PageRequest.of(page, size);
-    return wordService.list(paging);
+    return wordService.list(paging, searchText, categoryId, difficultyId);
   }
 
   @GetMapping("/{wordId}")

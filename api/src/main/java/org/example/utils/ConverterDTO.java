@@ -79,7 +79,8 @@ public final class ConverterDTO {
                 wordList.getName(),
                 wordList.getDifficulty().getDifficulty(),
                 likes,
-                popularity
+                popularity,
+                userDataToDto(wordList.getOwner())
         );
         return wordListDto;
     }
@@ -97,6 +98,7 @@ public final class ConverterDTO {
                 wordList.getDifficulty().getDifficulty(),
                 likes,
                 popularity,
+                userDataToDto(wordList.getOwner()),
                 wordDtoList
         );
         return wordListDto;
@@ -155,7 +157,9 @@ public final class ConverterDTO {
         var userWordListDto = new UserWordListDto(
                 userWordList.getUserData().getId(),
                 userWordList.getWordList().getId(),
-                userWordList.getIsFavorite()
+                userWordList.getIsFavorite(),
+                userWordList.getWordList().getDifficulty().getDifficulty(),
+                userWordList.getWordList().getName()
         );
         return userWordListDto;
     }

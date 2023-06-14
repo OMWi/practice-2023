@@ -4,14 +4,18 @@ public class UserWordListDto {
     private Long userId;
     private Long wordListId;
     private Boolean isFavorite;
+    private String difficulty;
+    private String name;
 
     public UserWordListDto() {
     }
 
-    public UserWordListDto(Long userId, Long wordListId, Boolean isFavorite) {
+    public UserWordListDto(Long userId, Long wordListId, Boolean isFavorite, String difficulty, String name) {
         this.userId = userId;
         this.wordListId = wordListId;
         this.isFavorite = isFavorite;
+        this.difficulty = difficulty;
+        this.name = name;
     }
 
     public Long getUserId() {
@@ -36,5 +40,21 @@ public class UserWordListDto {
 
     public void setIsFavorite(Boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -22,14 +22,14 @@ export async function loader() {
   const user = AuthService.getCurrentUser();
   if (!user) return null;
   try {
-    return (await UserDataService.getRandomUnlearnedUserWord(user.userId)).data;
+    return (await UserDataService.getQuestionWord(user.userId)).data;
   } catch (error) {
     return null;
   }
 }
 
 export default function LearnWord() {
-  const word = useLoaderData();
+  const userWord = useLoaderData();
   const navigate = useNavigate();
   const auth = useOutletContext()[0];
 
@@ -41,29 +41,20 @@ export default function LearnWord() {
     }
   }, [auth]);
 
-  const handleCorrectAnswer = async () => {
-    console.log("rework needed");
-    // await UserDataService.incUserWordGuessStreak(
-    //   AuthService.getCurrentUser().userId,
-    //   word.wordId,
-    // );
-    setVisibleMeanings(false);
-    navigate("/learn");
-  };
-
-  const handleWrongAnswer = async () => {
-    console.log("rework needed");
-    // await UserDataService.setZeroGuessStreak(
-    //   AuthService.getCurrentUser().userId,
-    //   word.wordId,
-    // );
+  const handleAnswer = async (isCorrect) => {
+    console.log("handle answer: ", isCorrect);
+    const result = await UserDataService.handleQuestionAnswer(
+      userWord.userId,
+      userWord.wordId,
+      isCorrect,
+    );
     setVisibleMeanings(false);
     navigate("/learn");
   };
 
   return (
     <Container maxWidth="md" sx={{ padding: 1 }}>
-      {auth && !word && (
+      {auth && !userWord && (
         <Stack alignItems="center">
           <Typography variant="h4">
             Congratulations! All words learned
@@ -71,13 +62,13 @@ export default function LearnWord() {
         </Stack>
       )}
 
-      {auth && word && (
+      {auth && userWord && (
         <Paper sx={{ padding: 2 }}>
           <Stack spacing={1}>
             <Stack direction="row">
               <Stack sx={{ flexGrow: 1 }}>
                 <Typography textAlign="center" variant="h5">
-                  {word.word}
+                  {userWord.word}
                 </Typography>
               </Stack>
 
@@ -88,7 +79,7 @@ export default function LearnWord() {
                   fontStyle="italic"
                   // sx={{ ml: 1 }}
                 >
-                  {word.category}
+                  {userWord.category}
                 </Typography>
               </Stack>
             </Stack>
@@ -99,17 +90,17 @@ export default function LearnWord() {
 
             <Stack>
               <Typography variant="subtitle2">
-                {word.isLearned
+                {userWord.isLearned
                   ? `Word Learned`
-                  : `Current guess streak: ${word.guessStreak}`}
+                  : `Current guess streak: ${userWord.guessStreak}`}
               </Typography>
             </Stack>
 
             <Divider sx={{ my: 0.5 }} /> */}
 
             <List sx={visibleMeanings ? {} : { filter: "blur(20px)" }}>
-              {word.meaningDtoList.length > 0 &&
-                word.meaningDtoList.map((meaningDto, index) => (
+              {userWord.meaningDtoList.length > 0 &&
+                userWord.meaningDtoList.map((meaningDto) => (
                   <ListItem disablePadding key={meaningDto.id} sx={{ mb: 1 }}>
                     <Stack
                       direction="row"
@@ -122,9 +113,6 @@ export default function LearnWord() {
                         variant="outlined"
                       />
 
-                      {/* <Typography variant="body1">
-                            {index + 1}. [{meaningDto.difficulty}]
-                          </Typography> */}
                       <Typography
                         variant="body1"
                         sx={{ mx: 1, overflow: "auto" }}
@@ -142,14 +130,14 @@ export default function LearnWord() {
                   <Button
                     color="error"
                     variant="contained"
-                    onClick={() => handleWrongAnswer()}
+                    onClick={() => handleAnswer(false)}
                     startIcon={<CloseIcon />}
                   >
                     Wrong
                   </Button>
                   <Button
                     variant="contained"
-                    onClick={() => handleCorrectAnswer()}
+                    onClick={() => handleAnswer(true)}
                     startIcon={<CheckIcon />}
                   >
                     Correct
