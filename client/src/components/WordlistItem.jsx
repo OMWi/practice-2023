@@ -36,10 +36,15 @@ export default function WordlistItem({ wordlistData }) {
               label={wordlistData.difficulty}
               variant="outlined"
             />
-            <Typography variant="h6">{wordlistData.name}</Typography>
+            <Stack>
+              <Typography variant="h6">{wordlistData.name}</Typography>
+              <Typography variant="subtitle1" sx={{ my: -0.5 }}>
+                creator: "{wordlistData.owner.username}"
+              </Typography>
+            </Stack>
           </Stack>
 
-          <Stack>
+          <Stack justifyContent="center">
             <Typography variant="body2" textAlign="end">
               Bookmarked: {wordlistData.popularity} times
             </Typography>

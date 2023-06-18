@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.dto.userwordlist.UserWordListCreationDto;
-import org.example.dto.wordlist.UserWordListDto;
+import org.example.dto.userwordlist.UserWordListDto;
 import org.example.model.UserdataWordlist;
 import org.example.model.UserdataWordlistId;
 import org.example.repository.UserDataRepository;

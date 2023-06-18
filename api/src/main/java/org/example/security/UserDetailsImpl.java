@@ -53,6 +53,10 @@ public class UserDetailsImpl implements UserDetails {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String getPassword() {
         return password;

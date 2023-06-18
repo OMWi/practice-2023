@@ -23,14 +23,12 @@ export async function loader() {
 
 export default function LeaderBoard() {
   const [userDataList, user] = useLoaderData();
-  console.log("list: ", userDataList);
-  console.log("user: ", user);
 
   return (
     <Container maxWidth="lg" sx={{ padding: 1 }}>
       <Paper>
         <Typography variant="h4" textAlign="center" sx={{ padding: 1 }}>
-          Best Learners
+          Leaderboard
         </Typography>
         <Divider />
         {userDataList.length > 0 && (

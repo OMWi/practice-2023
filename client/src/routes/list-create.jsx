@@ -5,6 +5,7 @@ import {
   Container,
   Divider,
   FormControl,
+  FormHelperText,
   IconButton,
   InputLabel,
   List,
@@ -22,10 +23,13 @@ import WordItem from "../components/WordItem";
 import WordService from "../services/word";
 import { Add, DeleteOutline } from "@mui/icons-material";
 import WordListService from "../services/word-list";
+import { ValidationError } from "../utils";
 
 export default function WordListCreate() {
   const navigate = useNavigate();
   const auth = useOutletContext()[0];
+
+  const [globalError, setGlobalError] = useState(ValidationError(false, ""));
 
   useEffect(() => {
     if (!auth) {
@@ -51,26 +55,31 @@ export default function WordListCreate() {
 
   const handleWordListSave = async () => {
     if (wordListName === "") {
-      // add validation message
-      console.log("wordListName validation");
+      setGlobalError(ValidationError(true, "List name required"));
       return;
     }
     if (difficulty === "") {
-      // add validation message
-      console.log("difficulty validation");
+      setGlobalError(ValidationError(true, "Difficulty required"));
       return;
     }
     if (wordsOfList.length === 0) {
-      // add validation message
-      console.log("wordsOfList validation");
+      setGlobalError(ValidationError(true, "List can't be empty"));
       return;
     }
-    const res = await WordListService.create(
+    WordListService.create(
       wordListName,
       difficulty,
       wordsOfList.map((word) => word.id),
-    );
-    navigate(`/word-lists/${res.data.id}`);
+    )
+      .then((res) => {
+        navigate(`/word-lists/${res.data.id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 403) {
+          navigate(-1);
+        }
+      });
   };
 
   const handleWordAdd = (word) => {
@@ -137,22 +146,25 @@ export default function WordListCreate() {
               </Select>
             </FormControl>
           </Stack>
-          <List>
-            {wordsOfList.map((word) => (
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                justifyContent="center"
-                key={word.id}
-              >
-                <WordItem wordData={word} />
-                <IconButton onClick={() => handleWordDelete(word)}>
-                  <DeleteOutline />
-                </IconButton>
-              </Stack>
-            ))}
-          </List>
+          {wordsOfList.length > 0 && (
+            <List>
+              {wordsOfList.map((word) => (
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  justifyContent="center"
+                  key={word.id}
+                >
+                  <WordItem wordData={word} />
+                  <IconButton onClick={() => handleWordDelete(word)}>
+                    <DeleteOutline />
+                  </IconButton>
+                </Stack>
+              ))}
+            </List>
+          )}
+
           <Stack direction="row" spacing={1}>
             <Autocomplete
               fullWidth
@@ -178,6 +190,10 @@ export default function WordListCreate() {
               <Add />
             </IconButton>
           </Stack>
+
+          <FormHelperText error={globalError.error}>
+            {globalError.error && globalError.helperText}
+          </FormHelperText>
 
           <Stack direction="row" spacing={1}>
             <Box sx={{ flexGrow: 1 }} />

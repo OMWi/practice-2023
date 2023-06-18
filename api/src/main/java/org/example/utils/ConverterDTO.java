@@ -8,12 +8,11 @@ import org.example.dto.userword.UserWordHasMeaningsDto;
 import org.example.dto.word.WordHasMeaningsDto;
 import org.example.dto.wordcategory.WordCategoryDto;
 import org.example.dto.word.WordDto;
-import org.example.dto.wordlist.UserWordListDto;
+import org.example.dto.userwordlist.UserWordListDto;
 import org.example.dto.wordlist.WordListDto;
 import org.example.dto.wordlist.WordListHasWordsDto;
 import org.example.model.*;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 public final class ConverterDTO {
@@ -105,13 +104,12 @@ public final class ConverterDTO {
     }
 
     public static UserDataDto userDataToDto(UserData userData) {
-        var today = new Date(System.currentTimeMillis());
-        var isSubscriber = userData.getSubscriptionExpirationDate() != null && today.compareTo(userData.getSubscriptionExpirationDate()) > 0;
         var userDataDto = new UserDataDto(
                 userData.getId(),
                 userData.getUsername(),
                 userData.getExp(),
-                isSubscriber
+                Utility.isSubscriber(userData),
+                userData.getSubscriptionExpirationDate()
         );
         return userDataDto;
     }
@@ -159,7 +157,8 @@ public final class ConverterDTO {
                 userWordList.getWordList().getId(),
                 userWordList.getIsFavorite(),
                 userWordList.getWordList().getDifficulty().getDifficulty(),
-                userWordList.getWordList().getName()
+                userWordList.getWordList().getName(),
+                userDataToDto(userWordList.getWordList().getOwner())
         );
         return userWordListDto;
     }

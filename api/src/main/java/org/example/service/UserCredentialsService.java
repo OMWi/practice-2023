@@ -1,5 +1,7 @@
 package org.example.service;
 
+import jakarta.security.auth.message.AuthException;
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.example.dto.auth.JwtDto;
 import org.example.dto.auth.UserCreationDto;
 import org.example.dto.usercredentials.UserCredentialsDto;
@@ -16,14 +18,16 @@ import org.example.security.JwtUtils;
 import org.example.security.UserDetailsImpl;
 import org.example.utils.ConverterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -87,4 +91,33 @@ public class UserCredentialsService {
         return new JwtDto(jwt, userDetails.getId(), userDetails.getEmail(), userRole, userData.getUsername());
     }
 
+    public JwtDto updateCredentials(UserCredentialsDto userCredentialsDto ) {
+        var userCredentials = userCredentialsRepository.findById(userCredentialsDto.getId()).orElseThrow();
+        if (userCredentialsDto.getEmail() != null && userCredentialsRepository.existsByEmail(userCredentialsDto.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (userCredentialsDto.getEmail() != null) {
+            userCredentials.setEmail(userCredentialsDto.getEmail());
+            var userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            userDetails.setEmail(userCredentialsDto.getEmail());
+        }
+        if (userCredentialsDto.getPassword() != null) {
+            userCredentials.setPassword(passwordEncoder.encode(userCredentialsDto.getPassword()));
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authentication.getName(), userCredentialsDto.getPassword())
+            );
+        }
+
+        userCredentialsRepository.save(userCredentials);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String role = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .toList().get(0);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        return new JwtDto(jwt, userCredentials.getId(), userCredentials.getEmail(), UserRole.valueOf(role), userDetails.getUsername());
+    }
 }

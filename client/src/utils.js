@@ -17,3 +17,23 @@ export function stringToColor(string) {
 
   return color;
 }
+
+export function ValidationError(error, helperText) {
+  return {
+    error: error,
+    helperText: helperText,
+  };
+}
+
+export function validateRequired(string) {
+  return string.trim() !== "";
+}
+
+export function validateMinLength(string, length) {
+  return string.length >= length;
+}
+
+export function validateNotEmpty(array) {
+  if (!Array.isArray(array)) return false;
+  return array.length > 0;
+}

@@ -13,6 +13,14 @@ const UserDataService = {
     return axios.get(`${API_URL}/leaderboard`, { headers: authHeader() });
   },
 
+  updateUserData(userId, username) {
+    return axios.put(
+      `${API_URL}/${userId}`,
+      { userId: userId, username: username },
+      { headers: authHeader() },
+    );
+  },
+
   // user words methods
   addUserWord(userId, wordId) {
     return axios.post(

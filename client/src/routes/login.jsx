@@ -9,10 +9,12 @@ import {
   Typography,
   Container,
   Paper,
+  FormHelperText,
 } from "@mui/material";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
+import { ValidationError, validateMinLength, validateRequired } from "../utils";
 import AuthService from "../services/auth";
 
 export default function Login() {
@@ -20,49 +22,75 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [emailError, setEmailError] = useState(ValidationError(false, ""));
+  const [passwordError, setPasswordError] = useState(
+    ValidationError(false, ""),
+  );
+  const [globalError, setGlobalError] = useState(ValidationError(false, ""));
+
   const setAuth = useOutletContext()[1];
 
-  const validateEmail = () => {
-    if (email === "") {
-      return { valid: false, helperText: "Email required" };
-    }
-    return { valid: true, helperText: "" };
+  const handleEmailChange = (event) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+    validateEmail(newEmail);
   };
 
-  const validatePassword = () => {
-    if (password === "") {
-      return { valid: false, helperText: "Password required" };
+  const validateEmail = (email) => {
+    if (!validateRequired(email)) {
+      setEmailError(ValidationError(true, "Email required"));
+      return false;
     }
-    if (password.length < 4) {
-      return {
-        valid: false,
-        helperText: "Password should be atleast 4 characters long",
-      };
+    setEmailError(ValidationError(false, ""));
+    return true;
+  };
+
+  const handlePasswordChange = (event) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    validatePassword(newPassword);
+  };
+
+  const validatePassword = (password) => {
+    if (!validateRequired(password)) {
+      setPasswordError(ValidationError(true, "Password required"));
+      return false;
     }
-    return { valid: true, helperText: "" };
+    if (!validateMinLength(password, 4)) {
+      setPasswordError(
+        ValidationError(true, "Password should be atleast 4 characters long"),
+      );
+      return false;
+    }
+    setPasswordError(ValidationError(false, ""));
+    return true;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!validateEmail().valid || !validatePassword().valid) {
+    if (!validateEmail(email) || !validatePassword(password)) {
       return;
     }
-    AuthService.login(email, password)
-      .then((response) => {
-        if (response.data.token) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          setAuth(true);
-          navigate(`/profile`);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    try {
+      const loginResponse = (await AuthService.login(email, password)).data;
+      if (loginResponse.token) {
+        localStorage.setItem("user", JSON.stringify(loginResponse));
+        setAuth(true);
+        navigate("/profile");
+      }
+    } catch (error) {
+      console.log("login error", error);
+      if (error.response.status === 401) {
+        setGlobalError(ValidationError(true, "Wrong email or password"));
+      }
+    }
   };
 
   return (
     <Container maxWidth="xs" sx={{ padding: 1 }}>
-      <Paper square sx={{ padding: 2, marginTop: 6 }}>
+      <Paper square sx={{ padding: 2, marginTop: 8 }}>
         <Stack
           alignItems="center"
           sx={{
@@ -83,7 +111,7 @@ export default function Login() {
             sx={{ mt: 1 }}
           >
             <TextField
-              margin="normal"
+              margin="dense"
               size="small"
               required
               fullWidth
@@ -92,12 +120,12 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={(event) => setEmail(event.target.value)}
-              error={!validateEmail().valid}
-              helperText={validateEmail().helperText}
+              error={emailError.error}
+              helperText={emailError.helperText}
+              onChange={(event) => handleEmailChange(event)}
             />
             <TextField
-              margin="normal"
+              margin="dense"
               size="small"
               required
               fullWidth
@@ -106,10 +134,13 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={(event) => setPassword(event.target.value)}
-              error={!validatePassword().valid}
-              helperText={validatePassword().helperText}
+              error={passwordError.error}
+              helperText={passwordError.helperText}
+              onChange={(event) => handlePasswordChange(event)}
             />
+            <FormHelperText error={globalError.error}>
+              {globalError.error && globalError.helperText}
+            </FormHelperText>
             <Button
               type="submit"
               fullWidth
@@ -119,7 +150,7 @@ export default function Login() {
               Login
             </Button>
             <Stack alignItems="flex-end">
-              <Link href="/register" variant="body2">
+              <Link href="/register" variant="body2" underline="always">
                 Don't have an account? Register
               </Link>
             </Stack>

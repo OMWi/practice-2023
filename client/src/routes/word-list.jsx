@@ -44,7 +44,6 @@ export default function WordList() {
 
     UserDataService.getUserWordList(user.userId, wordList.id)
       .then((response) => {
-        console.log(response);
         setIsAdded(true);
         setIsFavorite(response.data.isFavorite);
         return response;
@@ -58,7 +57,6 @@ export default function WordList() {
 
     UserDataService.addUserWordList(user.userId, wordList.id, false).then(
       (response) => {
-        console.log(response);
         setIsAdded(true);
       },
     );
@@ -70,7 +68,6 @@ export default function WordList() {
 
     UserDataService.deleteUserWordList(user.userId, wordList.id).then(
       (response) => {
-        console.log(response);
         setIsAdded(false);
         setIsFavorite(false);
       },
@@ -84,7 +81,6 @@ export default function WordList() {
     if (isAdded) {
       UserDataService.updateUserWordList(user.userId, wordList.id, true).then(
         (response) => {
-          console.log(response);
           setIsFavorite(true);
         },
       );
@@ -93,7 +89,6 @@ export default function WordList() {
 
     UserDataService.addUserWordList(user.userId, wordList.id, true).then(
       (response) => {
-        console.log(response);
         setIsAdded(true);
         setIsFavorite(true);
       },
@@ -106,7 +101,6 @@ export default function WordList() {
 
     UserDataService.updateUserWordList(user.userId, wordList.id, false).then(
       (response) => {
-        console.log(response);
         setIsFavorite(false);
       },
     );
@@ -124,9 +118,17 @@ export default function WordList() {
             alignItems="center"
           >
             <Chip size="small" label={wordList.difficulty} color="primary" />
-            <Typography variant="h5">{wordList.name}</Typography>
+            <Stack>
+              <Typography variant="h5">{wordList.name}</Typography>
+              <Typography variant="body1" sx={{ my: -0.5 }}>
+                creator: "{wordList.owner.username}"
+              </Typography>
+            </Stack>
           </Stack>
-          {isAdded ? (
+
+          {isGuest ? (
+            <></>
+          ) : isAdded ? (
             <IconButton onClick={handleRemove}>
               <BookmarkIcon />
             </IconButton>
@@ -136,7 +138,9 @@ export default function WordList() {
             </IconButton>
           )}
 
-          {isFavorite ? (
+          {isGuest ? (
+            <></>
+          ) : isFavorite ? (
             <IconButton onClick={handleUnfavorited}>
               <FavoriteIcon />
             </IconButton>

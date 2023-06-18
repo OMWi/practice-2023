@@ -38,7 +38,12 @@ export default function UserWordlistItem({ wordlistData }) {
               label={wordlistData.difficulty}
               variant="outlined"
             />
-            <Typography variant="h6">{wordlistData.name}</Typography>
+            <Stack>
+              <Typography variant="h6">{wordlistData.name}</Typography>
+              <Typography variant="subtitle1" sx={{ my: -0.5 }}>
+                creator: "{wordlistData.owner.username}"
+              </Typography>
+            </Stack>
           </Stack>
 
           <Stack justifyContent="center" alignItems="center">

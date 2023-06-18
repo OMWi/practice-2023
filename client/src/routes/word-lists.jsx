@@ -102,28 +102,11 @@ export default function WordLists() {
     if (searchText !== "") {
       url += `search=${searchText}&`;
     }
-    console.log("nav url: ", url);
     return url.substring(0, url.length - 1);
   };
 
   const handleSearch = async () => {
     navigate(getNavigationUrl(page, size));
-    // let url = "/word-lists";
-    // if (searchText === "" && difficulty === "" && sortBy === "") {
-    //   navigate("");
-    // }
-    // url += "?";
-    // if (searchText !== "") {
-    //   url += `search=${searchText}&`;
-    // }
-    // if (difficulty !== "") {
-    //   url += `difficulty=${difficulty}&`;
-    // }
-    // if (sortBy !== "") {
-    //   url += `sortBy=${sortBy}&`;
-    // }
-    // url = url.substring(0, url.length - 1);
-    // navigate(url);
   };
 
   return (

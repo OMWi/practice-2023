@@ -1,4 +1,6 @@
 import { Chip, ListItem, Paper, Stack, Typography } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +29,7 @@ export default function UserWordItem({ userWordData }) {
           },
         }}
       >
-        <Stack sx={{ padding: 1, width: 1 }}>
+        <Stack sx={{ padding: 1, width: 1 }} spacing={0.5}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Chip
               size="small"
@@ -47,9 +49,19 @@ export default function UserWordItem({ userWordData }) {
             </Typography>
           </Stack>
 
-          <Typography variant="subtitle2">
-            {userWordData.isLearned ? "Learned" : ""}
-          </Typography>
+          <Stack direction="row" spacing={1}>
+            {userWordData.isLearned ? (
+              <>
+                <CheckCircleIcon fontSize="small" />
+                <Typography variant="subtitle2">Mastered</Typography>
+              </>
+            ) : (
+              <>
+                <HourglassEmptyIcon fontSize="small" />
+                <Typography variant="subtitle2">Needs work</Typography>
+              </>
+            )}
+          </Stack>
         </Stack>
       </Paper>
     </ListItem>

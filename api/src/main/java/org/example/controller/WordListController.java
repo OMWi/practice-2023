@@ -40,6 +40,9 @@ public class WordListController {
             String role = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())
                     .toList().get(0);
+            if (role != "ADMIN" && !userDataService.isSubscriber(userDetails.getId())) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            }
             return wordListService.create(wordListDto, userDetails.getId());
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

@@ -15,7 +15,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import WordService from "../services/word";
@@ -44,7 +44,6 @@ export default function Word() {
 
     UserDataService.getUserWord(user.userId, word.id)
       .then((response) => {
-        console.log(response);
         setIsAdded(true);
         return response;
       })
@@ -57,7 +56,6 @@ export default function Word() {
 
     UserDataService.addUserWord(user.userId, word.id, false).then(
       (response) => {
-        console.log(response);
         setIsAdded(true);
       },
     );
@@ -68,7 +66,6 @@ export default function Word() {
     if (!user) return;
 
     UserDataService.deleteUserWord(user.userId, word.id).then((response) => {
-      console.log(response);
       setIsAdded(false);
     });
   };
@@ -91,7 +88,9 @@ export default function Word() {
               >
                 {word.categoryDto.category}
               </Typography>
-              {isAdded ? (
+              {isGuest ? (
+                <></>
+              ) : isAdded ? (
                 <IconButton onClick={handleRemove}>
                   <BookmarkIcon />
                 </IconButton>
@@ -120,7 +119,6 @@ export default function Word() {
                       label={meaningDto.difficulty}
                       variant="outlined"
                     />
-                    {/* <Typography variant="body1">{index + 1}.</Typography> */}
                     <Typography
                       variant="body1"
                       sx={{ mx: 1, overflow: "auto" }}

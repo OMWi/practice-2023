@@ -1,12 +1,20 @@
 package org.example.utils;
 
 
+import org.example.model.UserData;
+
+import java.sql.Date;
 import java.sql.SQLException;
 
 public final class Utility {
     private static final System.Logger logger = System.getLogger(Utility.class.getName());
 
     private Utility() {
+    }
+
+    public static boolean isSubscriber(UserData userData) {
+        var today = new Date(System.currentTimeMillis());
+        return userData.getSubscriptionExpirationDate() != null && userData.getSubscriptionExpirationDate().compareTo(today) > 0;
     }
 
     public static void printSQLException(SQLException ex) {

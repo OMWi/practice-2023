@@ -6,7 +6,7 @@ import org.example.dto.userdata.UserDataHaveRowNumberDto;
 import org.example.dto.userdata.UserDataUpdationDto;
 import org.example.dto.userword.*;
 import org.example.dto.userwordlist.UserWordListCreationDto;
-import org.example.dto.wordlist.UserWordListDto;
+import org.example.dto.userwordlist.UserWordListDto;
 import org.example.enums.UserRole;
 import org.example.security.UserDetailsImpl;
 import org.example.service.UserDataService;

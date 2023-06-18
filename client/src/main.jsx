@@ -90,7 +90,7 @@ const theme = createTheme({
       defaultProps: {
         component: LinkBehavior,
         underline: "none",
-        color: "black",
+        color: "#000",
         sx: {
           "&:hover": {
             color: "selected.main",

@@ -5,12 +5,14 @@ import org.example.dto.userdata.UserDataDto;
 import org.example.dto.userdata.UserDataHaveRowNumberDto;
 import org.example.dto.userdata.UserDataUpdationDto;
 import org.example.dto.wordlist.WordListDto;
+import org.example.enums.UserRole;
 import org.example.model.UserData;
 import org.example.repository.UserCredentialsRepository;
 import org.example.repository.UserDataRepository;
 import org.example.repository.WordListRepository;
 import org.example.security.UserDetailsImpl;
 import org.example.utils.ConverterDTO;
+import org.example.utils.Utility;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +68,7 @@ public class UserDataService {
         }
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
+        if (authentication.getPrincipal() == "anonymousUser" || !authentication.isAuthenticated()) {
             return userDataDtoList;
         }
 
@@ -93,11 +95,17 @@ public class UserDataService {
         return ConverterDTO.userDataToDto(userData);
     }
 
+    public boolean isSubscriber(Long userId) {
+        var userData = userDataRepository.findById(userId).orElseThrow();
+        return Utility.isSubscriber(userData);
+    }
+
     public UserDataDto update(UserDataUpdationDto userDataDto) {
         var userData = userDataRepository.findById(userDataDto.getUserId()).orElseThrow();
 
-        userData.setUsername(userDataDto.getUsername());
-        userData.setExp(userDataDto.getExp());
+        if (userDataDto.getUsername() != null) {
+            userData.setUsername(userDataDto.getUsername());
+        }
 
         var updatedUserData = userDataRepository.save(userData);
         return ConverterDTO.userDataToDto(updatedUserData);

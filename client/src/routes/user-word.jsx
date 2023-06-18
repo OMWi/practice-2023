@@ -22,7 +22,6 @@ export async function loader({ params }) {
   if (!user) return null;
   const userWordData = (await UserDataService.getUserWord(user.userId, wordId))
     .data;
-  console.log(userWordData);
   return userWordData;
 }
 
@@ -42,8 +41,6 @@ export default function UserWord() {
         return error;
       });
   };
-
-  console.log(word);
 
   const getLearningStatus = () => {
     if (word.isLearned) {

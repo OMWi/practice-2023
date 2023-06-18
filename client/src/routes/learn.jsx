@@ -10,6 +10,7 @@ import {
   Typography,
   Button,
   Chip,
+  Link,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CloseIcon from "@mui/icons-material/Close";
@@ -42,8 +43,7 @@ export default function LearnWord() {
   }, [auth]);
 
   const handleAnswer = async (isCorrect) => {
-    console.log("handle answer: ", isCorrect);
-    const result = await UserDataService.handleQuestionAnswer(
+    await UserDataService.handleQuestionAnswer(
       userWord.userId,
       userWord.wordId,
       isCorrect,
@@ -56,9 +56,15 @@ export default function LearnWord() {
     <Container maxWidth="md" sx={{ padding: 1 }}>
       {auth && !userWord && (
         <Stack alignItems="center">
-          <Typography variant="h4">
-            Congratulations! All words learned
+          <Typography variant="h6">
+            It seems like you've gone through all your practice for today.
           </Typography>
+          <Typography variant="h6">
+            Check back tomorrow to see if there are any new words to practice.
+          </Typography>
+          <Link href="/profile?tab=1" underline="alway">
+            Go Back
+          </Link>
         </Stack>
       )}
 
