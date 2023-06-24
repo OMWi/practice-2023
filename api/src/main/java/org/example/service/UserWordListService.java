@@ -40,7 +40,7 @@ public class UserWordListService {
     }
 
     public List<UserWordListDto> listByUserId(Long userId) {
-        var userWordLists = userWordListRepository.findAllByUserData_Id(userId);
+        var userWordLists = userWordListRepository.findAllByUserData_IdOrderByIsFavoriteDesc(userId);
 
         var userWordsDtoList = new ArrayList<UserWordListDto>();
         for (UserdataWordlist userWordList : userWordLists) {
